@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 
 <head>
+  <script src="assets/js/lab-shell.js"></script>
   <meta charset="UTF-8" />
   <title>簡譜和弦轉換</title>
   <style>
@@ -103,7 +104,7 @@
 
     .site-header {
       position: sticky;
-      top: 0;
+      top: var(--lab-bar, 0px);
       z-index: 60;
       background: rgba(255, 255, 255, .85);
       backdrop-filter: saturate(180%) blur(18px);
@@ -1066,7 +1067,7 @@
 
     .layout-split .side-sticky {
       position: sticky;
-      top: 88px;
+      top: calc(88px + var(--lab-bar, 0px));
       align-self: start;
     }
 

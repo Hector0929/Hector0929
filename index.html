@@ -3,133 +3,275 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>學習首頁</title>
-  <!-- 引入 Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Hector's Lab</title>
+  <meta name="description" content="Hector 自己寫的小工具：數學練習、遊戲、和弦移調、讀經與圖書借閱。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
   <style>
-    /* 設定 Inter 字體 */
+    /* 版面：置中單欄，最寬 1080px；方塊一律白底 + 陰影，不用邊框 */
+    :root {
+      --bg: #f3f3f6;
+      --surface: #ffffff;
+      --ink: #1d1d1f;
+      --ink-2: #6b6f76;
+      --accent: #0a72e8;
+      --mint: #1fa98a;
+      --shadow: 0 1px 2px rgba(20, 30, 60, .04), 0 6px 24px rgba(20, 30, 60, .07);
+      --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .12);
+      --radius: 24px;
+      --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+      --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+      --nav-h: 52px;
+    }
+
+    [data-cat="learn"] { --tint: #0a72e8; --tint-bg: #e6f0fd; }
+    [data-cat="play"]  { --tint: #e2611a; --tint-bg: #fdeee4; }
+    [data-cat="music"] { --tint: #6a4fd6; --tint-bg: #efebfd; }
+    [data-cat="faith"] { --tint: #1f8a5b; --tint-bg: #e5f5ec; }
+    [data-cat="lab"]   { --tint: #4a5361; --tint-bg: #eaedf1; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
     body {
-      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+    h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -.02em; }
+    p { margin: 0; }
+
+    .wrap {
+      max-width: 1080px;
+      margin-inline: auto;
+      padding-left: max(20px, env(safe-area-inset-left, 0px));
+      padding-right: max(20px, env(safe-area-inset-right, 0px));
+    }
+
+    /* ---------- 導覽列 ---------- */
+    body::before {
+      content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+      z-index: 51; background: rgba(243, 243, 246, .78);
+    }
+    .nav {
+      position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+      background: rgba(243, 243, 246, .78);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+    }
+    .nav .wrap { height: var(--nav-h); display: flex; align-items: center; gap: 28px; }
+    .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 17px; letter-spacing: -.01em; white-space: nowrap; }
+    .logo i { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--mint), var(--accent)); display: block; }
+    .nav-links { display: flex; gap: 24px; font-size: 14px; color: var(--ink-2); overflow-x: auto; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { white-space: nowrap; transition: color .2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-gh { margin-left: auto; font-size: 14px; color: var(--accent); white-space: nowrap; }
+
+    /* ---------- 主視覺 ---------- */
+    .hero { text-align: center; padding-block: 88px 56px; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: -30% 0 auto; height: 130%; pointer-events: none;
+      background:
+        radial-gradient(40% 50% at 38% 45%, rgba(31, 169, 138, .16), transparent 70%),
+        radial-gradient(40% 50% at 64% 55%, rgba(10, 114, 232, .12), transparent 70%);
+    }
+    .hero .wrap { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .eyebrow { font-size: 14px; font-weight: 600; color: var(--mint); letter-spacing: .04em; }
+    .hero h1 { font-size: clamp(40px, 7.4vw, 80px); line-height: 1.06; font-weight: 700; letter-spacing: -.04em; }
+    .grad { background: linear-gradient(90deg, var(--mint), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero .sub { font-size: clamp(18px, 2.2vw, 22px); color: var(--ink-2); max-width: 40ch; text-wrap: balance; }
+    .ctas { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 24px; margin-top: 8px; }
+    .btn {
+      display: inline-flex; align-items: center; height: 44px; padding: 0 24px; border-radius: 999px;
+      background: var(--accent); color: #fff; font-size: 16px; font-weight: 600;
+      box-shadow: 0 6px 18px rgba(10, 114, 232, .28); transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(10, 114, 232, .34); }
+    .more { color: var(--accent); font-size: 16px; font-weight: 500; }
+    .more:hover { text-decoration: underline; }
+
+    /* ---------- 精選 ---------- */
+    .bento { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; padding-bottom: 24px; }
+    .tile {
+      position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 8px;
+      min-height: 230px; padding: 30px 32px; border-radius: var(--radius);
+      background: linear-gradient(160deg, var(--tint-bg), var(--surface) 72%);
+      box-shadow: var(--shadow); transition: transform .3s, box-shadow .3s;
+    }
+    .tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .tile.big { grid-row: span 2; min-height: 480px; }
+    .tile .k { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--tint); }
+    .tile h3 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.12; letter-spacing: -.03em; position: relative; }
+    .tile p { color: var(--ink-2); max-width: 26ch; position: relative; }
+    .tile .go { margin-top: auto; font-weight: 600; font-size: 15px; color: var(--tint); position: relative; }
+
+    .tower { position: absolute; right: 36px; bottom: 36px; width: 210px; height: 240px; pointer-events: none; }
+    .tower b { position: absolute; left: 50%; transform: translateX(-50%) skewY(-8deg); border-radius: 12px; display: block; }
+    .tower b:nth-child(1) { bottom: 0; width: 190px; height: 64px; background: #f8cdb0; }
+    .tower b:nth-child(2) { bottom: 60px; width: 148px; height: 60px; background: #f3a676; }
+    .tower b:nth-child(3) { bottom: 116px; width: 108px; height: 56px; background: #ec8546; }
+    .tower b:nth-child(4) { bottom: 168px; width: 66px; height: 52px; background: var(--tint); }
+
+    .keys { position: absolute; right: 26px; top: 28px; display: flex; gap: 8px; font-weight: 700; font-size: 15px; }
+    .keys span { padding: 6px 12px; border-radius: 10px; background: var(--surface); color: var(--tint); box-shadow: var(--shadow); }
+    .keys span.on { background: var(--tint); color: #fff; }
+    .keys span.arrow { background: none; box-shadow: none; color: var(--ink-2); padding-inline: 0; }
+    .big-num {
+      position: absolute; right: 26px; top: 14px; font-family: var(--f-display); font-weight: 700;
+      font-size: 84px; letter-spacing: -.05em; line-height: 1; color: rgba(10, 114, 232, .16);
+      font-variant-numeric: tabular-nums; pointer-events: none;
+    }
+
+    /* ---------- 分類 ---------- */
+    .cat { padding-block: 64px 8px; }
+    .cat-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; margin-bottom: 24px; }
+    .cat-head .en { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tint); }
+    .cat-head h2 { font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; letter-spacing: -.035em; }
+    .cat-head p { color: var(--ink-2); font-size: 17px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 20px; }
+    .card {
+      position: relative; display: flex; flex-direction: column; gap: 10px;
+      padding: 24px; border-radius: 22px; background: var(--surface);
+      box-shadow: var(--shadow); transition: transform .3s, box-shadow .3s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .card-top { display: flex; align-items: center; gap: 14px; }
+    .glyph {
+      width: 48px; height: 48px; flex: none; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--tint-bg); color: var(--tint);
+      font-family: var(--f-display); font-weight: 700; font-size: 20px; letter-spacing: -.02em;
+    }
+    .card h3 { font-size: 19px; line-height: 1.3; letter-spacing: -.01em; }
+    .card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+    .card p { color: var(--ink-2); font-size: 15px; line-height: 1.55; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; position: relative; z-index: 1; }
+    .chips a, .chips span {
+      font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--bg); color: var(--ink-2);
+    }
+    .chips a { transition: background .2s, color .2s; }
+    .chips a:hover { background: var(--tint-bg); color: var(--tint); }
+    .chips .new { background: var(--tint-bg); color: var(--tint); font-weight: 700; }
+
+    footer { padding-block: 96px 56px; text-align: center; color: var(--ink-2); font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
+    footer a { color: var(--accent); }
+
+    @media (max-width: 760px) {
+      .nav .wrap { gap: 18px; }
+      .nav-gh { display: none; }
+      .hero { padding-block: 56px 40px; }
+      .bento { grid-template-columns: 1fr; }
+      .tile.big { grid-row: auto; min-height: 340px; }
+      .tower { transform: scale(.7); transform-origin: right bottom; right: 24px; bottom: 24px; }
+      .big-num { top: auto; bottom: 18px; font-size: 64px; }
+      .cat { padding-block: 48px 4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .tile, .card, .btn { transition: none; }
+      .tile:hover, .card:hover, .btn:hover { transform: none; }
     }
   </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 flex items-center justify-center p-4 md:p-8">
-  <div class="w-full max-w-4xl">
-    <h1 class="text-4xl font-bold text-center text-white mb-10 drop-shadow-lg tracking-wide">學習中心</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-      <!-- 數學測驗區塊 -->
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-300/50 pb-3">數學測驗</h2>
-        <div class="space-y-4">
-          <a href="akila_plus_test.html"
-            class="block w-full bg-blue-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-blue-600 transition duration-300">
-            三位數加二位數測驗
-          </a>
-          <a href="multiplication_test.html"
-            class="block w-full bg-blue-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-blue-600 transition duration-300">
-            九九乘法表挑戰-倒數計時版
-          </a>
-          <a href="multiplication_test_with_rank.html"
-            class="block w-full bg-blue-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-blue-600 transition duration-300">
-            九九乘法表挑戰-排名
-          </a>
-          <a href="multiplication_test2.html"
-            class="block w-full bg-blue-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-blue-600 transition duration-300">
-            九九乘法表挑戰-鍵盤輸入版
-          </a>
-          <a href="shooting_game.html"
-            class="block w-full bg-green-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-green-600 transition duration-300">
-            九九乘法表挑戰-射擊遊戲
-          </a>
-          <a href="shooting_game_adult.html"
-            class="block w-full bg-green-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-green-600 transition duration-300">
-            九九乘法表挑戰-射擊遊戲排名版
-          </a>
-        </div>
-      </div>
-
-      <!-- AI學習分享區塊 -->
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2 border-b border-gray-300/50 pb-3">AI學習分享</h2>
-        <p class="text-sm text-gray-600 mb-4">記錄我們的 AI 實做、工具掃描與探險心得，讓學習更有章法。</p>
-        <div class="space-y-4">
-          <a href="ai-learning-share.html"
-            class="block w-full bg-purple-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-purple-600 transition duration-300">
-            AI 學習分享專區
-          </a>
-          <a href="public/index.html"
-            class="block w-full bg-violet-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-violet-600 transition duration-300">
-            AI 工具示範頁
-          </a>
-        </div>
-      </div>
-
-      <!-- 音樂工具區塊 -->
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-300/50 pb-3">音樂工具</h2>
-        <div class="space-y-4">
-          <a href="guitar_chords.html"
-            class="block w-full bg-orange-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-orange-600 transition duration-300">
-            吉他和弦查詢
-          </a>
-          <a href="chords_tranport.html"
-            class="block w-full bg-amber-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-amber-600 transition duration-300">
-            和弦辨識/移調/匯出 (新版)
-          </a>
-        </div>
-      </div>
-
-      <!-- 空白區塊 2 (對應圖片右下角) -->
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-300/50 pb-3">益智遊戲</h2>
-        <div class="space-y-4">
-          <a href="Tetris.html"
-            class="block w-full bg-teal-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-teal-600 transition duration-300">
-            俄羅斯方塊
-          </a>
-          <a href="guess_number_1A2B.html"
-            class="block w-full bg-emerald-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-emerald-600 transition duration-300">
-            1A2B 猜數字
-          </a>
-          <a href="three_kingdoms_quiz.html"
-            class="block w-full bg-orange-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-orange-600 transition duration-300">
-            三國知識問答
-          </a>
-          <a href="monster_tower_v3.html"
-            class="block w-full bg-gradient-to-r from-amber-500 via-pink-500 to-indigo-600 text-white py-3 rounded-lg text-center font-bold shadow-md hover:opacity-95 transition duration-300 flex items-center justify-center gap-2">
-            <span>🏰</span>
-            <span>怪獸塔 V3 (2.5D 怪獸樂園)</span>
-            <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full">NEW</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 空白區塊 2 (對應圖片右下角) -->
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-300/50 pb-3">圖書借閱</h2>
-        <div class="space-y-4">
-          <a href="apbolc-library.html"
-            class="block w-full bg-teal-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-teal-600 transition duration-300">
-            掃描借書
-          </a>
-        </div>
-      </div>
-      <div class="bg-white/60 backdrop-blur-md border border-white/40 rounded-xl shadow-2xl p-6 hover:bg-white/70 transition duration-300">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-300/50 pb-3">聖經閱讀</h2>
-        <div class="space-y-4">
-          <a href="bible_reader.html"
-             class="block w-full bg-indigo-500 text-white py-3 rounded-lg text-center font-semibold hover:bg-indigo-600 transition duration-300">
-            Bible Reader
-          </a>
-        </div>
-      </div>
-
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="logo" href="index.html"><i></i>Hector's Lab</a>
+      <nav class="nav-links" id="nav-links" aria-label="分類"></nav>
+      <a class="nav-gh" href="https://github.com/Hector0929/Hector0929">GitHub ›</a>
     </div>
-  </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">爸爸做的工具，全家一起用</div>
+        <h1>學習、遊戲、音樂，<br><span class="grad">一個地方都找得到。</span></h1>
+        <p class="sub"><span id="app-count">13</span> 個自己寫的小工具，從九九乘法到和弦移調。</p>
+        <div class="ctas">
+          <a class="btn" href="#learn">開始探索</a>
+          <a class="more" href="monster_tower_v3.html">最新：怪獸塔 V3 ›</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap bento" aria-label="精選">
+      <a class="tile big" data-cat="play" href="monster_tower_v3.html">
+        <span class="k">精選 · 新版本</span>
+        <h3>怪獸塔 V3</h3>
+        <p>2.5D 怪獸樂園，抓到的怪獸會永久保存在圖鑑裡。</p>
+        <span class="go">立即遊玩 ›</span>
+        <div class="tower" aria-hidden="true"><b></b><b></b><b></b><b></b></div>
+      </a>
+      <a class="tile" data-cat="music" href="chords_tranport.html">
+        <span class="k">音樂</span>
+        <h3>簡譜和弦移調</h3>
+        <p>拍照辨識簡譜，一鍵換調再匯出。</p>
+        <span class="go">打開工具 ›</span>
+        <div class="keys" aria-hidden="true"><span>C</span><span class="arrow">→</span><span class="on">D</span></div>
+      </a>
+      <a class="tile" data-cat="learn" href="multiplication_test.html">
+        <span class="k">學習</span>
+        <h3>九九乘法挑戰</h3>
+        <p>倒數、排名、鍵盤、射擊，五種玩法。</p>
+        <span class="go">開始練習 ›</span>
+        <div class="big-num" aria-hidden="true">7×8</div>
+      </a>
+    </section>
+
+    <div id="catalog"></div>
+  </main>
+
+  <footer class="wrap">
+    <span>Hector's Lab</span>
+    <span>每個工具都是自己動手寫的 · <a href="https://github.com/Hector0929/Hector0929">原始碼</a></span>
+  </footer>
+
+  <script src="assets/js/lab-apps.js"></script>
+  <script>
+    (function () {
+      var LAB = window.LAB;
+      var esc = function (s) {
+        return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+      };
+
+      document.getElementById('app-count').textContent = LAB.apps.length;
+      document.getElementById('nav-links').innerHTML = LAB.categories.map(function (c) {
+        return '<a href="#' + c.id + '">' + esc(c.name) + '</a>';
+      }).join('');
+
+      document.getElementById('catalog').innerHTML = LAB.categories.map(function (c) {
+        var apps = LAB.apps.filter(function (a) { return a.cat === c.id; });
+        var cards = apps.map(function (a) {
+          var href = a.href || a.modes[0].href;
+          var chips = a.modes
+            ? a.modes.map(function (m) { return '<a href="' + m.href + '">' + esc(m.label) + '</a>'; }).join('')
+            : (a.tags || []).map(function (t) { return '<span' + (t === 'NEW' ? ' class="new"' : '') + '>' + esc(t) + '</span>'; }).join('');
+          return '<article class="card">' +
+            '<div class="card-top"><div class="glyph" aria-hidden="true">' + esc(a.glyph) + '</div>' +
+            '<h3><a href="' + href + '">' + esc(a.title) + '</a></h3></div>' +
+            '<p>' + esc(a.desc) + '</p>' +
+            (chips ? '<div class="chips">' + chips + '</div>' : '') +
+            '</article>';
+        }).join('');
+        return '<section class="wrap cat" id="' + c.id + '" data-cat="' + c.id + '">' +
+          '<div class="cat-head"><div><div class="en">' + esc(c.en) + '</div><h2>' + esc(c.name) + '</h2></div>' +
+          '<p>' + esc(c.blurb) + '</p></div>' +
+          '<div class="grid">' + cards + '</div></section>';
+      }).join('');
+    })();
+  </script>
 </body>
 
 </html>
