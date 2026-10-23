@@ -45,6 +45,7 @@ window.LAB = {
     },
 
     { id: 'ai-share', cat: 'lab', glyph: 'AI', title: 'AI 學習分享', desc: 'AI 實作、工具與探險心得。', href: 'ai-learning-share.html' },
-    { id: 'chords-exp', cat: 'lab', glyph: '♫', title: '和弦辨識實驗版', desc: '和弦工具的新做法，還在測試。', href: 'chords_tranport_experimental.html' }
+    { id: 'chords-exp', cat: 'lab', glyph: '♫', title: '和弦辨識實驗版', desc: '和弦工具的新做法，還在測試。', href: 'chords_tranport_experimental.html' },
+    { id: 'about', cat: 'lab', glyph: '人', title: '關於作者 (About Me)', desc: '劉于志 (Hector Liu) 14+ 年測試自動化實戰經歷與自傳。', href: 'about.html' }
   ]
 };

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <script src="assets/js/lab-shell.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>關於我 About Me - Hector Liu</title>
+  <meta name="description" content="劉于志 (Hector Liu) - 資深測試自動化與品質工程師。14+ 年軟韌體與 Android 平台測試經驗，曾任職於 Google Pixel 團隊與 HTC。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap">
+
+  <style>
+    /* Hector's Lab 全站統一設計規範 */
+    :root {
+      --bg: #f3f3f6;
+      --surface: #ffffff;
+      --surface-subtle: #f8f8fb;
+      --border: rgba(0, 0, 0, 0.06);
+      --ink: #1d1d1f;
+      --ink-2: #6b6f76;
+      --ink-3: #8e9198;
+      
+      --accent: #0a72e8;
+      --accent-bg: #e6f0fd;
+      --mint: #1fa98a;
+      --mint-bg: #e5f5ec;
+      --google-blue: #4285f4;
+      --google-green: #34a853;
+      --google-yellow: #fbbc05;
+      --google-red: #ea4335;
+      
+      --shadow-sm: 0 1px 2px rgba(20, 30, 60, .04), 0 2px 8px rgba(20, 30, 60, .03);
+      --shadow: 0 1px 2px rgba(20, 30, 60, .04), 0 6px 24px rgba(20, 30, 60, .07);
+      --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .11);
+      --radius: 22px;
+      --radius-sm: 12px;
+      --radius-pill: 999px;
+      
+      --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+      --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14151a;
+        --surface: #1e2026;
+        --surface-subtle: #272a33;
+        --border: rgba(255, 255, 255, 0.08);
+        --ink: #f5f5f7;
+        --ink-2: #a2a6b0;
+        --ink-3: #6e727d;
+        --accent: #3b93ff;
+        --accent-bg: rgba(59, 147, 255, 0.16);
+        --mint: #25c9a4;
+        --mint-bg: rgba(37, 201, 164, 0.15);
+        --shadow: 0 4px 20px rgba(0, 0, 0, .35);
+        --shadow-hover: 0 8px 30px rgba(0, 0, 0, .45);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin-inline: auto;
+      padding-left: max(20px, env(safe-area-inset-left, 0px));
+      padding-right: max(20px, env(safe-area-inset-right, 0px));
+    }
+
+    /* 頂部切換與 Header */
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 24px;
+      margin-bottom: -10px;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+    .lang-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all .2s ease;
+      font-family: var(--f-body);
+    }
+    .lang-btn:hover {
+      color: var(--ink);
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(10, 114, 232, .25);
+    }
+
+    /* Hero 名片區塊 */
+    .hero-card {
+      margin-top: 24px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px 36px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(10, 114, 232, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 14px;
+    }
+    .hero-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px 18px;
+      margin-bottom: 6px;
+    }
+    .hero-name {
+      font-family: var(--f-display);
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+    }
+    .hero-role {
+      font-size: clamp(17px, 2.5vw, 20px);
+      font-weight: 600;
+      color: var(--ink-2);
+    }
+    .hero-bio {
+      font-size: 16px;
+      color: var(--ink-2);
+      max-width: 68ch;
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .hero-tag {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--surface-subtle);
+      color: var(--ink-2);
+      border: 1px solid var(--border);
+    }
+    .hero-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--ink-2);
+    }
+    .hero-contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    /* 關鍵數據統計網格 */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    @media (max-width: 768px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .metric-card {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: transform .2s ease;
+    }
+    .metric-card:hover {
+      transform: translateY(-2px);
+    }
+    .metric-num {
+      font-family: var(--f-display);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--ink-2);
+      font-weight: 500;
+    }
+
+    /* 區塊通用樣式 */
+    .section-wrap {
+      margin-top: 36px;
+    }
+    .section-head {
+      margin-bottom: 20px;
+    }
+    .section-head h2 {
+      font-family: var(--f-display);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-head h2 i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    /* 技能矩陣 (Skill Matrix) */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 680px) {
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .skill-card {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+    }
+    .skill-cat {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .skill-chip {
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--surface-subtle);
+      color: var(--ink-2);
+      border: 1px solid var(--border);
+    }
+    .skill-chip.highlight {
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    /* 職涯時間軸 (Career Timeline) */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .timeline-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 30px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .timeline-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .timeline-company {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .timeline-period {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-3);
+      background: var(--surface-subtle);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+    }
+    .timeline-role {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .timeline-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--ink-2);
+      font-size: 15px;
+    }
+    .timeline-list li {
+      position: relative;
+      padding-left: 18px;
+      line-height: 1.6;
+    }
+    .timeline-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* 重點專案成果 (Featured Projects) */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .project-card {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .project-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .project-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+
+    /* 生活特質 (Beyond Work) */
+    .life-card {
+      background: linear-gradient(135deg, var(--surface-subtle), var(--surface));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 26px 30px;
+      border: 1px solid var(--border);
+      color: var(--ink-2);
+      line-height: 1.7;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- 語言切換按鈕 -->
+    <div class="top-actions">
+      <div class="lang-switcher" role="radiogroup" aria-label="語言切換 Language">
+        <button class="lang-btn active" id="btn-zh" data-lang="zh">繁體中文</button>
+        <button class="lang-btn" id="btn-en" data-lang="en">English</button>
+      </div>
+    </div>
+
+    <!-- Hero 名片區域 -->
+    <header class="hero-card">
+      <div class="hero-badge" data-i18n="heroBadge">14+ 年資深工程專家</div>
+      <div class="hero-title-row">
+        <h1 class="hero-name" data-i18n="heroName">劉于志 (Hector Liu)</h1>
+        <div class="hero-role" data-i18n="heroRole">資深測試自動化與品質工程師</div>
+      </div>
+      <p class="hero-bio" data-i18n="heroBio">
+        在軟體與系統測試領域擁有 14-15 年實戰經驗，歷經 HTC 智慧手機全盛期、Google Pixel 系統級自動化測試至美商顧問架構建立。專精於 Python 自動化測試開發、測試框架設計、問題根因追蹤與跨團隊溝通。善於活絡團隊氣氛，熱愛傳承與團隊協作。
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">Python Automation</span>
+        <span class="hero-tag">Android OS Platform</span>
+        <span class="hero-tag">Mobly & Mobile Harness</span>
+        <span class="hero-tag">Google Pixel Quality</span>
+        <span class="hero-tag">HTC Sense & IME</span>
+        <span class="hero-tag">Test Infrastructure</span>
+      </div>
+      <div class="hero-contact">
+        <div class="hero-contact-item">
+          <span>📍</span> <span data-i18n="location">台南市 (可接受全遠端/混合辦公)</span>
+        </div>
+        <div class="hero-contact-item">
+          <span>✉️</span> <a href="mailto:yuzy0929@gmail.com">yuzy0929@gmail.com</a>
+        </div>
+        <div class="hero-contact-item">
+          <span>📱</span> <span>0911-786-573</span>
+        </div>
+        <div class="hero-contact-item">
+          <span>🐙</span> <a href="https://github.com/Hector0929/Hector0929" target="_blank" rel="noopener">GitHub ›</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 關鍵數字指標 -->
+    <section class="metrics-grid" aria-label="職涯重點數據">
+      <div class="metric-card">
+        <div class="metric-num">14+</div>
+        <div class="metric-label" data-i18n="metricYears">年測試與自動化經驗</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">Google</div>
+        <div class="metric-label" data-i18n="metricGoogle">4年10個月 Pixel 自動化</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">HTC</div>
+        <div class="metric-label" data-i18n="metricHtc">9年9個月 核心軟韌體/輸入法</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">Python</div>
+        <div class="metric-label" data-i18n="metricPython">核心測試開發語言</div>
+      </div>
+    </section>
+
+    <!-- 專業技能矩陣 -->
+    <section class="section-wrap">
+      <div class="section-head">
+        <h2><i></i><span data-i18n="skillsTitle">專業技能矩陣</span></h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-cat">💻 <span data-i18n="catAutomation">自動化測試與開發</span></div>
+          <div class="skill-chips">
+            <span class="skill-chip highlight">Python (精通)</span>
+            <span class="skill-chip highlight">Mobly</span>
+            <span class="skill-chip highlight">Mobile Harness</span>
+            <span class="skill-chip">Test Scripts 開發</span>
+            <span class="skill-chip">Shell Script</span>
+            <span class="skill-chip">Kotlin / Java 協同</span>
+            <span class="skill-chip">TestComplete</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-cat">📱 <span data-i18n="catAndroid">Android 平台與系統領域</span></div>
+          <div class="skill-chips">
+            <span class="skill-chip highlight">Android OS 平台級測試</span>
+            <span class="skill-chip highlight">Nearby Share (無線跨裝置)</span>
+            <span class="skill-chip highlight">Face Unlock (人臉辨識)</span>
+            <span class="skill-chip">FactoryOTA 更新</span>
+            <span class="skill-chip">輸入法 (Gboard / HTC IME)</span>
+            <span class="skill-chip">ADB 指令與自動化</span>
+            <span class="skill-chip">GMS Core</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-cat">📊 <span data-i18n="catQuality">品質工程與分析工具</span></div>
+          <div class="skill-chips">
+            <span class="skill-chip highlight">Perfetto (延遲與效能分析)</span>
+            <span class="skill-chip highlight">Google PLX (儀表板視覺化)</span>
+            <span class="skill-chip">壓力測試 (Stress Test)</span>
+            <span class="skill-chip">負面測試 (Negative Test)</span>
+            <span class="skill-chip">問題根因追蹤 (Bug Tracking)</span>
+            <span class="skill-chip">測試計畫書撰寫</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-cat">🤝 <span data-i18n="catManagement">流程協作、實驗室與團隊導師</span></div>
+          <div class="skill-chips">
+            <span class="skill-chip highlight">測試實驗室建置 (Testbed / AP)</span>
+            <span class="skill-chip highlight">新人培訓與約聘轉正 Mentor</span>
+            <span class="skill-chip">外包團隊測試稽核</span>
+            <span class="skill-chip">Git / Piper / Bitbucket</span>
+            <span class="skill-chip">Jira & Bamboo CI/CD</span>
+            <span class="skill-chip">跨國現場測試 (US Field Trial)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 工作經歷時間軸 -->
+    <section class="section-wrap">
+      <div class="section-head">
+        <h2><i></i><span data-i18n="experienceTitle">工作經歷</span></h2>
+      </div>
+      <div class="timeline">
+        <!-- Zealogics -->
+        <article class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-company" data-i18n="job1Company">美商邏輯技術有限公司 (Zealogics Taiwan)</span>
+            <span class="timeline-period" data-i18n="job1Period">2023.01 – 仍在職</span>
+          </div>
+          <div class="timeline-role" data-i18n="job1Role">資深工程師 (Senior Engineer)</div>
+          <ul class="timeline-list" data-i18n-list="job1List">
+            <li>配合客戶軟體開發時程，使用 Python 開發端到端自動化測試架構，實行定期排程自動化驗證。</li>
+            <li>在每個 Release build 前執行高覆蓋率回歸測試，有效大幅降低人工重複檢查時間。</li>
+            <li>主動導入壓力測試（Stress Test）與負面測試（Negative Test），改善測試腳本語法結構，縮短運行時間並增加代碼維護性。</li>
+            <li>建立結構化交接與學習手冊，使新進同仁銜接週期縮短至一個月內即可獨立上線作業。</li>
+          </ul>
+        </article>
+
+        <!-- Google -->
+        <article class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-company" data-i18n="job2Company">台灣科高工程有限公司 (Google)</span>
+            <span class="timeline-period" data-i18n="job2Period">2018.01 – 2022.10 (4年10個月)</span>
+          </div>
+          <div class="timeline-role" data-i18n="job2Role">軟體測試工程師 (Senior Test Automation & Quality Engineer - Pixel Software)</div>
+          <ul class="timeline-list" data-i18n-list="job2List">
+            <li><strong>Nearby Share (跨裝置傳輸自動化)</strong>：使用 Python 與 Snippet 開發 Pixel 跨手機傳輸測試，深入分析多裝置通訊錯誤，成果獲內部競賽提名與貢獻獎。</li>
+            <li><strong>Tuscany (人臉解鎖功能自動化)</strong>：負責人臉辨識自動化測試計畫，將 Local 測試轉化為 Online 監控體系，並結合 Google PLX 視覺化儀表板分析延遲與成功率趨勢。</li>
+            <li><strong>FactoryOTA (工廠端更新自動化)</strong>：在實驗室搭建小型模組與自動化腳本，在軟體版本迭代時大幅節省手動測試工時。</li>
+            <li><strong>Gboard (Google 輸入法)</strong>：規劃 Gboard 自動化測試設計與報告書，建立高可信度回歸測試流程。</li>
+            <li>以卓越表現成功轉正為 Google 正式測試工程師，並因熱心跨團隊協助多次榮獲同儕獎金 (Peer Bonus)。</li>
+          </ul>
+        </article>
+
+        <!-- HTC -->
+        <article class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-company" data-i18n="job3Company">宏達國際電子股份有限公司 (HTC)</span>
+            <span class="timeline-period" data-i18n="job3Period">2008.05 – 2018.01 (9年9個月)</span>
+          </div>
+          <div class="timeline-role" data-i18n="job3Role">測試工程師 / 團隊導師 (Mentor)</div>
+          <ul class="timeline-list" data-i18n-list="job3List">
+            <li>主責廣受好評的 <strong>HTC Sense Input</strong>，跨越 Windows Mobile 與 Android 時代，協助將預設輸入法從 9 鍵鍵盤轉換升級為 QWERTY 體驗。</li>
+            <li>負責中國 SKU 團隊系統整合測試：HTC Sense Home、訊息 MMS、天氣定位與系統客製化項目。</li>
+            <li>多次赴美國支援 Field Trial 測試，獨立在第一線解決問題並協同電信商實驗室通過認證。</li>
+            <li>2013 年赴上海協助建立當地測試團隊；擔任實習生與約聘同仁導師，成功輔導多位優秀夥伴轉為正式員工。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- 精選專案成果 -->
+    <section class="section-wrap">
+      <div class="section-head">
+        <h2><i></i><span data-i18n="projectsTitle">代表性專案成果</span></h2>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-tag">Google Pixel</div>
+          <h3 class="project-title" data-i18n="p1Title">Nearby Share 跨裝置傳輸自動化</h3>
+          <p class="project-desc" data-i18n="p1Desc">突破多手機、多藍牙/WiFi 狀態複雜組合的測試瓶頸，使用 Python 與 Mobly 架構設計高穩定性自動化測試套裝，獲得團隊高度肯定。</p>
+        </div>
+
+        <div class="project-card">
+          <div class="project-tag">Google Pixel</div>
+          <h3 class="project-title" data-i18n="p2Title">Tuscany (Face Unlock) 延遲與穩定性監控</h3>
+          <p class="project-desc" data-i18n="p2Desc">結合 Perfetto 與 Google PLX 儀表板，將人臉辨識效能數據與解鎖延遲轉換為即時視覺化指標，精準攔截系統回歸 Bug。</p>
+        </div>
+
+        <div class="project-card">
+          <div class="project-tag">HTC Mobile</div>
+          <h3 class="project-title" data-i18n="p3Title">HTC Sense Input 輸入法測試體系</h3>
+          <p class="project-desc" data-i18n="p3Desc">主導知名智慧輸入法的鍵盤佈局、字典校正與打字體驗驗證，深受數百萬智慧型手機用戶喜愛。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 個人生活與軟實力 -->
+    <section class="section-wrap">
+      <div class="section-head">
+        <h2><i></i><span data-i18n="lifeTitle">工作之外的生活與特質</span></h2>
+      </div>
+      <div class="life-card">
+        <p data-i18n="lifeContent">
+          出生於彰化、現定居於文化底蘊豐富的臺南。對新技術與新工具始終充滿好奇心，喜歡在團隊中主動關心同仁、搭建溝通橋樑，常被大家戲稱為溫暖活絡的「里長伯」。工作之餘，我熱愛揮灑汗水的羽球運動、享受沉澱心靈的水彩繪畫，也珍惜每一次陪伴家人漫遊探索的旅程。
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <span>Hector Liu · Senior Test Automation & Quality Engineer</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      // 多國語言字典 (繁體中文 / English)
+      const i18n = {
+        zh: {
+          heroBadge: "14+ 年資深工程專家",
+          heroName: "劉于志 (Hector Liu)",
+          heroRole: "資深測試自動化與品質工程師",
+          heroBio: "在軟體與系統測試領域擁有 14-15 年實戰經驗，歷經 HTC 智慧手機全盛期、Google Pixel 系統級自動化測試至美商顧問架構建立。專精於 Python 自動化測試開發、測試框架設計、問題根因追蹤與跨團隊溝通。善於活絡團隊氣氛，熱愛傳承與團隊協作。",
+          location: "台南市 (可接受全遠端/混合辦公)",
+          metricYears: "年測試與自動化經驗",
+          metricGoogle: "4年10個月 Pixel 自動化",
+          metricHtc: "9年9個月 核心軟韌體/輸入法",
+          metricPython: "核心測試開發語言",
+          skillsTitle: "專業技能矩陣",
+          catAutomation: "自動化測試與開發",
+          catAndroid: "Android 平台與系統領域",
+          catQuality: "品質工程與分析工具",
+          catManagement: "流程協作、實驗室與團隊導師",
+          experienceTitle: "工作經歷",
+          job1Company: "美商邏輯技術有限公司 (Zealogics Taiwan)",
+          job1Period: "2023.01 – 仍在職",
+          job1Role: "資深工程師 (Senior Engineer)",
+          job1List: [
+            "配合客戶軟體開發時程，使用 Python 開發端到端自動化測試架構，實行定期排程自動化驗證。",
+            "在每個 Release build 前執行高覆蓋率回歸測試，有效大幅降低人工重複檢查時間。",
+            "主動導入壓力測試（Stress Test）與負面測試（Negative Test），改善測試腳本語法結構，縮短運行時間並增加代碼維護性。",
+            "建立結構化交接與學習手冊，使新進同仁銜接週期縮短至一個月內即可獨立上線作業。"
+          ],
+          job2Company: "台灣科高工程有限公司 (Google)",
+          job2Period: "2018.01 – 2022.10 (4年10個月)",
+          job2Role: "軟體測試工程師 (Senior Test Automation & Quality Engineer - Pixel Software)",
+          job2List: [
+            "<strong>Nearby Share (跨裝置傳輸自動化)</strong>：使用 Python 與 Snippet 開發 Pixel 跨手機傳輸測試，深入分析多裝置通訊錯誤，成果獲內部競賽提名與貢獻獎。",
+            "<strong>Tuscany (人臉解鎖功能自動化)</strong>：負責人臉辨識自動化測試計畫，將 Local 測試轉化為 Online 監控體系，並結合 Google PLX 視覺化儀表板分析延遲與成功率趨勢。",
+            "<strong>FactoryOTA (工廠端更新自動化)</strong>：在實驗室搭建小型模組與自動化腳本，在軟體版本迭代時大幅節省手動測試工時。",
+            "<strong>Gboard (Google 輸入法)</strong>：規劃 Gboard 自動化測試設計與報告書，建立高可信度回歸測試流程。",
+            "以卓越表現成功轉正為 Google 正式測試工程師，並因熱心跨團隊協助多次榮獲同儕獎金 (Peer Bonus)。"
+          ],
+          job3Company: "宏達國際電子股份有限公司 (HTC)",
+          job3Period: "2008.05 – 2018.01 (9年9個月)",
+          job3Role: "測試工程師 / 團隊導師 (Mentor)",
+          job3List: [
+            "主責廣受好評的 <strong>HTC Sense Input</strong>，跨越 Windows Mobile 與 Android 時代，協助將預設輸入法從 9 鍵鍵盤轉換升級為 QWERTY 體驗。",
+            "負責中國 SKU 團隊系統整合測試：HTC Sense Home、訊息 MMS、天氣定位與系統客製化項目。",
+            "多次赴美國支援 Field Trial 測試，獨立在第一線解決問題並協同電信商實驗室通過認證。",
+            "2013 年赴上海協助建立當地測試團隊；擔任實習生與約聘同仁導師，成功輔導多位優秀夥伴轉為正式員工。"
+          ],
+          projectsTitle: "代表性專案成果",
+          p1Title: "Nearby Share 跨裝置傳輸自動化",
+          p1Desc: "突破多手機、多藍牙/WiFi 狀態複雜組合的測試瓶頸，使用 Python 與 Mobly 架構設計高穩定性自動化測試套裝，獲得團隊高度肯定。",
+          p2Title: "Tuscany (Face Unlock) 延遲與穩定性監控",
+          p2Desc: "結合 Perfetto 與 Google PLX 儀表板，將人臉辨識效能數據與解鎖延遲轉換為即時視覺化指標，精準攔截系統回歸 Bug。",
+          p3Title: "HTC Sense Input 輸入法測試體系",
+          p3Desc: "主導知名智慧輸入法的鍵盤佈局、字典校正與打字體驗驗證，深受數百萬智慧型手機用戶喜愛。",
+          lifeTitle: "工作之外的生活與特質",
+          lifeContent: "出生於彰化、現定居於文化底蘊豐富的臺南。對新技術與新工具始終充滿好奇心，喜歡在團隊中主動關心同仁、搭建溝通橋樑，常被大家戲稱為溫暖活絡的「里長伯」。工作之餘，我熱愛揮灑汗水的羽球運動、享受沉澱心靈的水彩繪畫，也珍惜每一次陪伴家人漫遊探索的旅程。"
+        },
+        en: {
+          heroBadge: "14+ Years Senior QA & Automation Expert",
+          heroName: "Hector Liu (劉于志)",
+          heroRole: "Senior Test Automation & Quality Engineer",
+          heroBio: "With over 14 years of solid experience in software, firmware, and Android platform testing, Hector has contributed to the golden age of HTC smartphones, Pixel system-level test automation at Google, and enterprise quality consulting at US-based firms. Specialized in Python automation frameworks, root cause analysis, testbed design, and cross-functional leadership.",
+          location: "Tainan, Taiwan (Open to Remote / Hybrid)",
+          metricYears: "Years in QA & Automation",
+          metricGoogle: "4.8 yrs Pixel Automation",
+          metricHtc: "9.8 yrs System & Input Method",
+          metricPython: "Core Development Language",
+          skillsTitle: "Core Competency Matrix",
+          catAutomation: "Test Automation & Scripting",
+          catAndroid: "Android OS & Platform Domain",
+          catQuality: "Quality Engineering & Telemetry",
+          catManagement: "Collaboration, Lab & Mentorship",
+          experienceTitle: "Work Experience",
+          job1Company: "Zealogics Taiwan",
+          job1Period: "Jan 2023 – Present",
+          job1Role: "Senior Engineer",
+          job1List: [
+            "Architected Python-based end-to-end test automation suites aligned with client release roadmaps, enabling continuous scheduled verification.",
+            "Executed high-coverage regression test suites prior to every release build, significantly reducing manual regression turnaround time.",
+            "Introduced stress and negative testing paradigms, refactored test code structure to maximize maintainability, readability, and execution speed.",
+            "Standardized onboarding runbooks and documentation, reducing new hire onboarding ramp-up to under one month."
+          ],
+          job2Company: "Google (Taiwan Engineering)",
+          job2Period: "Jan 2018 – Oct 2022 (4 yrs 10 mos)",
+          job2Role: "Senior Test Automation & Quality Engineer (Pixel Software)",
+          job2List: [
+            "<strong>Nearby Share Automation</strong>: Built robust multi-device test suites using Python and Mobly snippets for group sharing; nominated for internal engineering excellence awards.",
+            "<strong>Tuscany (Face Unlock)</strong>: Owned Face Unlock test strategy for 3 years, converted local testing into online telemetry, and visualized latency/success trends via Google PLX dashboards.",
+            "<strong>FactoryOTA Pipeline</strong>: Established automated testbeds and scripts for factory OTA validation, saving engineering hours on each software release.",
+            "<strong>Google IME (Gboard)</strong>: Authored test plans, automation scripts, and regression suites for Gboard on Android devices.",
+            "Successfully converted to Google Full-Time Employee (FTE) based on consistent high impact, earning multiple Peer Bonuses and Spot Bonuses."
+          ],
+          job3Company: "HTC Corporation",
+          job3Period: "May 2008 – Jan 2018 (9 yrs 9 mos)",
+          job3Role: "Test Engineer / Team Mentor",
+          job3List: [
+            "Spearheaded testing for the acclaimed <strong>HTC Sense Input</strong> across Windows Mobile and Android, transitioning default layout from 9-key to modern QWERTY.",
+            "Led China SKU system verification including HTC Sense Home, MMS messaging, location services, and customized carrier OS builds.",
+            "Frequently deployed on international Field Trials in the US, independently triaging carrier certification blockers and lab testing issues.",
+            "Assisted in establishing the Shanghai testing hub in 2013; mentored contractors and university interns, coaching multiple candidates into full-time roles."
+          ],
+          projectsTitle: "Featured Key Projects",
+          p1Title: "Nearby Share Cross-Device Test Automation",
+          p1Desc: "Tackled multi-device Bluetooth and WiFi state permutation challenges with Python & Mobly, creating a resilient, scalable wireless automation harness.",
+          p2Title: "Tuscany (Face Unlock) Latency & Reliability Telemetry",
+          p2Desc: "Leveraged Perfetto tracing and PLX data dashboards to deliver real-time visual metrics on facial recognition speed, intercepting critical regressions.",
+          p3Title: "HTC Sense Input Testing System",
+          p3Desc: "Led layout verification, multi-language dictionary accuracy, and typing usability for one of the most beloved Android keyboard experiences.",
+          lifeTitle: "Beyond The Code",
+          lifeContent: "Born in Changhua and now rooted in historic Tainan. Continuously curious about emerging technologies and AI. Known as the cheerful team 'village mayor' who fosters open communication and great vibes. Outside of work, I am passionate about badminton, watercolor painting, and exploring the world with my family."
+        }
+      };
+
+      const btnZh = document.getElementById('btn-zh');
+      const btnEn = document.getElementById('btn-en');
+
+      function setLanguage(lang) {
+        const dict = i18n[lang] || i18n.zh;
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-TW';
+
+        // 更新單一文字節點
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (dict[key]) el.textContent = dict[key];
+        });
+
+        // 更新清單陣列
+        document.querySelectorAll('[data-i18n-list]').forEach(el => {
+          const key = el.getAttribute('data-i18n-list');
+          if (dict[key] && Array.isArray(dict[key])) {
+            el.innerHTML = dict[key].map(item => `<li>${item}</li>`).join('');
+          }
+        });
+
+        // 按鈕狀態切換
+        btnZh.classList.toggle('active', lang === 'zh');
+        btnEn.classList.toggle('active', lang === 'en');
+
+        try {
+          localStorage.setItem('hector_lang_pref', lang);
+        } catch (_) { }
+      }
+
+      btnZh.addEventListener('click', () => setLanguage('zh'));
+      btnEn.addEventListener('click', () => setLanguage('en'));
+
+      // 讀取既有設定或瀏覽器預設語系
+      let initialLang = 'zh';
+      try {
+        const saved = localStorage.getItem('hector_lang_pref');
+        if (saved && (saved === 'zh' || saved === 'en')) {
+          initialLang = saved;
+        }
+      } catch (_) { }
+
+      setLanguage(initialLang);
+    })();
+  </script>
+</body>
+
+</html>
