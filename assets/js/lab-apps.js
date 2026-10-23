@@ -23,10 +23,8 @@ window.LAB = {
     { id: 'addition', cat: 'learn', glyph: '+', title: '三位數加二位數', desc: '直式加法練習，用鍵盤輸入答案。', href: 'akila_plus_test.html' },
     { id: 'three-kingdoms', cat: 'learn', glyph: '國', title: '三國知識問答', desc: '200 道題目，從桃園結義到三分歸晉。', href: 'three_kingdoms_quiz.html', tags: ['200 題'] },
 
-    { id: 'monster-tower', cat: 'play', glyph: '塔', title: '怪獸塔 V3', desc: '2.5D 怪獸樂園，怪獸會永久保存在圖鑑裡。', href: 'monster_tower_v3.html', tags: ['NEW'] },
     { id: 'tetris', cat: 'play', glyph: '▦', title: '俄羅斯方塊', desc: '經典方塊，手機也能玩。', href: 'Tetris.html' },
     { id: '1a2b', cat: 'play', glyph: 'AB', title: '1A2B 猜數字', desc: '用推理找出四位不重複的數字。', href: 'guess_number_1A2B.html' },
-    { id: 'slot', cat: 'play', glyph: '7', title: '爸！拉霸啦！', desc: '拉一把，看看今天手氣如何。', href: 'slot_game.html' },
 
     {
       id: 'chords', cat: 'music', glyph: '♪', title: '簡譜和弦移調', desc: '拍照辨識簡譜和弦，一鍵換調再匯出。',
@@ -34,8 +32,6 @@ window.LAB = {
       also: ['pages/scan.html', 'pages/recognize.html', 'pages/transpose.html', 'pages/export.html']
     },
     { id: 'guitar-chords', cat: 'music', glyph: 'G', title: '吉他和弦查詢', desc: '查和弦按法，支援左手模式。', href: 'guitar_chords.html' },
-
-    { id: 'bible', cat: 'faith', glyph: '✦', title: '聖經金句讀稿機', desc: '使徒行傳金句，逐句朗讀練習。', href: 'bible_reader.html' },
     {
       id: 'library', cat: 'faith', glyph: '書', title: '領頭羊圖書借閱', desc: '掃描 QR Code 借書、還書。',
       modes: [
