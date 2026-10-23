@@ -1304,13 +1304,11 @@
 
                 <select id="gemini-model-select"
                   style="padding:8px 10px;border:1px solid var(--color-border);border-radius:8px;font:14px var(--font-sans);background:#fff;">
-                  <option value="gemini-3.1-pro-preview">🌟 Gemini 3.1 Pro (最強大)</option>
-                  <option value="gemini-3-flash-preview">⚡ Gemini 3 Flash (高階均衡)</option>
-                  <option value="gemini-2.5-pro-preview">🧠 Gemini 2.5 Pro (進階思考)</option>
-                  <option value="gemini-2.5-flash-preview" selected>✨ Gemini 2.5 Flash (推薦)</option>
-                  <option value="gemini-2.5-flash-lite-preview">🚀 Gemini 2.5 Flash-Lite (最快)</option>
-                  <option value="gemini-2.0-flash-exp">✨ Gemini 2.0 Flash (實驗性)</option>
-                  <option value="gemini-1.5-pro">Gemini 1.5 Pro (穩定舊版)</option>
+                  <option value="gemini-3.8-flash" selected>⚡ Gemini 3.8 Flash (推薦首選)</option>
+                  <option value="gemini-3.1-pro-preview">🌟 Gemini 3.1 Pro (最強大推論)</option>
+                  <option value="gemini-3.5-flash-lite">🚀 Gemini 3.5 Flash-Lite (極速輕量)</option>
+                  <option value="gemini-2.5-flash">✨ Gemini 2.5 Flash (穩定版)</option>
+                  <option value="gemini-2.5-pro">🧠 Gemini 2.5 Pro (進階思考)</option>
                 </select>
 
                 <label
@@ -1909,7 +1907,12 @@
       if (modelSelect && !modelSelect.__wired) {
         try {
           const savedModel = localStorage.getItem('chordapp.pref.geminiModel');
-          if (savedModel) modelSelect.value = savedModel;
+          const validValues = Array.from(modelSelect.options).map(o => o.value);
+          if (savedModel && validValues.includes(savedModel)) {
+            modelSelect.value = savedModel;
+          } else {
+            modelSelect.value = 'gemini-3.8-flash';
+          }
         } catch (_) { }
         modelSelect.addEventListener('change', () => {
           try { localStorage.setItem('chordapp.pref.geminiModel', modelSelect.value); } catch (_) { }
@@ -1917,7 +1920,7 @@
         modelSelect.__wired = true;
       }
 
-      // === Gemini API 呼叫核心（精簡版） ===
+      // === Gemini API 呼叫核心（升級支援 Gemini 3.8 / 3.1 / 2.5 系列） ===
       async function fileToBase64Mime(file) {
         return new Promise((resolve, reject) => {
           const r = new FileReader();
@@ -1952,14 +1955,31 @@
       }
       async function callGeminiAPIFromFile(file, apiKey) {
         const { mimeType, base64 } = await fileToBase64Mime(file);
-        const body = { contents: [{ parts: [{ text: buildPrompt() }, { inlineData: { mimeType, data: base64 } }] }], generationConfig: { temperature: 0.1, maxOutputTokens: 2048 } };
+        const body = {
+          contents: [{ parts: [{ text: buildPrompt() }, { inlineData: { mimeType, data: base64 } }] }],
+          generationConfig: { temperature: 0.1, maxOutputTokens: 8192 }
+        };
         const modelSelect = d.getElementById('gemini-model-select');
-        const modelName = modelSelect ? modelSelect.value : 'gemini-1.5-flash';
+        const modelName = (modelSelect && modelSelect.value) ? modelSelect.value : 'gemini-3.8-flash';
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
         const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        if (!resp.ok) { const t = await resp.text(); throw new Error('Gemini API 錯誤 ' + resp.status + ': ' + t.slice(0, 200)); }
+        if (!resp.ok) {
+          const t = await resp.text();
+          let msg = 'Gemini API 錯誤 ' + resp.status;
+          try {
+            const errJson = JSON.parse(t);
+            if (errJson?.error?.message) msg += ': ' + errJson.error.message;
+            else msg += ': ' + t.slice(0, 200);
+          } catch (_) {
+            msg += ': ' + t.slice(0, 200);
+          }
+          throw new Error(msg);
+        }
         const json = await resp.json();
-        const text = json?.candidates?.[0]?.content?.parts?.map(p => p.text).filter(Boolean).join('\n') || '';
+        const parts = json?.candidates?.[0]?.content?.parts || [];
+        // 優先過濾思考過程 (thought === true)，只保留最終解答文字
+        const textParts = parts.filter(p => !p.thought && p.text);
+        const text = (textParts.length > 0 ? textParts : parts).map(p => p.text).filter(Boolean).join('\n') || '';
         return text;
       }
       function formatDisplay(raw) {
@@ -1989,35 +2009,15 @@
         if (mKey) meta.key = mKey[1].toUpperCase();
         return meta;
       }
-      async function handleRecognize() {
-        const file = fi?.files?.[0];
-        const apiKey = apiKeyInput?.value.trim();
-        const statusEl = d.getElementById('gemini-status');
-        const out = d.getElementById('recognize-output');
-        if (!file) { statusEl.textContent = '請先選擇檔案'; return; }
-        if (!apiKey) { statusEl.textContent = '請輸入 API Key'; return; }
-        statusEl.textContent = '辨識中...'; out.style.display = 'none'; out.textContent = '';
-        try { const text = await callGeminiAPIFromFile(file, apiKey); const display = formatDisplay(text); out.textContent = display || '(無內容)'; out.style.display = 'block'; statusEl.textContent = '完成'; }
-        catch (err) { statusEl.textContent = '錯誤: ' + err.message; }
-      }
-      const rbtn1 = d.getElementById('recognize-btn');
-      const rbtn2 = d.getElementById('recognize-btn-secondary');
-      [rbtn1, rbtn2].forEach(btn => { if (btn && !btn.__wired) { btn.addEventListener('click', handleRecognize); btn.__wired = true; } });
-      const rbtn3 = d.getElementById('recognize-ai-btn');
-      if (rbtn3 && !rbtn3.__wired) { rbtn3.addEventListener('click', handleRecognize); rbtn3.__wired = true; }
 
-      // 移除測試別名欄位（僅保留 #api-key）
       // 偵測調性手動修改同步
       const detectedKeyInput = d.getElementById('detected-key');
       if (detectedKeyInput && !detectedKeyInput.__wired) {
         detectedKeyInput.addEventListener('change', () => {
           let val = detectedKeyInput.value.trim();
           if (!val) return;
-          // 正規化：首字母大寫 其餘轉小寫，再處理 b/#
           val = val.replace(/[^A-Ga-g#b]/g, '').toUpperCase().replace(/B(?!B)/, 'B');
-          // 映射降號 to 正式（保留原樣若合法）
           const allow = ['C', 'C#', 'D', 'Eb', 'D#', 'E', 'F', 'F#', 'G', 'Ab', 'G#', 'A', 'Bb', 'A#', 'B'];
-          // 若同時存在升降重複，優先使用常見降號名稱
           const preferMap = { 'A#': 'Bb', 'D#': 'Eb', 'G#': 'Ab' };
           if (preferMap[val]) val = preferMap[val];
           if (!allow.includes(val)) { detectedKeyInput.style.borderColor = '#e11d48'; return; }
@@ -2028,7 +2028,7 @@
         detectedKeyInput.__wired = true;
       }
 
-      // === 成功後寫入編輯器並切換 ===
+      // === 成功後寫入編輯器並切換視圖 ===
       const origImgBox = d.getElementById('recognition-original');
       async function handleRecognize() {
         const file = fi?.files?.[0];
@@ -2074,6 +2074,12 @@
         }
         catch (err) { statusEl.textContent = '錯誤: ' + err.message; }
       }
+
+      const rbtn1 = d.getElementById('recognize-btn');
+      const rbtn2 = d.getElementById('recognize-btn-secondary');
+      [rbtn1, rbtn2].forEach(btn => { if (btn && !btn.__wired) { btn.addEventListener('click', handleRecognize); btn.__wired = true; } });
+      const rbtn3 = d.getElementById('recognize-ai-btn');
+      if (rbtn3 && !rbtn3.__wired) { rbtn3.addEventListener('click', handleRecognize); rbtn3.__wired = true; }
 
       async function handleTextUpload(file) {
         if (!file) return;

@@ -609,12 +609,25 @@
       }
       async function callGeminiAPIFromFile(file, apiKey){
         const {mimeType,base64}= await fileToBase64Mime(file);
-        const body={contents:[{parts:[{text:buildPrompt()},{inlineData:{mimeType,data:base64}}]}],generationConfig:{temperature:0.1,maxOutputTokens:2048}};
-        const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${encodeURIComponent(apiKey)}`;
+        const body={contents:[{parts:[{text:buildPrompt()},{inlineData:{mimeType,data:base64}}]}],generationConfig:{temperature:0.1,maxOutputTokens:8192}};
+        const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
         const resp= await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-        if(!resp.ok){ const t=await resp.text(); throw new Error('Gemini API 錯誤 '+resp.status+': '+t.slice(0,200)); }
+        if(!resp.ok){
+          const t=await resp.text();
+          let msg = 'Gemini API 錯誤 '+resp.status;
+          try {
+            const errJson = JSON.parse(t);
+            if (errJson?.error?.message) msg += ': ' + errJson.error.message;
+            else msg += ': ' + t.slice(0, 200);
+          } catch(_) {
+            msg += ': ' + t.slice(0, 200);
+          }
+          throw new Error(msg);
+        }
         const json= await resp.json();
-        const text=json?.candidates?.[0]?.content?.parts?.map(p=>p.text).filter(Boolean).join('\n')||'';
+        const parts = json?.candidates?.[0]?.content?.parts || [];
+        const textParts = parts.filter(p => !p.thought && p.text);
+        const text = (textParts.length > 0 ? textParts : parts).map(p => p.text).filter(Boolean).join('\n') || '';
         return text;
       }
       function formatDisplay(raw){
