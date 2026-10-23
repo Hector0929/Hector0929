@@ -6,10 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>關於我 About Me - Hector Liu</title>
-  <meta name="description" content="劉于志 (Hector Liu) - 資深測試自動化與品質工程師。14+ 年軟韌體與 Android 平台測試經驗，曾任職於 Google Pixel 團隊與 HTC。">
+  <meta name="description" content="Hector Liu - 資深測試自動化與品質工程師。14+ 年軟韌體與 Android 平台測試經驗，曾任職於 Google Pixel 團隊與 HTC。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap">
 
   <style>
     /* Hector's Lab 全站統一設計規範 */
@@ -21,7 +22,7 @@
       --ink: #1d1d1f;
       --ink-2: #6b6f76;
       --ink-3: #8e9198;
-      
+
       --accent: #0a72e8;
       --accent-bg: #e6f0fd;
       --mint: #1fa98a;
@@ -30,14 +31,14 @@
       --google-green: #34a853;
       --google-yellow: #fbbc05;
       --google-red: #ea4335;
-      
+
       --shadow-sm: 0 1px 2px rgba(20, 30, 60, .04), 0 2px 8px rgba(20, 30, 60, .03);
       --shadow: 0 1px 2px rgba(20, 30, 60, .04), 0 6px 24px rgba(20, 30, 60, .07);
       --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .11);
       --radius: 22px;
       --radius-sm: 12px;
       --radius-pill: 999px;
-      
+
       --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
       --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
     }
@@ -60,7 +61,9 @@
       }
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -81,6 +84,7 @@
       text-decoration: none;
       transition: opacity .2s;
     }
+
     a:hover {
       text-decoration: underline;
     }
@@ -99,6 +103,7 @@
       padding-top: 24px;
       margin-bottom: -10px;
     }
+
     .lang-switcher {
       display: inline-flex;
       background: var(--surface);
@@ -107,6 +112,7 @@
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border);
     }
+
     .lang-btn {
       padding: 6px 14px;
       border-radius: var(--radius-pill);
@@ -119,9 +125,11 @@
       transition: all .2s ease;
       font-family: var(--f-body);
     }
+
     .lang-btn:hover {
       color: var(--ink);
     }
+
     .lang-btn.active {
       background: var(--accent);
       color: #fff;
@@ -139,6 +147,7 @@
       position: relative;
       overflow: hidden;
     }
+
     .hero-card::after {
       content: "";
       position: absolute;
@@ -149,6 +158,7 @@
       background: radial-gradient(circle, rgba(10, 114, 232, 0.1) 0%, transparent 70%);
       pointer-events: none;
     }
+
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -163,6 +173,7 @@
       border-radius: var(--radius-pill);
       margin-bottom: 14px;
     }
+
     .hero-title-row {
       display: flex;
       flex-wrap: wrap;
@@ -170,6 +181,7 @@
       gap: 12px 18px;
       margin-bottom: 6px;
     }
+
     .hero-name {
       font-family: var(--f-display);
       font-size: clamp(32px, 5vw, 44px);
@@ -177,11 +189,13 @@
       letter-spacing: -.03em;
       line-height: 1.1;
     }
+
     .hero-role {
       font-size: clamp(17px, 2.5vw, 20px);
       font-weight: 600;
       color: var(--ink-2);
     }
+
     .hero-bio {
       font-size: 16px;
       color: var(--ink-2);
@@ -189,12 +203,14 @@
       margin-top: 14px;
       line-height: 1.7;
     }
+
     .hero-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 20px;
     }
+
     .hero-tag {
       font-size: 13px;
       font-weight: 600;
@@ -204,6 +220,7 @@
       color: var(--ink-2);
       border: 1px solid var(--border);
     }
+
     .hero-contact {
       display: flex;
       flex-wrap: wrap;
@@ -214,6 +231,7 @@
       font-size: 14px;
       color: var(--ink-2);
     }
+
     .hero-contact-item {
       display: inline-flex;
       align-items: center;
@@ -227,11 +245,13 @@
       gap: 16px;
       margin-top: 24px;
     }
+
     @media (max-width: 768px) {
       .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
+
     .metric-card {
       background: var(--surface);
       border-radius: var(--radius-sm);
@@ -241,9 +261,11 @@
       text-align: center;
       transition: transform .2s ease;
     }
+
     .metric-card:hover {
       transform: translateY(-2px);
     }
+
     .metric-num {
       font-family: var(--f-display);
       font-size: 32px;
@@ -252,6 +274,7 @@
       line-height: 1;
       margin-bottom: 6px;
     }
+
     .metric-label {
       font-size: 13px;
       color: var(--ink-2);
@@ -262,9 +285,11 @@
     .section-wrap {
       margin-top: 36px;
     }
+
     .section-head {
       margin-bottom: 20px;
     }
+
     .section-head h2 {
       font-family: var(--f-display);
       font-size: 24px;
@@ -274,6 +299,7 @@
       align-items: center;
       gap: 10px;
     }
+
     .section-head h2 i {
       width: 10px;
       height: 10px;
@@ -288,11 +314,13 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 18px;
     }
+
     @media (max-width: 680px) {
       .skills-grid {
         grid-template-columns: 1fr;
       }
     }
+
     .skill-card {
       background: var(--surface);
       border-radius: var(--radius-sm);
@@ -300,6 +328,7 @@
       padding: 22px 24px;
       border: 1px solid var(--border);
     }
+
     .skill-cat {
       font-size: 15px;
       font-weight: 700;
@@ -309,11 +338,13 @@
       align-items: center;
       gap: 8px;
     }
+
     .skill-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
+
     .skill-chip {
       font-size: 13px;
       padding: 4px 10px;
@@ -322,6 +353,7 @@
       color: var(--ink-2);
       border: 1px solid var(--border);
     }
+
     .skill-chip.highlight {
       background: var(--accent-bg);
       color: var(--accent);
@@ -335,6 +367,7 @@
       flex-direction: column;
       gap: 20px;
     }
+
     .timeline-card {
       background: var(--surface);
       border-radius: var(--radius);
@@ -343,6 +376,7 @@
       border: 1px solid var(--border);
       position: relative;
     }
+
     .timeline-header {
       display: flex;
       flex-wrap: wrap;
@@ -351,11 +385,13 @@
       gap: 8px;
       margin-bottom: 12px;
     }
+
     .timeline-company {
       font-size: 20px;
       font-weight: 700;
       color: var(--ink);
     }
+
     .timeline-period {
       font-size: 13px;
       font-weight: 600;
@@ -364,12 +400,14 @@
       padding: 3px 10px;
       border-radius: var(--radius-pill);
     }
+
     .timeline-role {
       font-size: 16px;
       font-weight: 600;
       color: var(--accent);
       margin-bottom: 14px;
     }
+
     .timeline-list {
       list-style: none;
       display: flex;
@@ -378,11 +416,13 @@
       color: var(--ink-2);
       font-size: 15px;
     }
+
     .timeline-list li {
       position: relative;
       padding-left: 18px;
       line-height: 1.6;
     }
+
     .timeline-list li::before {
       content: "•";
       position: absolute;
@@ -397,6 +437,7 @@
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 18px;
     }
+
     .project-card {
       background: var(--surface);
       border-radius: var(--radius-sm);
@@ -408,10 +449,12 @@
       gap: 10px;
       transition: transform .2s ease, box-shadow .2s ease;
     }
+
     .project-card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
     }
+
     .project-tag {
       font-size: 11px;
       font-weight: 700;
@@ -419,11 +462,13 @@
       text-transform: uppercase;
       color: var(--accent);
     }
+
     .project-title {
       font-size: 17px;
       font-weight: 700;
       line-height: 1.3;
     }
+
     .project-desc {
       font-size: 14px;
       color: var(--ink-2);
@@ -464,11 +509,12 @@
     <header class="hero-card">
       <div class="hero-badge" data-i18n="heroBadge">14+ 年資深工程專家</div>
       <div class="hero-title-row">
-        <h1 class="hero-name" data-i18n="heroName">劉于志 (Hector Liu)</h1>
+        <h1 class="hero-name" data-i18n="heroName">Hector Liu</h1>
         <div class="hero-role" data-i18n="heroRole">資深測試自動化與品質工程師</div>
       </div>
       <p class="hero-bio" data-i18n="heroBio">
-        在軟體與系統測試領域擁有 14-15 年實戰經驗，歷經 HTC 智慧手機全盛期、Google Pixel 系統級自動化測試至美商顧問架構建立。專精於 Python 自動化測試開發、測試框架設計、問題根因追蹤與跨團隊溝通。善於活絡團隊氣氛，熱愛傳承與團隊協作。
+        在軟體與系統測試領域擁有 14-15 年實戰經驗，歷經 HTC 智慧手機全盛期、Google Pixel 系統級自動化測試至美商顧問架構建立。專精於 Python
+        自動化測試開發、測試框架設計、問題根因追蹤與跨團隊溝通。善於活絡團隊氣氛，熱愛傳承與團隊協作。
       </p>
       <div class="hero-tags">
         <span class="hero-tag">Python Automation</span>
@@ -484,9 +530,6 @@
         </div>
         <div class="hero-contact-item">
           <span>✉️</span> <a href="mailto:yuzy0929@gmail.com">yuzy0929@gmail.com</a>
-        </div>
-        <div class="hero-contact-item">
-          <span>📱</span> <span>0911-786-573</span>
         </div>
         <div class="hero-contact-item">
           <span>🐙</span> <a href="https://github.com/Hector0929/Hector0929" target="_blank" rel="noopener">GitHub ›</a>
@@ -584,7 +627,7 @@
             <span class="timeline-company" data-i18n="job1Company">美商邏輯技術有限公司 (Zealogics Taiwan)</span>
             <span class="timeline-period" data-i18n="job1Period">2023.01 – 仍在職</span>
           </div>
-          <div class="timeline-role" data-i18n="job1Role">資深工程師 (Senior Engineer)</div>
+          <div class="timeline-role" data-i18n="job1Role">軟體測試技術領導 (SQA Technical Leader)</div>
           <ul class="timeline-list" data-i18n-list="job1List">
             <li>配合客戶軟體開發時程，使用 Python 開發端到端自動化測試架構，實行定期排程自動化驗證。</li>
             <li>在每個 Release build 前執行高覆蓋率回歸測試，有效大幅降低人工重複檢查時間。</li>
@@ -599,10 +642,13 @@
             <span class="timeline-company" data-i18n="job2Company">台灣科高工程有限公司 (Google)</span>
             <span class="timeline-period" data-i18n="job2Period">2018.01 – 2022.10 (4年10個月)</span>
           </div>
-          <div class="timeline-role" data-i18n="job2Role">軟體測試工程師 (Senior Test Automation & Quality Engineer - Pixel Software)</div>
+          <div class="timeline-role" data-i18n="job2Role">軟體測試工程師 (Senior Test Automation & Quality Engineer - Pixel
+            Software)</div>
           <ul class="timeline-list" data-i18n-list="job2List">
-            <li><strong>Nearby Share (跨裝置傳輸自動化)</strong>：使用 Python 與 Snippet 開發 Pixel 跨手機傳輸測試，深入分析多裝置通訊錯誤，成果獲內部競賽提名與貢獻獎。</li>
-            <li><strong>Tuscany (人臉解鎖功能自動化)</strong>：負責人臉辨識自動化測試計畫，將 Local 測試轉化為 Online 監控體系，並結合 Google PLX 視覺化儀表板分析延遲與成功率趨勢。</li>
+            <li><strong>Nearby Share (跨裝置傳輸自動化)</strong>：使用 Python 與 Snippet 開發 Pixel 跨手機傳輸測試，深入分析多裝置通訊錯誤，成果獲內部競賽提名與貢獻獎。
+            </li>
+            <li><strong>Tuscany (人臉解鎖功能自動化)</strong>：負責人臉辨識自動化測試計畫，將 Local 測試轉化為 Online 監控體系，並結合 Google PLX
+              視覺化儀表板分析延遲與成功率趨勢。</li>
             <li><strong>FactoryOTA (工廠端更新自動化)</strong>：在實驗室搭建小型模組與自動化腳本，在軟體版本迭代時大幅節省手動測試工時。</li>
             <li><strong>Gboard (Google 輸入法)</strong>：規劃 Gboard 自動化測試設計與報告書，建立高可信度回歸測試流程。</li>
             <li>以卓越表現成功轉正為 Google 正式測試工程師，並因熱心跨團隊協助多次榮獲同儕獎金 (Peer Bonus)。</li>
@@ -617,7 +663,8 @@
           </div>
           <div class="timeline-role" data-i18n="job3Role">測試工程師 / 團隊導師 (Mentor)</div>
           <ul class="timeline-list" data-i18n-list="job3List">
-            <li>主責廣受好評的 <strong>HTC Sense Input</strong>，跨越 Windows Mobile 與 Android 時代，協助將預設輸入法從 9 鍵鍵盤轉換升級為 QWERTY 體驗。</li>
+            <li>主責廣受好評的 <strong>HTC Sense Input</strong>，跨越 Windows Mobile 與 Android 時代，協助將預設輸入法從 9 鍵鍵盤轉換升級為 QWERTY 體驗。
+            </li>
             <li>負責中國 SKU 團隊系統整合測試：HTC Sense Home、訊息 MMS、天氣定位與系統客製化項目。</li>
             <li>多次赴美國支援 Field Trial 測試，獨立在第一線解決問題並協同電信商實驗室通過認證。</li>
             <li>2013 年赴上海協助建立當地測試團隊；擔任實習生與約聘同仁導師，成功輔導多位優秀夥伴轉為正式員工。</li>
@@ -635,13 +682,15 @@
         <div class="project-card">
           <div class="project-tag">Google Pixel</div>
           <h3 class="project-title" data-i18n="p1Title">Nearby Share 跨裝置傳輸自動化</h3>
-          <p class="project-desc" data-i18n="p1Desc">突破多手機、多藍牙/WiFi 狀態複雜組合的測試瓶頸，使用 Python 與 Mobly 架構設計高穩定性自動化測試套裝，獲得團隊高度肯定。</p>
+          <p class="project-desc" data-i18n="p1Desc">突破多手機、多藍牙/WiFi 狀態複雜組合的測試瓶頸，使用 Python 與 Mobly
+            架構設計高穩定性自動化測試套裝，獲得團隊高度肯定。</p>
         </div>
 
         <div class="project-card">
           <div class="project-tag">Google Pixel</div>
           <h3 class="project-title" data-i18n="p2Title">Tuscany (Face Unlock) 延遲與穩定性監控</h3>
-          <p class="project-desc" data-i18n="p2Desc">結合 Perfetto 與 Google PLX 儀表板，將人臉辨識效能數據與解鎖延遲轉換為即時視覺化指標，精準攔截系統回歸 Bug。</p>
+          <p class="project-desc" data-i18n="p2Desc">結合 Perfetto 與 Google PLX 儀表板，將人臉辨識效能數據與解鎖延遲轉換為即時視覺化指標，精準攔截系統回歸 Bug。
+          </p>
         </div>
 
         <div class="project-card">
@@ -675,7 +724,7 @@
       const i18n = {
         zh: {
           heroBadge: "14+ 年資深工程專家",
-          heroName: "劉于志 (Hector Liu)",
+          heroName: "Hector Liu",
           heroRole: "資深測試自動化與品質工程師",
           heroBio: "在軟體與系統測試領域擁有 14-15 年實戰經驗，歷經 HTC 智慧手機全盛期、Google Pixel 系統級自動化測試至美商顧問架構建立。專精於 Python 自動化測試開發、測試框架設計、問題根因追蹤與跨團隊溝通。善於活絡團隊氣氛，熱愛傳承與團隊協作。",
           location: "台南市 (可接受全遠端/混合辦公)",
@@ -729,7 +778,7 @@
         },
         en: {
           heroBadge: "14+ Years Senior QA & Automation Expert",
-          heroName: "Hector Liu (劉于志)",
+          heroName: "Hector Liu",
           heroRole: "Senior Test Automation & Quality Engineer",
           heroBio: "With over 14 years of solid experience in software, firmware, and Android platform testing, Hector has contributed to the golden age of HTC smartphones, Pixel system-level test automation at Google, and enterprise quality consulting at US-based firms. Specialized in Python automation frameworks, root cause analysis, testbed design, and cross-functional leadership.",
           location: "Tainan, Taiwan (Open to Remote / Hybrid)",
