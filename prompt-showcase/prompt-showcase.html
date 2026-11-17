@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <script src="../assets/js/lab-shell.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AI 修圖與提示詞案例庫 · Hector's Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap">
+  <style>
+    /* Hector's Lab 淺色設計規範 */
+    :root {
+      --bg: #f3f3f6;
+      --surface: #ffffff;
+      --surface-subtle: #f8f8fb;
+      --border: rgba(0, 0, 0, 0.06);
+      --ink: #1d1d1f;
+      --ink-2: #6b6f76;
+      --ink-3: #8e9198;
+      --accent: #c83e7b;
+      --accent-bg: #fcebf3;
+      --accent-glow: rgba(200, 62, 123, 0.22);
+      --blue: #0a72e8;
+      --mint: #1fa98a;
+      --code-bg: #f8f8fb;
+      --tag-bg: #ffffff;
+      --tag-active: #c83e7b;
+      --copy-btn-bg: #ffffff;
+      --copy-btn-hover: #f1f2f6;
+      --shadow: 0 1px 2px rgba(20, 30, 60, .04), 0 6px 24px rgba(20, 30, 60, .07);
+      --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .12);
+      --radius: 22px;
+      --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+      --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-body);
+      line-height: 1.6;
+      padding: 40px 20px 80px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* 頁首標題 */
+    header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: var(--f-display);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--ink-2);
+      font-size: 16px;
+    }
+
+    /* 標籤篩選列 */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+
+    .tag-btn {
+      background: var(--tag-bg);
+      color: var(--ink-2);
+      border: 1px solid var(--border);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(20, 30, 60, .04);
+      transition: all 0.2s ease;
+    }
+
+    .tag-btn:hover {
+      color: var(--ink);
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(20, 30, 60, .08);
+    }
+
+    .tag-btn.active {
+      background: var(--tag-active);
+      color: #fff;
+      border-color: var(--tag-active);
+      box-shadow: 0 6px 18px var(--accent-glow);
+    }
+
+    /* 瀑布流版面 */
+    .masonry-grid {
+      column-count: 1;
+      column-gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .masonry-grid {
+        column-count: 2;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .masonry-grid {
+        column-count: 2;
+      }
+    }
+
+    .case-card {
+      break-inside: avoid;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .case-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    /* 卡片標頭 */
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .card-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .case-title {
+      font-family: var(--f-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .case-desc {
+      font-size: 14px;
+      color: var(--ink-2);
+      margin-bottom: 18px;
+      line-height: 1.55;
+    }
+
+    /* 區塊小標 */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-3);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 提示詞區塊 */
+    .prompt-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 13px;
+      color: #2d3139;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    /* 格式切換與複製工具列 */
+    .view-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      background: #efeff4;
+      padding: 4px 6px;
+      border-radius: 12px;
+    }
+
+    .view-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .view-tab {
+      background: none;
+      border: none;
+      color: var(--ink-2);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .view-tab:hover {
+      color: var(--ink);
+    }
+
+    .view-tab.active {
+      background: #ffffff;
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--copy-btn-bg);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--copy-btn-hover);
+    }
+
+    .copy-btn.copied {
+      background: var(--mint);
+      border-color: var(--mint);
+      color: #fff;
+    }
+
+    /* 結構化內容顯示區 */
+    .output-viewer {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .output-content {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      color: #2d3139;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 280px;
+      overflow-y: auto;
+      line-height: 1.55;
+    }
+
+    /* 視覺成果預覽區 */
+    .visual-section {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .visual-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .visual-header h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-2);
+    }
+
+    .poster-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 12px;
+      background: #ebebf0;
+      border-radius: 12px;
+    }
+
+    /* 3:4 CSS Visual Simulation of the Poster Prompt */
+    .mock-poster {
+      width: 260px;
+      height: 346.6px; /* 3:4 比例 */
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      font-family: Georgia, serif;
+    }
+
+    /* Top Half (Original full-bleed) */
+    .poster-top {
+      flex: 1;
+      width: 100%;
+      background: linear-gradient(135deg, #1e293b, #334155, #475569);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster-top-visual {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 60% 40%, rgba(245, 158, 11, 0.45), transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.5), transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Bottom Half (Warm off-white textured paper) */
+    .poster-bottom {
+      flex: 1;
+      width: 100%;
+      background: #fbf9f5;
+      background-image: radial-gradient(#e5dfd5 1px, transparent 1px);
+      background-size: 8px 8px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 14px;
+    }
+
+    /* Blurred Crop Window behind subject */
+    .blurred-crop-frame {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 64px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, rgba(71, 85, 105, 0.4), rgba(51, 65, 85, 0.6));
+      filter: blur(0.5px);
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    /* 3D Cutout Pop-out Subject breaking the boundary */
+    .subject-popout {
+      position: absolute;
+      top: -34px; /* Breaks across top/bottom seam */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 140px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Simulated Subject Graphic (Statue / Portrait Silhouette with 3D drop shadow) */
+    .subject-graphic {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.35));
+    }
+
+    /* Subject base soft fade / shadow */
+    .subject-base-fade {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 24px;
+      background: radial-gradient(ellipse at center, rgba(30, 27, 24, 0.28) 0%, transparent 70%);
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* Typography on Poster */
+    .poster-text-top {
+      font-size: 6px;
+      line-height: 1.4;
+      color: #94918c;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      z-index: 6;
+      font-weight: 500;
+    }
+
+    .poster-text-bottom {
+      align-self: flex-end;
+      text-align: right;
+      font-size: 6px;
+      line-height: 1.4;
+      color: #94918c;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      z-index: 6;
+      font-weight: 500;
+    }
+
+    /* 實體圖片展示 */
+    .real-image-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 320px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(20, 30, 60, 0.16);
+      cursor: zoom-in;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .real-image-wrapper:hover {
+      transform: scale(1.02);
+      box-shadow: 0 16px 36px rgba(20, 30, 60, 0.24);
+    }
+
+    .real-image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+
+    .image-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(29, 29, 31, 0.78);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      pointer-events: none;
+    }
+
+    .image-caption {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 18, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 24px;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Case 02 Papercut Diorama Mockup Styles */
+    .mock-papercut-top {
+      flex: 1;
+      width: 100%;
+      background: linear-gradient(180deg, #5b768e 0%, #879ba9 50%, #c4b8a7 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .mock-papercut-top::before {
+      content: "";
+      position: absolute;
+      top: 20%;
+      left: 60%;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fde4c3 0%, rgba(253,228,195,0) 70%);
+      opacity: 0.8;
+    }
+
+    .mock-papercut-top-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 10px;
+      border-radius: 4px;
+      backdrop-filter: blur(4px);
+    }
+
+    .mock-papercut-bottom {
+      flex: 1;
+      width: 100%;
+      background: #fbf8f2;
+      background-image: radial-gradient(#ece4d6 1px, transparent 1px);
+      background-size: 8px 8px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .papercut-editorial {
+      position: relative;
+      z-index: 5;
+      text-align: left;
+    }
+
+    .papercut-title {
+      font-family: Georgia, serif;
+      font-size: 17px;
+      line-height: 1.15;
+      color: #272320;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
+    }
+
+    .papercut-subtitle {
+      font-family: monospace, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 2px;
+      color: #7b7169;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .papercut-keywords {
+      font-size: 7.5px;
+      letter-spacing: 1.5px;
+      color: #9c9187;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .papercut-poem {
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 8.5px;
+      color: #635a53;
+      margin-top: 4px;
+    }
+
+    .papercut-diorama-layers {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .paper-layer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .paper-layer-1 {
+      height: 92%;
+      background: #ded5c7;
+      clip-path: polygon(0% 45%, 30% 25%, 65% 42%, 100% 20%, 100% 100%, 0% 100%);
+      filter: drop-shadow(0 -3px 4px rgba(60, 50, 40, 0.08));
+    }
+
+    .paper-layer-2 {
+      height: 68%;
+      background: #cbbeab;
+      clip-path: polygon(0% 30%, 40% 48%, 75% 22%, 100% 38%, 100% 100%, 0% 100%);
+      filter: drop-shadow(0 -4px 6px rgba(50, 40, 30, 0.12));
+    }
+
+    .paper-layer-3 {
+      height: 40%;
+      background: #b5a48e;
+      clip-path: polygon(0% 22%, 28% 40%, 60% 16%, 100% 32%, 100% 100%, 0% 100%);
+      filter: drop-shadow(0 -5px 8px rgba(40, 30, 20, 0.16));
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Prompt Showcase · 提示詞與成果庫</h1>
+      <p>精選優質提示詞、結構化產出與視覺成果參考對照</p>
+    </header>
+
+    <!-- Tag Filter Bar -->
+    <div class="filter-bar" id="filterBar">
+      <button class="tag-btn active" data-tag="all">全部 (All)</button>
+    </div>
+
+    <!-- Masonry Cards Container -->
+    <div class="masonry-grid" id="cardGrid"></div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="關閉">✕</button>
+    <img id="lightboxImg" src="" alt="放大預覽">
+  </div>
+
+  <script>
+    // 案例資料庫 (可隨時追加新案例)
+        const showcaseData = [
+      {
+        id: "case-01",
+        title: "3:4 畫廊風 3D 破框海報 (Gallery Split 3D Pop-out)",
+        tags: ["圖像生成", "海報設計", "視覺排版", "3D破框"],
+        desc: "以原照片無縫對接，下半部暖米白紙張背景上主體局部放大並打破橫向模糊小窗（3D破框），底部柔和漸變融入紙面。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical poster, horizontally split into top and bottom halves touching seamlessly, no white line, gap, or border.\n\n[TOP HALF — PHOTO REALISM]\nFull-bleed display of the uploaded original photograph, preserving authentic perspective, natural sunlight, and environmental details.\n\n[BOTTOM HALF — 3D POP-OUT & RECONSTRUCTION]\n- Background: Warm off-white textured fine art paper.\n- Subject: The main subject is precisely cut out, enlarged, and centered.\n- 3D Pop-out: Behind the subject sits a thin horizontal rectangular frame showing a softly blurred crop of the original scene. The subject punches forward through the frame, breaking the boundary.\n- Base Transition: Base of the subject softly fades into the paper with natural particles, gentle shadow, and soft reflection.\n\n[EDITORIAL TYPOGRAPHY]\n- Top-Left: 3 short poetic lines in small, light-grey uppercase serif font with wide letter-spacing.\n- Bottom-Right: 2 minimalist notation lines ending with an em-dash \"—\".\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: white dividing lines, harsh edges, cartoon style, distorted anatomy, cheap plastic 3D, commercial ads.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫廊海報（Vertical Gallery Poster）。\n* **版面結構**：上下精準 1:1 無縫拼接（Seamless Borderless Split），零白邊隔線。\n* **上半部 (Top Half)**：滿版呈現原相機照片（Full-bleed Original Photo），保留真實光影。\n* **下半部 (Bottom Half)**：\n  - **材質底色**：溫暖米白微糙藝術紙（Warm off-white textured paper）。\n  - **主體特效**：主體精準摳圖、適度放大並居中。\n  - **3D 破框 (Pop-out)**：主體背後置放薄型橫向模糊窗，主體向前破框而出。\n  - **底部過渡**：主體底部自然柔和羽化融入紙面，帶細緻微粒與接觸陰影。\n* **字體排版 (Typography)**：\n  - 左上方：3 行寬字距淺灰大寫襯線詩意短句。\n  - 右下方：2 行帶破折號「—」的極簡註記文字。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-01",
+  "title": "Gallery Split Poster with 3D Pop-out",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "horizontal_50_50_seamless",
+    "top_half": {
+      "content": "original_photo",
+      "fit": "full_bleed"
+    },
+    "bottom_half": {
+      "background": "warm_off_white_textured_paper",
+      "subject": {
+        "effect": "3d_pop_out_breaking_frame",
+        "base_transition": "soft_fade_particles_shadow"
+      },
+      "background_accent": "thin_horizontal_rectangle_blurred_original",
+      "typography": {
+        "top_left": "3_short_poetic_lines_wide_serif",
+        "bottom_right": "2_lines_with_em_dash"
+      }
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: "images/case-01.jpg",
+        imageCaption: "真實 AI 成果範例：台灣街道暮色騎士 · 3D 破框畫廊海報"
+      },
+      {
+        id: "case-02",
+        title: "3:4 雜誌風立體紙雕海報 (Layered Paper-cut Diorama & Editorial)",
+        tags: ["圖像生成", "海報設計", "紙雕藝術", "雜誌排版", "視覺重構"],
+        desc: "以照片無縫拼接，下半部將原場景重構為精細多層次立體卡紙微縮剪紙（Paper-cut Diorama），搭配高級獨立雜誌風格襯線排版。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical magazine editorial poster, top and bottom halves joined seamlessly with no white line, border, or gap.\n\n[TOP HALF — PHOTO REALISM]\nThe uploaded original photograph preserved faithfully without alteration: authentic lighting, realistic texture, and unchanged subjects.\n\n[BOTTOM HALF — PAPERCRAFT DIORAMA]\n- Medium & Texture: The identical scene and composition recreated as a layered paper-cut diorama. Textured heavyweight cardstock, crisp cut edges, and soft, natural drop shadows between stacked layers.\n- Color Palette: Muted harmonious palette directly sampled from the photo, set against a warm cream paper background.\n- Dimensionality: Tangible physical depth with foreground-to-background paper elevation.\n\n[EDITORIAL TYPOGRAPHY]\n- Placement: Upper-left corner of the bottom half.\n- Title: Large 2-line elegant serif title matching the scene mood.\n- Subtitle: Small spaced uppercase subtitle \"LANDSCAPE STUDY / 01\".\n- Supporting: 3 minimal keywords and one short poetic line. Minimal, premium magazine aesthetic.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: white separating lines, glossy plastic 3D, commercial cartoons, colored pencil textures, heavy digital noise.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下 1:1 精確無縫對接。\n* **上半部 (TOP)**：忠實保留原片構圖、主體相貌、光影與氛圍，不作扭曲。\n* **下半部 (BOTTOM - 立體紙雕微縮)**：\n  - **材質**：厚磅紋理卡紙（Textured cardstock）、精緻裁切切口、層層堆疊之立體微投影。\n  - **色彩**：自原片萃取之低飽和柔和色盤，基底為奶油白/象牙白紙。\n  - **排版系統 (位於左上角)**：\n    - 主標題：典雅雙行襯線字體（Serif Title）。\n    - 副標題：寬字距微型大寫字 `LANDSCAPE STUDY / 01`。\n    - 輔助元素：3 個風格關鍵詞與 1 行極簡詩句。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-02",
+  "title": "Layered Paper-cut Diorama & Editorial Poster",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "vertical_50_50_seamless",
+    "top_half": {
+      "content": "original_photo_unchanged"
+    },
+    "bottom_half": {
+      "medium": "layered_paper_cut_diorama",
+      "textures": [
+        "textured_cardstock",
+        "crisp_cut_edges",
+        "soft_shadows"
+      ],
+      "palette": "muted_tones_cream_paper_background",
+      "typography": {
+        "position": "upper_left",
+        "title": "large_2_line_serif",
+        "subtitle": "LANDSCAPE STUDY / 01"
+      }
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: null,
+        imageCaption: "概念預覽（傳送生成圖片即可自動更新為真實 AI 成果）"
+      },
+      {
+        id: "case-03",
+        title: "3:4 獨立刊物風極簡手繪紙本海報 (Minimalist Hand-drawn Paper Illustration)",
+        tags: ["圖像生成", "海報設計", "極簡手繪", "雜誌排版", "藝術出版", "視覺重構"],
+        desc: "上下 1:1 分割。上半部忠實保留原片；下半部以極簡手繪墨線與低彩度壓克力平塗，在大量負空間中重構微縮主體，營造獨立藝術刊物封面感。",
+        prompt: "[FORMAT & RATIO]\nStrict 3:4 vertical composition, divided horizontally into two exact 1:1 equal halves (top 50%, bottom 50%), seamless borderless connection.\n\n[TOP HALF — PHOTO REALISM]\nFaithful preservation of the uploaded photo: original subject pose, proportions, natural lighting, and photographic atmosphere. Subtle editorial color grading of a high-end contemporary art book.\n\n[BOTTOM HALF — MINIMAL PAPER COVER ILLUSTRATION]\n- Concept: A small subject surrounded by generous poetic negative space (occupying 10–20% centered).\n- Medium: Warm off-white rough handmade paper texture with visible grain. Delicate, slightly imperfect hand-drawn black ink contour lines and restrained flat acrylic/gouache color blocks.\n- Palette: Max 4 muted colors directly extracted from the photograph.\n- Environment: Highly abstracted with minimal dry-brush strokes and thin ink lines.\n\n[EDITORIAL TYPOGRAPHY]\n- Title: Understated elegant serif title \"THE WALK\".\n- Subtitle & Issue: Spaced uppercase category \"OUTDOORS\" and issue notation \"2026 / NO. 03\".\n- Aesthetic: Evoking independent art publication book covers and quiet picture books.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: colored pencils, crayons, bleeding watercolor, 3D render, cartoon characters, commercial ads, cluttered details.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：嚴格 3:4 縱向構圖，上下精確 1:1 等分對接（各佔 50%）。\n* **上半部 (真實攝影)**：忠實保留人物、光影與透視，施以展覽級高級調色。\n* **下半部 (極簡手繪紙本插畫)**：\n  - **核心哲學**：大量空白中的微小主體（主體僅佔 10%–20%，居中置放）。\n  - **手作媒材**：溫潤米白粗糙紙張、微不完美手繪墨線、壓克力/不透明水彩平塗色塊。\n  - **色彩提煉**：直接萃取原相機主色並壓縮至 4 色以內。\n* **現代編輯排版**：\n  - 標題：襯線體 `THE WALK`\n  - 標籤與期號：大寫 `OUTDOORS` 與 `2026 / NO. 03`\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-03",
+  "title": "Minimal Hand-Drawn Paper Illustration Poster",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "horizontal_50_50_exact_seamless",
+    "top_half": {
+      "content": "original_photo_faithful",
+      "style": "editorial_art_book"
+    },
+    "bottom_half": {
+      "medium": "minimalist_ink_and_gouache_on_rough_paper",
+      "subject_scale": "10_to_20_percent_centered",
+      "negative_space": "extensive_breathing_room",
+      "palette": "max_4_colors_from_photo",
+      "typography": {
+        "title": "THE WALK",
+        "category": "OUTDOORS",
+        "issue": "2026 / NO. 03"
+      }
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: "images/case-03.jpg",
+        imageCaption: "真實 AI 成果範例：步道漫步父子 · 獨立藝文出版品封面海報 (THE WALK / OUTDOORS / 2026 NO. 03)"
+      },
+      {
+        id: "case-04",
+        title: "3:4 旅人手帳立體微縮紙雕海報 (Travel Journal Pop-up Diorama)",
+        tags: ["圖像生成", "海報設計", "手帳紙藝", "立體微縮", "空間延伸", "視覺重構"],
+        desc: "畫面精準 50/50 分割。上半部真實海景道路；下半部無縫銜接至一本展開的旅行手帳，將道路、標誌、電線桿重構為立體折頁微縮紙雕。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical photography derivative poster, strict 1:1 horizontal division (top 50% real world, bottom 50% journal world), seamless spatial continuation.\n\n[TOP HALF — REAL WORLD]\nFaithful preservation of the uploaded photo: original coastal road perspective, light and shadows, utility poles, and ocean. Subtle clean editorial color grading.\n\n[BOTTOM HALF — POP-UP TRAVEL JOURNAL]\n- Medium & Vehicle: A realistic open travel journal lying on a warm off-white background, showing visible paper thickness, naturally curled page corners, and central book spine.\n- Pop-up Diorama: Key architectural and environmental elements from the photo selectively reconstructed as 3D pop-up structures rising from the pages. Built with fold lines, precision cutouts, paper supports, and natural contact drop shadows.\n- Detailing: Restrained watercolor wash with architectural ink contours.\n- Seamless Transition: The road and shoreline naturally flow across the boundary into the book spine and page fold.\n\n[EDITORIAL TYPOGRAPHY]\nNo large titles, readable text, or watermarks. Optional 1–3 tiny black silhouette line figures interacting as travelers.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: simple watercolor filters, flat photo collages, distorted perspective, text/watermarks, cartoon illustration.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下嚴格 1:1 等分對接（各佔 50%）。\n* **上半部（真實世界）**：忠實保留海邊公路、電線桿與海水光影，微調出版級色調。\n* **下半部（書中第二世界）**：\n  - **載體**：展開的旅行手帳（具厚度、捲曲頁角與清晰書脊）。\n  - **立體微縮紙雕 (Pop-up Diorama)**：萃取原圖景觀，以折頁、切口、支撐結構與自然接觸陰影重構立體空間。\n  - **跨界過渡**：海面與柏油路流暢延伸至書頁與書脊，空間無縫流動。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-04",
+  "title": "Travel Journal Pop-up Diorama Poster",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "vertical_50_50_exact_seamless",
+    "top_half": {
+      "realm": "real_photographic_world",
+      "fidelity": "strict_preservation"
+    },
+    "bottom_half": {
+      "realm": "travel_journal_pop_up_book",
+      "features": [
+        "open_pages_thickness",
+        "curled_corners_and_spine",
+        "pop_up_architecture"
+      ],
+      "transition": "seamless_road_and_water_into_book"
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: "images/case-04.jpg",
+        imageCaption: "真實 AI 成果範例：海邊公路延伸至旅行手帳 · 3D 微縮立體紙藝海報"
+      },
+      {
+        id: "case-05",
+        title: "3:4「第二世界」概念二創海報 (The Second World Doodled Poster)",
+        tags: ["圖像生成", "海報設計", "第二世界", "黑線塗鴉", "互動拼貼", "視覺重構"],
+        desc: "上下 1:1 分割。上半部真實攝影；下半部米白紙大面積留白，將照片邊緣與元素轉化為可互動結構，配合黑線塗鴉小人與幽默手寫旁白。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical poster, strict 1:1 horizontal split (top 50% authentic photo, bottom 50% doodle second world), borderless connection.\n\n[TOP HALF — PHOTO REALISM]\nFaithful preservation of the uploaded photo: subject, natural sunlight, reflection, and environmental perspective intact without artificial re-creation.\n\n[BOTTOM HALF — INTERACTIVE SECOND WORLD]\n- Background: Warm off-white paper texture with extensive negative space.\n- Structural Interaction: The physical structures of the photo (e.g. water edge, road, horizon) transform into interactable entities (piers, ladders, platforms). The cut edge of the photograph actively defines the interaction zone.\n- Doodle Figures: 0–3 minimalist black line-art doodle figures actively using the photo structure (climbing, fishing, observing), not merely standing.\n\n[EDITORIAL TYPOGRAPHY]\n- Handwritten Commentary: A single short, witty, casual handwritten English caption integrated organically into the negative space (e.g. \"A better view, just one ladder away.\").\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: mechanical torn paper templates, decorative clutter (random leaves/stars), altered colors, dense characters.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下嚴格 1:1 等分對接。\n* **上半部（真實攝影）**：忠實保留原片主體、光影與透視，僅作必要裁切。\n* **下半部（第二世界）**：\n  - **背景**：暖米白紙張質地，大面積留白。\n  - **結構互動**：將照片邊界轉化為可互動實體（如木棧道、碼頭、攀爬梯）。\n  - **黑線塗鴉小人**：0–3 個極簡手繪人物，真正與照片物理結構互動。\n  - **手寫旁白**：幽默自然的簡短英文手寫註解。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-05",
+  "title": "The Second World Doodled Poster",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "vertical_50_50_exact",
+    "top_half": {
+      "realm": "authentic_photograph",
+      "fidelity": "strict_preservation"
+    },
+    "bottom_half": {
+      "realm": "interactive_second_world",
+      "background": "warm_off_white_paper_negative_space",
+      "elements": [
+        "structural_cutout_edge",
+        "black_line_doodle_interaction",
+        "minimalist_doodle_figures"
+      ]
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: "images/case-05.jpg",
+        imageCaption: "真實 AI 成果範例：海景剪影延伸木棧道與看海小人 · 第二世界二創海報"
+      },
+      {
+        id: "case-06",
+        title: "3:4 建築空間手工剪紙與紙雕海報 (Architectural Paper-cut Collage Poster)",
+        tags: ["圖像生成", "海報設計", "手工剪紙", "紙雕拼貼", "建築重構", "現代排版"],
+        desc: "嚴格 50/50 上下分割。上半部展覽級真實建築攝影；下半部將老街教堂重構為霧面卡紙微縮剪紙，結合鏤空字與現代編輯排版系統。",
+        prompt: "[FORMAT & RATIO]\nStrict 3:4 vertical editorial poster, exact 1:1 horizontal split (top 50%, bottom 50%), clear division with unified visual continuity.\n\n[TOP HALF — PHOTO REALISM]\nFaithfully preserve the original photograph: red brick church architecture, alley perspective, natural sunlight, materials, and authentic atmosphere. Subtle exhibition-grade color grading.\n\n[BOTTOM HALF — PAPERCRAFT RECONSTRUCTION]\n- Medium & Texture: Handcrafted architectural paper-cut diorama collage. Matte textured cardstock with visible paper fibers, crisp cut edges, and soft, natural contact drop shadows between stacked layers.\n- Palette: Warm ivory and muted terracotta extracted directly from the photo, harmonious and restrained.\n- Geometry: Abstracted geometric elevation and facades creating genuine physical depth, like an art photograph of a paper sculpture.\n\n[EDITORIAL TYPOGRAPHY]\n- Title: Debossed paper-cutout serif title \"WALK SOFTLY\".\n- Subtitle: Small spaced uppercase \"IN THE OLD LANE\".\n- Metadata Labels: Refined minimal tags (PLACE: TAINAN, TAIWAN / DIRECTION: TOWARD THE LIGHT / MATERIAL: PAPER & MEMORY / NOTE: SLOW STEPS, DEEP ROOTS).\n- Integration: Text aligned along paper contours and architectural axes with wide tracking.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: plastic 3D render, cartoon aesthetics, cheap clipart, gradients, year numbers.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 豎版畫幅，上下嚴格 1:1 等分對接（各佔 50%）。\n* **上半部（原始攝影）**：忠實還原紅磚教堂與老街巷弄光影，展覽級專業調色。\n* **下半部（手工剪紙與紙雕）**：\n  - **材質**：象牙白/米白底紙、霧面卡紙纖維、俐落邊緣與堆疊接觸自然陰影。\n  - **色彩**：低飽和紅磚色與灰褐、橄欖綠，溫暖克制。\n  - **現代編輯排版**：\n    - 主標題：鏤空/剪紙質感襯線字 `WALK SOFTLY`\n    - 副標題：`IN THE OLD LANE`\n    - 輔助標籤：`PLACE: TAINAN`、`DIRECTION`、`MATERIAL`、`NOTE`\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-06",
+  "title": "Architectural Paper-cut Collage Poster",
+  "aspect_ratio": "3:4",
+  "layout": {
+    "split": "vertical_50_50_exact_split",
+    "top_half": {
+      "realm": "authentic_photography",
+      "fidelity": "strict_preservation"
+    },
+    "bottom_half": {
+      "realm": "handcrafted_paper_cut_diorama",
+      "materials": [
+        "matte_textured_paper",
+        "crisp_cut_clean_edges",
+        "natural_contact_shadows"
+      ],
+      "palette": "warm_ivory_and_terracotta_extracted",
+      "typography_system": {
+        "title": "WALK SOFTLY",
+        "subtitle": "IN THE OLD LANE",
+        "metadata": [
+          "PLACE: TAINAN, TAIWAN",
+          "DIRECTION: TOWARD THE LIGHT",
+          "MATERIAL: PAPER & MEMORY",
+          "NOTE: SLOW STEPS"
+        ]
+      }
+    }
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "SD 3.5"
+  ]
+}, null, 2),
+        image: "images/case-06.jpg",
+        imageCaption: "真實 AI 成果範例：台南老街紅磚教堂 · 手工卡紙雕塑與現代編輯排版海報 (WALK SOFTLY)"
+      },
+      {
+        id: "case-07",
+        title: "專業建築競賽藍圖線稿插畫 (Architectural Competition Vector Line Illustration)",
+        tags: ["圖像生成", "建築設計", "競賽線稿", "藍圖美學", "向量插畫", "視覺重構"],
+        desc: "保留原建築佈局與透視，轉化為歐洲競賽級純白底深靛藍（#1E3264）向量線稿。實填藍色人物，細線窗格與空氣透視，零陰影雜色。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical composition, full canvas vector architectural presentation board.\n\n[SOURCE FAITHFULNESS & PERSPECTIVE]\nFaithfully preserve the exact architectural layout, perspective, geometry, and spatial context of the reference building.\n\n[LINEWORK & VECTOR HIERARCHY]\n- Linework: Clean, uniform vector lines without hand-jitter, shading, or drop shadows.\n- Hierarchy: Medium blue lines for primary building massing; fine delicate lines for fenestration, mullions, and railings; ultra-fine light blue lines for background buildings to establish atmospheric perspective.\n\n[FILL RULES & COLOR PALETTE]\n- Strict Monochromatic Palette: Pure Deep Indigo Blue (#1E3264) on Pure White background only. No gradients, grays, or secondary colors.\n- Facade: White ground with blue linework, hollow without interior fill.\n- Entourage Figures: Solid indigo blue fill with ultra-fine white lines demarcating clothing separations.\n- Vegetation: Closed organic contour lines for canopies (white interior), solid blue lines for tree trunks. Minimal stippled hatch for ground lawn texture.\n\n[ATMOSPHERE & PARAMS]\nEuropean architectural competition board aesthetic, minimalist blueprint precision, complete detail, zero cast shadows.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **風格定位**：歐洲建築競賽展板向量線稿（Architectural Competition Vector Illustration）。\n* **雙色配色**：嚴格限定深靛藍（`#1E3264`）＋ 純白（`#FFFFFF`），零灰色零漸層。\n* **線條粗細分級**：主體外輪廓（中線）> 窗格細部（細線）> 遠景輪廓（極細線，空氣透視）。\n* **填充規則**：\n  - 建築立面：白底藍線，空心不填充。\n  - 人物：深靛藍實填，白細線勾勒服飾。\n  - 樹木：閉合線框樹冠留白，實心線幹。\n  - 草坪：極細點線紋理。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / ControlNet (Lineart/Canny)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-07",
+  "title": "Architectural Competition Vector Line Illustration",
+  "aspect_ratio": "3:4",
+  "color_palette": {
+    "primary": "#1E3264 (Deep Indigo Blue)",
+    "background": "#FFFFFF (Pure White)"
+  },
+  "linework_hierarchy": {
+    "facade_main": "medium_uniform_vector_lines",
+    "details": "fine_geometric_lines",
+    "background": "ultra_fine_aerial_perspective"
+  },
+  "fill_rules": {
+    "architecture": "outline_only_no_fill",
+    "figures": "solid_blue_fill_with_white_division_lines",
+    "trees": "closed_contour_hollow_canopy",
+    "ground": "minimal_dotted_hatch_texture"
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1",
+    "ControlNet Canny"
+  ]
+}, null, 2),
+        image: "images/case-07.jpg",
+        imageCaption: "真實 AI 成果範例：建築渲染圖轉歐洲競賽級深靛藍向量線稿與藍圖美學"
+      },
+      {
+        id: "case-08",
+        title: "4:5 A24 電影感慢快門人像攝影 (A24 Motion Blur Cinematic Portrait)",
+        tags: ["圖像生成", "電影感攝影", "慢快門", "動態模糊", "人像攝影", "A24風格"],
+        desc: "胸口視角 Leica SL3 慢快門作品。主體絕對凝止銳利，背景數百通勤人流拉出動態模糊，低飽和混凝土冷色調呈現「冷靜與混亂」A24 電影張力。",
+        prompt: "[FORMAT & RATIO]\n4:5 vertical framing, eye-level chest shot cinematic portrait.\n\n[CAMERA PROFILE & LIGHTING]\n- Camera: Shot on Leica SL3 with 50mm Summilux lens, f/2.8 aperture.\n- Technique: Slow shutter panning capture, creating smooth physical motion blur streaks.\n- Lighting: Overcast natural soft diffused light as ambient source, gentle prolonged exposure blur without harsh contrast.\n\n[SUBJECT & CROWD DYNAMICS]\n- Main Subject: Completely still, sharp direct gaze, symmetrical features, authentic skin texture with visible pores, understated minimalist fashion.\n- Crowd: Hundreds of commuters rushing in multiple directions, stretched into smooth horizontal and diagonal motion blur streaks.\n- Thematic Contrast: Editorial aesthetic of \"Calm vs Chaos\", silent rebellion through stillness.\n\n[COLOR PALETTE & FILM GRAIN]\nA24-inspired desaturated concrete grey and neutral pale skin tones. Fine organic film grain, clean optical blur physics, zero digital artifacts or face distortion.\nParameters: --ar 4:5 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **相機與鏡頭參數**：Leica SL3, 50mm Summilux, f/2.8, 胸口高度平視角度，慢速快門（Slow Shutter Panning）。\n* **光影風格**：陰天漫射柔光，避免過硬陰影，提供乾淨物理性模糊軌跡。\n* **色彩美學**：A24 電影調色，低飽和混凝土灰冷調搭配中性膚色。\n* **視覺核心**：主體絕對靜止與清晰（Sharp Foreground） vs 背景通勤人流高速流動動態模糊（Motion Blur Crowd），體現「冷靜與混亂」對比。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev]\n* **推薦參數建議**：`--ar 4:5 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-08",
+  "title": "A24 Motion Blur Cinematic Portrait",
+  "aspect_ratio": "4:5",
+  "camera_profile": {
+    "body": "Leica SL3",
+    "lens": "50mm Summilux",
+    "aperture": "f/2.8",
+    "technique": "slow_shutter_panning_motion_blur"
+  },
+  "lighting_and_color": {
+    "light": "overcast_diffused_soft_light",
+    "palette": "a24_desaturated_concrete_gray"
+  },
+  "composition": {
+    "subject": "still_sharp_focus_direct_gaze",
+    "crowd": "hundreds_of_commuters_motion_blur",
+    "theme": "calm_vs_chaos_silent_rebellion"
+  },
+  "parameters": "--ar 4:5 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1 [dev]"
+  ]
+}, null, 2),
+        image: "images/case-08.jpg",
+        imageCaption: "真實 AI 成果範例：車站天橋通勤人流慢快門動態模糊 · A24 電影質感人像"
+      },
+      {
+        id: "case-09",
+        title: "3:4 混合媒介手撕紙實景拼貼海報 (Mixed Media Torn Paper Collage Poster)",
+        tags: ["圖像生成", "混合媒介", "手撕紙拼貼", "絲網印刷", "藝術海報", "視覺重構"],
+        desc: "照片以不規則手撕毛邊破入暖米白底紙。結合朱砂紅圓形色塊、黑色松樹飛鳥剪影與極小打字機文字，呈現絲網印刷與獨立藝術誌質感。",
+        prompt: "[FORMAT & RATIO]\n3:4 vertical mixed media collage poster, continuous perspective and horizon across medium transitions.\n\n[PHOTOGRAPHIC CORE & TORN EDGES]\nPreserve the core subject, natural sunlight, and spatial depth. The authentic photograph is shaped with organic, randomized torn deckled paper edges, extending onto a warm off-white textured vintage paper background.\n\n[GRAPHIC SILHOUETTES & SCREENPRINT ACCENTS]\n- Hand-drawn Ratio: 30%–35% graphic accents.\n- Silhouettes: Simplified black silhouettes (pine trees, flock of birds, distant mountain pagoda) extending the movement of the composition.\n- Color Block: A single bold, high-saturation crimson red sun disc behind the architecture creating a strong focal anchor.\n\n[EDITORIAL TYPOGRAPHY]\n- Large negative space with a single line of tiny, minimalist typewriter font at the bottom corner (e.g. \"a quieter world still here\").\n- Aesthetic: Screenprint texture, independent art magazine, vintage paper fibers.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: full-bleed flat photo, dense cluttered doodles, bold headlines, multiple bright colors, logos, watermarks.\nParameters: --ar 3:4 --style raw --v 6.1",
+        markdown: "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅拼貼海報（Mixed Media Collage Poster）。\n* **手撕紙過渡 (Torn Deckled Edges)**：\n  - 照片以隨機不規則毛邊邊緣撕開，主體透視、光線與地平線與背景保持連續。\n  - 底紙為暖米白色、帶有纖維質感的復古粗糙紙張。\n* **混合媒介重構 (30%~35% 手繪與版畫元素)**：\n  - **黑色剪影**：松樹剪影、空中飛鳥群、遠山古剎，延伸空間景深與動線。\n  - **單一高飽和色塊**：朱砂紅日輪，借鑒絲網版畫（Screenprint）衝擊力。\n  - **微型打字機字體**：右下角留白處極小單行打字機體短句（如 *a quieter world still here*）。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / ControlNet\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+        json: JSON.stringify({
+  "id": "case-09",
+  "title": "Mixed Media Torn Paper Collage Poster",
+  "aspect_ratio": "3:4",
+  "collage_elements": {
+    "base_medium": "warm_off_white_textured_vintage_paper",
+    "photographic_core": "irregular_torn_deckled_edges_continuous_perspective",
+    "hand_drawn_ratio": "30_to_35_percent",
+    "graphic_accents": [
+      "single_crimson_red_sun_disc",
+      "minimal_black_silhouettes_pine_trees_birds",
+      "subtle_typewriter_editorial_caption"
+    ]
+  },
+  "parameters": "--ar 3:4 --style raw --v 6.1",
+  "recommended_models": [
+    "Midjourney v6.1",
+    "Flux.1 [dev]"
+  ]
+}, null, 2),
+        image: "images/case-09.jpg",
+        imageCaption: "真實 AI 成果範例：天壇祈年殿 · 混合媒介手撕毛邊拼貼與絲網朱紅日輪海報"
+      }
+    ];
+
+    // 初始化與渲染
+    function initShowcase() {
+      renderTags();
+      renderCards(showcaseData);
+    }
+
+    // 取得所有唯一標籤
+    function getAllTags() {
+      const tagSet = new Set();
+      showcaseData.forEach(item => item.tags.forEach(t => tagSet.add(t)));
+      return Array.from(tagSet);
+    }
+
+    // 渲染過濾標籤列
+    function renderTags() {
+      const filterBar = document.getElementById("filterBar");
+      const tags = getAllTags();
+      tags.forEach(tag => {
+        const btn = document.createElement("button");
+        btn.className = "tag-btn";
+        btn.dataset.tag = tag;
+        btn.textContent = tag;
+        btn.addEventListener("click", () => filterByTag(tag, btn));
+        filterBar.appendChild(btn);
+      });
+
+      document.querySelector('[data-tag="all"]').addEventListener("click", function() {
+        document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        renderCards(showcaseData);
+      });
+    }
+
+    // 標籤篩選
+    function filterByTag(tag, targetBtn) {
+      document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
+      targetBtn.classList.add("active");
+      const filtered = showcaseData.filter(item => item.tags.includes(tag));
+      renderCards(filtered);
+    }
+
+    // 渲染案例卡片
+    function renderCards(dataList) {
+      const cardGrid = document.getElementById("cardGrid");
+      cardGrid.innerHTML = "";
+
+      dataList.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "case-card";
+        card.id = `card-${item.id}`;
+
+        card.innerHTML = `
+          <div class="card-meta">
+            <div class="card-tags">
+              ${item.tags.map(t => `<span class="card-tag">#${t}</span>`).join("")}
+            </div>
+          </div>
+          <h2 class="case-title">${item.title}</h2>
+          <p class="case-desc">${item.desc}</p>
+
+          <div class="section-title">
+            <span>📝</span> 原始提示詞 (Prompt)
+          </div>
+          <div class="prompt-box">${escapeHtml(item.prompt)}</div>
+
+          <!-- Format Switcher & Output View -->
+          <div class="view-toolbar">
+            <div class="view-tabs">
+              <button class="view-tab active" data-type="md" data-id="${item.id}">Markdown</button>
+              <button class="view-tab" data-type="json" data-id="${item.id}">JSON</button>
+              <button class="view-tab" data-type="prompt" data-id="${item.id}">Prompt</button>
+            </div>
+            <button class="copy-btn" id="copy-btn-${item.id}" title="點擊複製目前顯示內容">
+              <span>📋</span> <span class="copy-text">複製內容</span>
+            </button>
+          </div>
+
+          <div class="output-viewer">
+            <pre class="output-content" id="output-content-${item.id}">${escapeHtml(item.markdown)}</pre>
+          </div>
+
+          <!-- 成果視覺參考圖 (真實 AI 產圖) -->
+          <div class="visual-section">
+            <div class="visual-header">
+              <h4>🖼️ 成果視覺參考圖 (AI Generated Result)</h4>
+            </div>
+            <div class="poster-container">
+              ${item.image ? `
+                <div>
+                  <div class="real-image-wrapper" onclick="openLightbox('${item.image}')" title="點擊放大預覽">
+                    <span class="image-badge">✨ AI 成果範例</span>
+                    <img src="${item.image}" alt="${escapeHtml(item.title)}">
+                  </div>
+                  ${item.imageCaption ? `<div class="image-caption">${escapeHtml(item.imageCaption)} (點擊可放大)</div>` : ""}
+                </div>
+              ` : (item.id === "case-02" ? `
+                <!-- Case 02 Papercut Diorama Mockup -->
+                <div class="mock-poster">
+                  <div class="mock-papercut-top">
+                    <span class="mock-papercut-top-label">ORIGINAL SCENE</span>
+                  </div>
+                  <div class="mock-papercut-bottom">
+                    <div class="papercut-editorial">
+                      <div class="papercut-title">QUIET HORIZON<br>SILENT CONTOURS</div>
+                      <div class="papercut-subtitle">LANDSCAPE STUDY / 01</div>
+                      <div class="papercut-keywords">TEXTURE • CONTOUR • DEPTH</div>
+                      <div class="papercut-poem">Where the quiet horizon folds into paper memory.</div>
+                    </div>
+                    <div class="papercut-diorama-layers">
+                      <div class="paper-layer paper-layer-1"></div>
+                      <div class="paper-layer paper-layer-2"></div>
+                      <div class="paper-layer paper-layer-3"></div>
+                    </div>
+                  </div>
+                </div>
+              ` : `
+                <!-- General Fallback CSS Mockup -->
+                <div class="mock-poster">
+                  <div class="poster-top"><div class="poster-top-visual">ORIGINAL SCENE</div></div>
+                  <div class="poster-bottom">
+                    <div class="poster-text-top">IN SILENCE AND FORM<br>TIME DISSOLVES AWAY<br>ECHOES REMAIN</div>
+                    <div class="blurred-crop-frame"></div>
+                    <div class="subject-popout">
+                      <svg class="subject-graphic" viewBox="0 0 100 130" fill="none">
+                        <path d="M50 8C38 8 32 20 32 34C32 46 38 54 42 60C32 64 20 74 16 95C24 102 40 108 50 108C60 108 76 102 84 95C80 74 68 64 58 60C62 54 68 46 68 34C68 20 62 8 50 8Z" fill="#383431" />
+                      </svg>
+                    </div>
+                    <div class="subject-base-fade"></div>
+                    <div class="poster-text-bottom">SERIES NO. 04<br>— AUTUMN ARCHIVE</div>
+                  </div>
+                </div>
+              `)}
+            </div>
+          </div>
+        `;
+
+        cardGrid.appendChild(card);
+        bindCardEvents(item);
+      });
+    }
+
+    // 綁定卡片內按鈕事件
+    function bindCardEvents(item) {
+      const card = document.getElementById(`card-${item.id}`);
+      const tabs = card.querySelectorAll(".view-tab");
+      const outputEl = card.querySelector(`#output-content-${item.id}`);
+      const copyBtn = card.querySelector(`#copy-btn-${item.id}`);
+      const copyText = copyBtn.querySelector(".copy-text");
+
+      let currentMode = "md"; // 'md', 'json', 'prompt'
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          currentMode = tab.dataset.type;
+
+          if (currentMode === "md") {
+            outputEl.textContent = item.markdown;
+          } else if (currentMode === "json") {
+            outputEl.textContent = item.json;
+          } else if (currentMode === "prompt") {
+            outputEl.textContent = item.prompt;
+          }
+        });
+      });
+
+      // 複製按鈕功能
+      copyBtn.addEventListener("click", async () => {
+        let contentToCopy = "";
+        if (currentMode === "md") contentToCopy = item.markdown;
+        else if (currentMode === "json") contentToCopy = item.json;
+        else if (currentMode === "prompt") contentToCopy = item.prompt;
+
+        try {
+          await navigator.clipboard.writeText(contentToCopy);
+          copyBtn.classList.add("copied");
+          copyText.textContent = "已複製！✓";
+          setTimeout(() => {
+            copyBtn.classList.remove("copied");
+            copyText.textContent = "複製內容";
+          }, 1800);
+        } catch (err) {
+          // Fallback
+          const ta = document.createElement("textarea");
+          ta.value = contentToCopy;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          copyBtn.classList.add("copied");
+          copyText.textContent = "已複製！✓";
+          setTimeout(() => {
+            copyBtn.classList.remove("copied");
+            copyText.textContent = "複製內容";
+          }, 1800);
+        }
+      });
+    }
+
+    // 跳脫 HTML 防止 XSS
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // 啟動
+    
+    // Lightbox 功能
+    function openLightbox(imgSrc) {
+      const lb = document.getElementById("lightbox");
+      const img = document.getElementById("lightboxImg");
+      img.src = imgSrc;
+      lb.classList.add("active");
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById("lightbox");
+      lb.classList.remove("active");
+    }
+
+    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+      if (e.target.id === "lightbox" || e.target.id === "lightboxClose") {
+        closeLightbox();
+      }
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    initShowcase();
+  </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+[
+  {
+    "id": "case-01",
+    "title": "3:4 畫廊風 3D 破框海報 (Gallery Split 3D Pop-out)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "視覺排版",
+      "3D破框"
+    ],
+    "desc": "以原照片無縫對接，下半部暖米白紙張背景上主體局部放大並打破橫向模糊小窗（3D破框），底部柔和漸變融入紙面。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical poster, horizontally split into top and bottom halves touching seamlessly, no white line, gap, or border.\n\n[TOP HALF — PHOTO REALISM]\nFull-bleed display of the uploaded original photograph, preserving authentic perspective, natural sunlight, and environmental details.\n\n[BOTTOM HALF — 3D POP-OUT & RECONSTRUCTION]\n- Background: Warm off-white textured fine art paper.\n- Subject: The main subject is precisely cut out, enlarged, and centered.\n- 3D Pop-out: Behind the subject sits a thin horizontal rectangular frame showing a softly blurred crop of the original scene. The subject punches forward through the frame, breaking the boundary.\n- Base Transition: Base of the subject softly fades into the paper with natural particles, gentle shadow, and soft reflection.\n\n[EDITORIAL TYPOGRAPHY]\n- Top-Left: 3 short poetic lines in small, light-grey uppercase serif font with wide letter-spacing.\n- Bottom-Right: 2 minimalist notation lines ending with an em-dash \"—\".\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: white dividing lines, harsh edges, cartoon style, distorted anatomy, cheap plastic 3D, commercial ads.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫廊海報（Vertical Gallery Poster）。\n* **版面結構**：上下精準 1:1 無縫拼接（Seamless Borderless Split），零白邊隔線。\n* **上半部 (Top Half)**：滿版呈現原相機照片（Full-bleed Original Photo），保留真實光影。\n* **下半部 (Bottom Half)**：\n  - **材質底色**：溫暖米白微糙藝術紙（Warm off-white textured paper）。\n  - **主體特效**：主體精準摳圖、適度放大並居中。\n  - **3D 破框 (Pop-out)**：主體背後置放薄型橫向模糊窗，主體向前破框而出。\n  - **底部過渡**：主體底部自然柔和羽化融入紙面，帶細緻微粒與接觸陰影。\n* **字體排版 (Typography)**：\n  - 左上方：3 行寬字距淺灰大寫襯線詩意短句。\n  - 右下方：2 行帶破折號「—」的極簡註記文字。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-01\",\n  \"title\": \"Gallery Split Poster with 3D Pop-out\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"horizontal_50_50_seamless\",\n    \"top_half\": {\n      \"content\": \"original_photo\",\n      \"fit\": \"full_bleed\"\n    },\n    \"bottom_half\": {\n      \"background\": \"warm_off_white_textured_paper\",\n      \"subject\": {\n        \"effect\": \"3d_pop_out_breaking_frame\",\n        \"base_transition\": \"soft_fade_particles_shadow\"\n      },\n      \"background_accent\": \"thin_horizontal_rectangle_blurred_original\",\n      \"typography\": {\n        \"top_left\": \"3_short_poetic_lines_wide_serif\",\n        \"bottom_right\": \"2_lines_with_em_dash\"\n      }\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": "images/case-01.jpg",
+    "imageCaption": "真實 AI 成果範例：台灣街道暮色騎士 · 3D 破框畫廊海報"
+  },
+  {
+    "id": "case-02",
+    "title": "3:4 雜誌風立體紙雕海報 (Layered Paper-cut Diorama & Editorial)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "紙雕藝術",
+      "雜誌排版",
+      "視覺重構"
+    ],
+    "desc": "以照片無縫拼接，下半部將原場景重構為精細多層次立體卡紙微縮剪紙（Paper-cut Diorama），搭配高級獨立雜誌風格襯線排版。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical magazine editorial poster, top and bottom halves joined seamlessly with no white line, border, or gap.\n\n[TOP HALF — PHOTO REALISM]\nThe uploaded original photograph preserved faithfully without alteration: authentic lighting, realistic texture, and unchanged subjects.\n\n[BOTTOM HALF — PAPERCRAFT DIORAMA]\n- Medium & Texture: The identical scene and composition recreated as a layered paper-cut diorama. Textured heavyweight cardstock, crisp cut edges, and soft, natural drop shadows between stacked layers.\n- Color Palette: Muted harmonious palette directly sampled from the photo, set against a warm cream paper background.\n- Dimensionality: Tangible physical depth with foreground-to-background paper elevation.\n\n[EDITORIAL TYPOGRAPHY]\n- Placement: Upper-left corner of the bottom half.\n- Title: Large 2-line elegant serif title matching the scene mood.\n- Subtitle: Small spaced uppercase subtitle \"LANDSCAPE STUDY / 01\".\n- Supporting: 3 minimal keywords and one short poetic line. Minimal, premium magazine aesthetic.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: white separating lines, glossy plastic 3D, commercial cartoons, colored pencil textures, heavy digital noise.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下 1:1 精確無縫對接。\n* **上半部 (TOP)**：忠實保留原片構圖、主體相貌、光影與氛圍，不作扭曲。\n* **下半部 (BOTTOM - 立體紙雕微縮)**：\n  - **材質**：厚磅紋理卡紙（Textured cardstock）、精緻裁切切口、層層堆疊之立體微投影。\n  - **色彩**：自原片萃取之低飽和柔和色盤，基底為奶油白/象牙白紙。\n  - **排版系統 (位於左上角)**：\n    - 主標題：典雅雙行襯線字體（Serif Title）。\n    - 副標題：寬字距微型大寫字 `LANDSCAPE STUDY / 01`。\n    - 輔助元素：3 個風格關鍵詞與 1 行極簡詩句。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-02\",\n  \"title\": \"Layered Paper-cut Diorama & Editorial Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"vertical_50_50_seamless\",\n    \"top_half\": {\n      \"content\": \"original_photo_unchanged\"\n    },\n    \"bottom_half\": {\n      \"medium\": \"layered_paper_cut_diorama\",\n      \"textures\": [\n        \"textured_cardstock\",\n        \"crisp_cut_edges\",\n        \"soft_shadows\"\n      ],\n      \"palette\": \"muted_tones_cream_paper_background\",\n      \"typography\": {\n        \"position\": \"upper_left\",\n        \"title\": \"large_2_line_serif\",\n        \"subtitle\": \"LANDSCAPE STUDY / 01\"\n      }\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": null,
+    "imageCaption": "概念預覽（傳送生成圖片即可自動更新為真實 AI 成果）"
+  },
+  {
+    "id": "case-03",
+    "title": "3:4 獨立刊物風極簡手繪紙本海報 (Minimalist Hand-drawn Paper Illustration)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "極簡手繪",
+      "雜誌排版",
+      "藝術出版",
+      "視覺重構"
+    ],
+    "desc": "上下 1:1 分割。上半部忠實保留原片；下半部以極簡手繪墨線與低彩度壓克力平塗，在大量負空間中重構微縮主體，營造獨立藝術刊物封面感。",
+    "prompt": "[FORMAT & RATIO]\nStrict 3:4 vertical composition, divided horizontally into two exact 1:1 equal halves (top 50%, bottom 50%), seamless borderless connection.\n\n[TOP HALF — PHOTO REALISM]\nFaithful preservation of the uploaded photo: original subject pose, proportions, natural lighting, and photographic atmosphere. Subtle editorial color grading of a high-end contemporary art book.\n\n[BOTTOM HALF — MINIMAL PAPER COVER ILLUSTRATION]\n- Concept: A small subject surrounded by generous poetic negative space (occupying 10–20% centered).\n- Medium: Warm off-white rough handmade paper texture with visible grain. Delicate, slightly imperfect hand-drawn black ink contour lines and restrained flat acrylic/gouache color blocks.\n- Palette: Max 4 muted colors directly extracted from the photograph.\n- Environment: Highly abstracted with minimal dry-brush strokes and thin ink lines.\n\n[EDITORIAL TYPOGRAPHY]\n- Title: Understated elegant serif title \"THE WALK\".\n- Subtitle & Issue: Spaced uppercase category \"OUTDOORS\" and issue notation \"2026 / NO. 03\".\n- Aesthetic: Evoking independent art publication book covers and quiet picture books.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: colored pencils, crayons, bleeding watercolor, 3D render, cartoon characters, commercial ads, cluttered details.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：嚴格 3:4 縱向構圖，上下精確 1:1 等分對接（各佔 50%）。\n* **上半部 (真實攝影)**：忠實保留人物、光影與透視，施以展覽級高級調色。\n* **下半部 (極簡手繪紙本插畫)**：\n  - **核心哲學**：大量空白中的微小主體（主體僅佔 10%–20%，居中置放）。\n  - **手作媒材**：溫潤米白粗糙紙張、微不完美手繪墨線、壓克力/不透明水彩平塗色塊。\n  - **色彩提煉**：直接萃取原相機主色並壓縮至 4 色以內。\n* **現代編輯排版**：\n  - 標題：襯線體 `THE WALK`\n  - 標籤與期號：大寫 `OUTDOORS` 與 `2026 / NO. 03`\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-03\",\n  \"title\": \"Minimal Hand-Drawn Paper Illustration Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"horizontal_50_50_exact_seamless\",\n    \"top_half\": {\n      \"content\": \"original_photo_faithful\",\n      \"style\": \"editorial_art_book\"\n    },\n    \"bottom_half\": {\n      \"medium\": \"minimalist_ink_and_gouache_on_rough_paper\",\n      \"subject_scale\": \"10_to_20_percent_centered\",\n      \"negative_space\": \"extensive_breathing_room\",\n      \"palette\": \"max_4_colors_from_photo\",\n      \"typography\": {\n        \"title\": \"THE WALK\",\n        \"category\": \"OUTDOORS\",\n        \"issue\": \"2026 / NO. 03\"\n      }\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": "images/case-03.jpg",
+    "imageCaption": "真實 AI 成果範例：步道漫步父子 · 獨立藝文出版品封面海報 (THE WALK / OUTDOORS / 2026 NO. 03)"
+  },
+  {
+    "id": "case-04",
+    "title": "3:4 旅人手帳立體微縮紙雕海報 (Travel Journal Pop-up Diorama)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "手帳紙藝",
+      "立體微縮",
+      "空間延伸",
+      "視覺重構"
+    ],
+    "desc": "畫面精準 50/50 分割。上半部真實海景道路；下半部無縫銜接至一本展開的旅行手帳，將道路、標誌、電線桿重構為立體折頁微縮紙雕。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical photography derivative poster, strict 1:1 horizontal division (top 50% real world, bottom 50% journal world), seamless spatial continuation.\n\n[TOP HALF — REAL WORLD]\nFaithful preservation of the uploaded photo: original coastal road perspective, light and shadows, utility poles, and ocean. Subtle clean editorial color grading.\n\n[BOTTOM HALF — POP-UP TRAVEL JOURNAL]\n- Medium & Vehicle: A realistic open travel journal lying on a warm off-white background, showing visible paper thickness, naturally curled page corners, and central book spine.\n- Pop-up Diorama: Key architectural and environmental elements from the photo selectively reconstructed as 3D pop-up structures rising from the pages. Built with fold lines, precision cutouts, paper supports, and natural contact drop shadows.\n- Detailing: Restrained watercolor wash with architectural ink contours.\n- Seamless Transition: The road and shoreline naturally flow across the boundary into the book spine and page fold.\n\n[EDITORIAL TYPOGRAPHY]\nNo large titles, readable text, or watermarks. Optional 1–3 tiny black silhouette line figures interacting as travelers.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: simple watercolor filters, flat photo collages, distorted perspective, text/watermarks, cartoon illustration.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下嚴格 1:1 等分對接（各佔 50%）。\n* **上半部（真實世界）**：忠實保留海邊公路、電線桿與海水光影，微調出版級色調。\n* **下半部（書中第二世界）**：\n  - **載體**：展開的旅行手帳（具厚度、捲曲頁角與清晰書脊）。\n  - **立體微縮紙雕 (Pop-up Diorama)**：萃取原圖景觀，以折頁、切口、支撐結構與自然接觸陰影重構立體空間。\n  - **跨界過渡**：海面與柏油路流暢延伸至書頁與書脊，空間無縫流動。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-04\",\n  \"title\": \"Travel Journal Pop-up Diorama Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"vertical_50_50_exact_seamless\",\n    \"top_half\": {\n      \"realm\": \"real_photographic_world\",\n      \"fidelity\": \"strict_preservation\"\n    },\n    \"bottom_half\": {\n      \"realm\": \"travel_journal_pop_up_book\",\n      \"features\": [\n        \"open_pages_thickness\",\n        \"curled_corners_and_spine\",\n        \"pop_up_architecture\"\n      ],\n      \"transition\": \"seamless_road_and_water_into_book\"\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": "images/case-04.jpg",
+    "imageCaption": "真實 AI 成果範例：海邊公路延伸至旅行手帳 · 3D 微縮立體紙藝海報"
+  },
+  {
+    "id": "case-05",
+    "title": "3:4「第二世界」概念二創海報 (The Second World Doodled Poster)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "第二世界",
+      "黑線塗鴉",
+      "互動拼貼",
+      "視覺重構"
+    ],
+    "desc": "上下 1:1 分割。上半部真實攝影；下半部米白紙大面積留白，將照片邊緣與元素轉化為可互動結構，配合黑線塗鴉小人與幽默手寫旁白。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical poster, strict 1:1 horizontal split (top 50% authentic photo, bottom 50% doodle second world), borderless connection.\n\n[TOP HALF — PHOTO REALISM]\nFaithful preservation of the uploaded photo: subject, natural sunlight, reflection, and environmental perspective intact without artificial re-creation.\n\n[BOTTOM HALF — INTERACTIVE SECOND WORLD]\n- Background: Warm off-white paper texture with extensive negative space.\n- Structural Interaction: The physical structures of the photo (e.g. water edge, road, horizon) transform into interactable entities (piers, ladders, platforms). The cut edge of the photograph actively defines the interaction zone.\n- Doodle Figures: 0–3 minimalist black line-art doodle figures actively using the photo structure (climbing, fishing, observing), not merely standing.\n\n[EDITORIAL TYPOGRAPHY]\n- Handwritten Commentary: A single short, witty, casual handwritten English caption integrated organically into the negative space (e.g. \"A better view, just one ladder away.\").\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: mechanical torn paper templates, decorative clutter (random leaves/stars), altered colors, dense characters.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅，上下嚴格 1:1 等分對接。\n* **上半部（真實攝影）**：忠實保留原片主體、光影與透視，僅作必要裁切。\n* **下半部（第二世界）**：\n  - **背景**：暖米白紙張質地，大面積留白。\n  - **結構互動**：將照片邊界轉化為可互動實體（如木棧道、碼頭、攀爬梯）。\n  - **黑線塗鴉小人**：0–3 個極簡手繪人物，真正與照片物理結構互動。\n  - **手寫旁白**：幽默自然的簡短英文手寫註解。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-05\",\n  \"title\": \"The Second World Doodled Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"vertical_50_50_exact\",\n    \"top_half\": {\n      \"realm\": \"authentic_photograph\",\n      \"fidelity\": \"strict_preservation\"\n    },\n    \"bottom_half\": {\n      \"realm\": \"interactive_second_world\",\n      \"background\": \"warm_off_white_paper_negative_space\",\n      \"elements\": [\n        \"structural_cutout_edge\",\n        \"black_line_doodle_interaction\",\n        \"minimalist_doodle_figures\"\n      ]\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": "images/case-05.jpg",
+    "imageCaption": "真實 AI 成果範例：海景剪影延伸木棧道與看海小人 · 第二世界二創海報"
+  },
+  {
+    "id": "case-06",
+    "title": "3:4 建築空間手工剪紙與紙雕海報 (Architectural Paper-cut Collage Poster)",
+    "tags": [
+      "圖像生成",
+      "海報設計",
+      "手工剪紙",
+      "紙雕拼貼",
+      "建築重構",
+      "現代排版"
+    ],
+    "desc": "嚴格 50/50 上下分割。上半部展覽級真實建築攝影；下半部將老街教堂重構為霧面卡紙微縮剪紙，結合鏤空字與現代編輯排版系統。",
+    "prompt": "[FORMAT & RATIO]\nStrict 3:4 vertical editorial poster, exact 1:1 horizontal split (top 50%, bottom 50%), clear division with unified visual continuity.\n\n[TOP HALF — PHOTO REALISM]\nFaithfully preserve the original photograph: red brick church architecture, alley perspective, natural sunlight, materials, and authentic atmosphere. Subtle exhibition-grade color grading.\n\n[BOTTOM HALF — PAPERCRAFT RECONSTRUCTION]\n- Medium & Texture: Handcrafted architectural paper-cut diorama collage. Matte textured cardstock with visible paper fibers, crisp cut edges, and soft, natural contact drop shadows between stacked layers.\n- Palette: Warm ivory and muted terracotta extracted directly from the photo, harmonious and restrained.\n- Geometry: Abstracted geometric elevation and facades creating genuine physical depth, like an art photograph of a paper sculpture.\n\n[EDITORIAL TYPOGRAPHY]\n- Title: Debossed paper-cutout serif title \"WALK SOFTLY\".\n- Subtitle: Small spaced uppercase \"IN THE OLD LANE\".\n- Metadata Labels: Refined minimal tags (PLACE: TAINAN, TAIWAN / DIRECTION: TOWARD THE LIGHT / MATERIAL: PAPER & MEMORY / NOTE: SLOW STEPS, DEEP ROOTS).\n- Integration: Text aligned along paper contours and architectural axes with wide tracking.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: plastic 3D render, cartoon aesthetics, cheap clipart, gradients, year numbers.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 豎版畫幅，上下嚴格 1:1 等分對接（各佔 50%）。\n* **上半部（原始攝影）**：忠實還原紅磚教堂與老街巷弄光影，展覽級專業調色。\n* **下半部（手工剪紙與紙雕）**：\n  - **材質**：象牙白/米白底紙、霧面卡紙纖維、俐落邊緣與堆疊接觸自然陰影。\n  - **色彩**：低飽和紅磚色與灰褐、橄欖綠，溫暖克制。\n  - **現代編輯排版**：\n    - 主標題：鏤空/剪紙質感襯線字 `WALK SOFTLY`\n    - 副標題：`IN THE OLD LANE`\n    - 輔助標籤：`PLACE: TAINAN`、`DIRECTION`、`MATERIAL`、`NOTE`\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / SD 3.5 (Inpaint)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-06\",\n  \"title\": \"Architectural Paper-cut Collage Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"layout\": {\n    \"split\": \"vertical_50_50_exact_split\",\n    \"top_half\": {\n      \"realm\": \"authentic_photography\",\n      \"fidelity\": \"strict_preservation\"\n    },\n    \"bottom_half\": {\n      \"realm\": \"handcrafted_paper_cut_diorama\",\n      \"materials\": [\n        \"matte_textured_paper\",\n        \"crisp_cut_clean_edges\",\n        \"natural_contact_shadows\"\n      ],\n      \"palette\": \"warm_ivory_and_terracotta_extracted\",\n      \"typography_system\": {\n        \"title\": \"WALK SOFTLY\",\n        \"subtitle\": \"IN THE OLD LANE\",\n        \"metadata\": [\n          \"PLACE: TAINAN, TAIWAN\",\n          \"DIRECTION: TOWARD THE LIGHT\",\n          \"MATERIAL: PAPER & MEMORY\",\n          \"NOTE: SLOW STEPS\"\n        ]\n      }\n    }\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"SD 3.5\"\n  ]\n}",
+    "image": "images/case-06.jpg",
+    "imageCaption": "真實 AI 成果範例：台南老街紅磚教堂 · 手工卡紙雕塑與現代編輯排版海報 (WALK SOFTLY)"
+  },
+  {
+    "id": "case-07",
+    "title": "專業建築競賽藍圖線稿插畫 (Architectural Competition Vector Line Illustration)",
+    "tags": [
+      "圖像生成",
+      "建築設計",
+      "競賽線稿",
+      "藍圖美學",
+      "向量插畫",
+      "視覺重構"
+    ],
+    "desc": "保留原建築佈局與透視，轉化為歐洲競賽級純白底深靛藍（#1E3264）向量線稿。實填藍色人物，細線窗格與空氣透視，零陰影雜色。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical composition, full canvas vector architectural presentation board.\n\n[SOURCE FAITHFULNESS & PERSPECTIVE]\nFaithfully preserve the exact architectural layout, perspective, geometry, and spatial context of the reference building.\n\n[LINEWORK & VECTOR HIERARCHY]\n- Linework: Clean, uniform vector lines without hand-jitter, shading, or drop shadows.\n- Hierarchy: Medium blue lines for primary building massing; fine delicate lines for fenestration, mullions, and railings; ultra-fine light blue lines for background buildings to establish atmospheric perspective.\n\n[FILL RULES & COLOR PALETTE]\n- Strict Monochromatic Palette: Pure Deep Indigo Blue (#1E3264) on Pure White background only. No gradients, grays, or secondary colors.\n- Facade: White ground with blue linework, hollow without interior fill.\n- Entourage Figures: Solid indigo blue fill with ultra-fine white lines demarcating clothing separations.\n- Vegetation: Closed organic contour lines for canopies (white interior), solid blue lines for tree trunks. Minimal stippled hatch for ground lawn texture.\n\n[ATMOSPHERE & PARAMS]\nEuropean architectural competition board aesthetic, minimalist blueprint precision, complete detail, zero cast shadows.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **風格定位**：歐洲建築競賽展板向量線稿（Architectural Competition Vector Illustration）。\n* **雙色配色**：嚴格限定深靛藍（`#1E3264`）＋ 純白（`#FFFFFF`），零灰色零漸層。\n* **線條粗細分級**：主體外輪廓（中線）> 窗格細部（細線）> 遠景輪廓（極細線，空氣透視）。\n* **填充規則**：\n  - 建築立面：白底藍線，空心不填充。\n  - 人物：深靛藍實填，白細線勾勒服飾。\n  - 樹木：閉合線框樹冠留白，實心線幹。\n  - 草坪：極細點線紋理。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / ControlNet (Lineart/Canny)\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-07\",\n  \"title\": \"Architectural Competition Vector Line Illustration\",\n  \"aspect_ratio\": \"3:4\",\n  \"color_palette\": {\n    \"primary\": \"#1E3264 (Deep Indigo Blue)\",\n    \"background\": \"#FFFFFF (Pure White)\"\n  },\n  \"linework_hierarchy\": {\n    \"facade_main\": \"medium_uniform_vector_lines\",\n    \"details\": \"fine_geometric_lines\",\n    \"background\": \"ultra_fine_aerial_perspective\"\n  },\n  \"fill_rules\": {\n    \"architecture\": \"outline_only_no_fill\",\n    \"figures\": \"solid_blue_fill_with_white_division_lines\",\n    \"trees\": \"closed_contour_hollow_canopy\",\n    \"ground\": \"minimal_dotted_hatch_texture\"\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1\",\n    \"ControlNet Canny\"\n  ]\n}",
+    "image": "images/case-07.jpg",
+    "imageCaption": "真實 AI 成果範例：建築渲染圖轉歐洲競賽級深靛藍向量線稿與藍圖美學"
+  },
+  {
+    "id": "case-08",
+    "title": "4:5 A24 電影感慢快門人像攝影 (A24 Motion Blur Cinematic Portrait)",
+    "tags": [
+      "圖像生成",
+      "電影感攝影",
+      "慢快門",
+      "動態模糊",
+      "人像攝影",
+      "A24風格"
+    ],
+    "desc": "胸口視角 Leica SL3 慢快門作品。主體絕對凝止銳利，背景數百通勤人流拉出動態模糊，低飽和混凝土冷色調呈現「冷靜與混亂」A24 電影張力。",
+    "prompt": "[FORMAT & RATIO]\n4:5 vertical framing, eye-level chest shot cinematic portrait.\n\n[CAMERA PROFILE & LIGHTING]\n- Camera: Shot on Leica SL3 with 50mm Summilux lens, f/2.8 aperture.\n- Technique: Slow shutter panning capture, creating smooth physical motion blur streaks.\n- Lighting: Overcast natural soft diffused light as ambient source, gentle prolonged exposure blur without harsh contrast.\n\n[SUBJECT & CROWD DYNAMICS]\n- Main Subject: Completely still, sharp direct gaze, symmetrical features, authentic skin texture with visible pores, understated minimalist fashion.\n- Crowd: Hundreds of commuters rushing in multiple directions, stretched into smooth horizontal and diagonal motion blur streaks.\n- Thematic Contrast: Editorial aesthetic of \"Calm vs Chaos\", silent rebellion through stillness.\n\n[COLOR PALETTE & FILM GRAIN]\nA24-inspired desaturated concrete grey and neutral pale skin tones. Fine organic film grain, clean optical blur physics, zero digital artifacts or face distortion.\nParameters: --ar 4:5 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **相機與鏡頭參數**：Leica SL3, 50mm Summilux, f/2.8, 胸口高度平視角度，慢速快門（Slow Shutter Panning）。\n* **光影風格**：陰天漫射柔光，避免過硬陰影，提供乾淨物理性模糊軌跡。\n* **色彩美學**：A24 電影調色，低飽和混凝土灰冷調搭配中性膚色。\n* **視覺核心**：主體絕對靜止與清晰（Sharp Foreground） vs 背景通勤人流高速流動動態模糊（Motion Blur Crowd），體現「冷靜與混亂」對比。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev]\n* **推薦參數建議**：`--ar 4:5 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-08\",\n  \"title\": \"A24 Motion Blur Cinematic Portrait\",\n  \"aspect_ratio\": \"4:5\",\n  \"camera_profile\": {\n    \"body\": \"Leica SL3\",\n    \"lens\": \"50mm Summilux\",\n    \"aperture\": \"f/2.8\",\n    \"technique\": \"slow_shutter_panning_motion_blur\"\n  },\n  \"lighting_and_color\": {\n    \"light\": \"overcast_diffused_soft_light\",\n    \"palette\": \"a24_desaturated_concrete_gray\"\n  },\n  \"composition\": {\n    \"subject\": \"still_sharp_focus_direct_gaze\",\n    \"crowd\": \"hundreds_of_commuters_motion_blur\",\n    \"theme\": \"calm_vs_chaos_silent_rebellion\"\n  },\n  \"parameters\": \"--ar 4:5 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1 [dev]\"\n  ]\n}",
+    "image": "images/case-08.jpg",
+    "imageCaption": "真實 AI 成果範例：車站天橋通勤人流慢快門動態模糊 · A24 電影質感人像"
+  },
+  {
+    "id": "case-09",
+    "title": "3:4 混合媒介手撕紙實景拼貼海報 (Mixed Media Torn Paper Collage Poster)",
+    "tags": [
+      "圖像生成",
+      "混合媒介",
+      "手撕紙拼貼",
+      "絲網印刷",
+      "藝術海報",
+      "視覺重構"
+    ],
+    "desc": "照片以不規則手撕毛邊破入暖米白底紙。結合朱砂紅圓形色塊、黑色松樹飛鳥剪影與極小打字機文字，呈現絲網印刷與獨立藝術誌質感。",
+    "prompt": "[FORMAT & RATIO]\n3:4 vertical mixed media collage poster, continuous perspective and horizon across medium transitions.\n\n[PHOTOGRAPHIC CORE & TORN EDGES]\nPreserve the core subject, natural sunlight, and spatial depth. The authentic photograph is shaped with organic, randomized torn deckled paper edges, extending onto a warm off-white textured vintage paper background.\n\n[GRAPHIC SILHOUETTES & SCREENPRINT ACCENTS]\n- Hand-drawn Ratio: 30%–35% graphic accents.\n- Silhouettes: Simplified black silhouettes (pine trees, flock of birds, distant mountain pagoda) extending the movement of the composition.\n- Color Block: A single bold, high-saturation crimson red sun disc behind the architecture creating a strong focal anchor.\n\n[EDITORIAL TYPOGRAPHY]\n- Large negative space with a single line of tiny, minimalist typewriter font at the bottom corner (e.g. \"a quieter world still here\").\n- Aesthetic: Screenprint texture, independent art magazine, vintage paper fibers.\n\n[NEGATIVE PROMPT & PARAMS]\nAvoid: full-bleed flat photo, dense cluttered doodles, bold headlines, multiple bright colors, logos, watermarks.\nParameters: --ar 3:4 --style raw --v 6.1",
+    "markdown": "### 🎨 提示詞解析與排版規格說明\n\n* **尺寸比例**：3:4 垂直畫幅拼貼海報（Mixed Media Collage Poster）。\n* **手撕紙過渡 (Torn Deckled Edges)**：\n  - 照片以隨機不規則毛邊邊緣撕開，主體透視、光線與地平線與背景保持連續。\n  - 底紙為暖米白色、帶有纖維質感的復古粗糙紙張。\n* **混合媒介重構 (30%~35% 手繪與版畫元素)**：\n  - **黑色剪影**：松樹剪影、空中飛鳥群、遠山古剎，延伸空間景深與動線。\n  - **單一高飽和色塊**：朱砂紅日輪，借鑒絲網版畫（Screenprint）衝擊力。\n  - **微型打字機字體**：右下角留白處極小單行打字機體短句（如 *a quieter world still here*）。\n* **推薦適用模型**：Midjourney v6.1 / Flux.1 [dev] / ControlNet\n* **推薦參數建議**：`--ar 3:4 --style raw --v 6.1`",
+    "json": "{\n  \"id\": \"case-09\",\n  \"title\": \"Mixed Media Torn Paper Collage Poster\",\n  \"aspect_ratio\": \"3:4\",\n  \"collage_elements\": {\n    \"base_medium\": \"warm_off_white_textured_vintage_paper\",\n    \"photographic_core\": \"irregular_torn_deckled_edges_continuous_perspective\",\n    \"hand_drawn_ratio\": \"30_to_35_percent\",\n    \"graphic_accents\": [\n      \"single_crimson_red_sun_disc\",\n      \"minimal_black_silhouettes_pine_trees_birds\",\n      \"subtle_typewriter_editorial_caption\"\n    ]\n  },\n  \"parameters\": \"--ar 3:4 --style raw --v 6.1\",\n  \"recommended_models\": [\n    \"Midjourney v6.1\",\n    \"Flux.1 [dev]\"\n  ]\n}",
+    "image": "images/case-09.jpg",
+    "imageCaption": "真實 AI 成果範例：天壇祈年殿 · 混合媒介手撕毛邊拼貼與絲網朱紅日輪海報"
+  }
+]
