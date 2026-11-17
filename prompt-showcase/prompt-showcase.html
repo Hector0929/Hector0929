@@ -372,17 +372,26 @@
     }
     .detail-media .frame {
       position: relative;
-      height: 100%;
-      max-height: 100%;
-      aspect-ratio: 3 / 4;
       max-width: 100%;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 14px 40px rgba(20, 30, 60, .22);
       background: var(--surface-sunk);
+      line-height: 0;
+    }
+    .detail-media .frame.mock {
+      width: min(100%, calc((min(880px, 100dvh - 48px) - 56px) * 0.75));
+      aspect-ratio: 3 / 4;
     }
     .detail-media .frame.zoomable { cursor: zoom-in; }
-    .detail-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .detail-media img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: calc(min(880px, 100dvh - 48px) - 56px);
+      object-fit: contain;
+    }
     .detail-media .zoom-hint {
       position: absolute;
       right: 10px;
@@ -483,51 +492,42 @@
     .tab:hover { color: var(--ink); }
     .tab[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
 
-    /* 提示詞模組 */
-    .module {
+    /* 提示詞（整段一體） */
+    .prompt-block {
+      position: relative;
+      background: var(--surface-subtle);
       border: 1px solid var(--border);
       border-radius: 14px;
-      margin-bottom: 10px;
-      background: var(--surface);
-      overflow: hidden;
     }
-    .module > summary {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 10px 9px 12px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .module > summary::-webkit-details-marker { display: none; }
-    .module > summary .chev { color: var(--ink-3); font-size: 11px; transition: transform .2s; width: 12px; }
-    .module[open] > summary .chev { transform: rotate(90deg); }
-    .module > summary .mod { white-space: normal; }
-    .module .mod-copy {
-      margin-left: auto;
-      border: 0;
-      background: none;
-      color: var(--ink-3);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 7px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .module .mod-copy:hover { background: var(--surface-subtle); color: var(--ink); }
-    .module .mod-copy.copied { color: var(--mint); }
-    .module pre {
+    .prompt-block pre {
       margin: 0;
-      padding: 2px 14px 14px 32px;
+      padding: 16px 18px 18px;
       font-family: var(--mono);
       font-size: 12.5px;
-      line-height: 1.6;
+      line-height: 1.7;
       color: var(--code-ink);
       white-space: pre-wrap;
       word-break: break-word;
     }
+    .prompt-block pre .mod { font-size: 11.5px; padding: 1px 6px; white-space: normal; }
+    .prompt-copy {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink-2);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .prompt-copy:hover { color: var(--ink); background: #fff; }
+    .prompt-copy.copied { background: var(--mint); border-color: var(--mint); color: #fff; }
 
     .code-block {
       background: var(--surface-subtle);
@@ -559,7 +559,8 @@
       }
       .detail-grid { display: block; height: 100%; overflow-y: auto; }
       .detail-media { padding: 16px 16px 4px; background: var(--surface); }
-      .detail-media .frame { height: auto; width: min(100%, 420px); }
+      .detail-media img { max-height: 70vh; }
+      .detail-media .frame.mock { width: min(100%, 420px); }
       .detail-side { display: block; }
       .detail-top {
         position: sticky;
@@ -572,7 +573,7 @@
         border-bottom: 1px solid var(--border);
       }
       .detail-scroll { overflow: visible; padding: 0 16px 40px; }
-      .module pre { padding-left: 14px; }
+      .prompt-block pre { padding: 14px 14px 16px; }
     }
 
     /* ── Lightbox（放在 dialog 內，才能疊在面板之上） ── */
@@ -1238,7 +1239,7 @@
       document.getElementById("nextBtn").disabled = currentIndex === visible.length - 1;
 
       document.getElementById("detailMedia").innerHTML = `
-        <div class="frame${item.image ? " zoomable" : ""}" ${item.image ? `role="button" tabindex="0" aria-label="放大預覽"` : ""}>
+        <div class="frame${item.image ? " zoomable" : " mock"}" ${item.image ? `role="button" tabindex="0" aria-label="放大預覽"` : ""}>
           ${posterHtml(item)}
           ${item.image ? `<span class="zoom-hint">點擊放大</span>` : `<span class="card-badge">概念預覽 · 待補成果圖</span>`}
         </div>`;
@@ -1254,15 +1255,15 @@
 
       let panel = "";
       if (activeTab === "prompt") {
-        panel = modules.map((m, i) => `
-          <details class="module" open>
-            <summary>
-              <span class="chev" aria-hidden="true">▶</span>
-              <span class="mod mod-${moduleKind(m.name)}">${escapeHtml(m.name || "PROMPT")}</span>
-              <button class="mod-copy" data-mod="${i}"><span class="label">複製</span></button>
-            </summary>
-            <pre>${escapeHtml(m.body)}</pre>
-          </details>`).join("");
+        // 整段提示詞為一體：只在原文中把 [SECTION] 標題上色，不拆開
+        const highlighted = modules.map(m =>
+          (m.name ? `<span class="mod mod-${moduleKind(m.name)}">[${escapeHtml(m.name)}]</span>\n` : "") + escapeHtml(m.body)
+        ).join("\n\n");
+        panel = `
+          <div class="prompt-block">
+            <button class="prompt-copy" id="copyPromptInline"><span aria-hidden="true">📋</span><span class="label">複製</span></button>
+            <pre>${highlighted}</pre>
+          </div>`;
       } else if (activeTab === "md") {
         panel = `<div class="md">${renderMarkdown(item.markdown || "")}</div>`;
       } else {
@@ -1299,13 +1300,11 @@
         await copyText(item.json || "");
         flashCopied(e.currentTarget, "複製 JSON");
       });
-      scroll.querySelectorAll(".mod-copy").forEach(b => b.addEventListener("click", async e => {
-        e.preventDefault();
-        e.stopPropagation();
-        const m = modules[+b.dataset.mod];
-        await copyText(m.name ? `[${m.name}]\n${m.body}` : m.body);
-        flashCopied(b, "複製", "✓");
-      }));
+      const inlineCopy = document.getElementById("copyPromptInline");
+      if (inlineCopy) inlineCopy.addEventListener("click", async () => {
+        await copyText(item.prompt);
+        flashCopied(inlineCopy, "複製");
+      });
     }
 
     function step(delta) {
