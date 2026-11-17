@@ -6,6 +6,7 @@ window.LAB = {
     { id: 'play', name: '遊戲', en: 'Play', blurb: '純粹好玩的' },
     { id: 'music', name: '音樂', en: 'Music', blurb: '敬拜團與練琴用' },
     { id: 'faith', name: '信仰與社群', en: 'Faith', blurb: '教會與讀經相關' },
+    { id: 'create', name: '影像與創作', en: 'Create', blurb: 'AI 修圖、提示詞與視覺實驗' },
     { id: 'lab', name: '實驗室', en: 'Lab', blurb: '作者介紹與個人經歷' }
   ],
   apps: [
@@ -38,6 +39,13 @@ window.LAB = {
         { label: '借閱', href: 'apbolc-library.html' },
         { label: '使用說明', href: 'apbolc-library_intro.html' }
       ]
+    },
+
+    {
+      id: 'prompt-showcase', cat: 'create', glyph: '藝', title: 'AI 修圖與提示詞案例庫',
+      desc: '記錄各種 AI 修圖效果、海報排版與結構化提示詞對照。',
+      href: 'prompt-showcase/prompt-showcase.html',
+      tags: ['NEW', 'Prompt', '9 案例']
     },
 
     { id: 'about', cat: 'lab', glyph: '人', title: '關於作者 (About Me)', desc: 'Hector Liu 14+ 年測試自動化實戰經歷與自傳。', href: 'about.html' }

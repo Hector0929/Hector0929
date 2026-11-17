@@ -30,6 +30,7 @@
     [data-cat="play"]  { --tint: #e2611a; --tint-bg: #fdeee4; }
     [data-cat="music"] { --tint: #6a4fd6; --tint-bg: #efebfd; }
     [data-cat="faith"] { --tint: #1f8a5b; --tint-bg: #e5f5ec; }
+    [data-cat="create"] { --tint: #c83e7b; --tint-bg: #fcebf3; }
     [data-cat="lab"]   { --tint: #4a5361; --tint-bg: #eaedf1; }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -109,6 +110,7 @@
     }
     .tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
     .tile.big { grid-row: span 2; min-height: 480px; }
+    .tile.wide { grid-column: 1 / -1; min-height: 200px; }
     .tile .k { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--tint); }
     .tile h3 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.12; letter-spacing: -.03em; position: relative; }
     .tile p { color: var(--ink-2); max-width: 26ch; position: relative; }
@@ -230,6 +232,13 @@
         <p>完整指法圖示、把位換算與仿真琴弦試聽。</p>
         <span class="go">開始查詢 ›</span>
         <div class="keys" aria-hidden="true"><span class="on">G</span><span>C</span><span>D</span></div>
+      </a>
+      <a class="tile wide" data-cat="create" href="prompt-showcase/prompt-showcase.html">
+        <span class="k">影像與創作 · 新收錄</span>
+        <h3>AI 修圖與提示詞案例庫</h3>
+        <p>記錄各種 AI 修圖效果、海報排版與結構化提示詞對照，支援 Markdown / JSON 一鍵複製。</p>
+        <span class="go">瀏覽案例庫 ›</span>
+        <div class="keys" aria-hidden="true"><span class="on">3:4</span><span>4:5</span><span>Prompt</span></div>
       </a>
     </section>
 
