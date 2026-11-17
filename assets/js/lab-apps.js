@@ -6,7 +6,7 @@ window.LAB = {
     { id: 'play', name: '遊戲', en: 'Play', blurb: '純粹好玩的' },
     { id: 'music', name: '音樂', en: 'Music', blurb: '敬拜團與練琴用' },
     { id: 'faith', name: '信仰與社群', en: 'Faith', blurb: '教會與讀經相關' },
-    { id: 'lab', name: '實驗室', en: 'Lab', blurb: 'AI 心得與還在試的東西' }
+    { id: 'lab', name: '實驗室', en: 'Lab', blurb: '作者介紹與個人經歷' }
   ],
   apps: [
     {
@@ -40,8 +40,6 @@ window.LAB = {
       ]
     },
 
-    { id: 'ai-share', cat: 'lab', glyph: 'AI', title: 'AI 學習分享', desc: 'AI 實作、工具與探險心得。', href: 'ai-learning-share.html' },
-    { id: 'chords-exp', cat: 'lab', glyph: '♫', title: '和弦辨識實驗版', desc: '和弦工具的新做法，還在測試。', href: 'chords_tranport_experimental.html' },
     { id: 'about', cat: 'lab', glyph: '人', title: '關於作者 (About Me)', desc: 'Hector Liu 14+ 年測試自動化實戰經歷與自傳。', href: 'about.html' }
   ]
 };
