@@ -14,547 +14,269 @@
       --bg: #f3f3f6;
       --surface: #ffffff;
       --surface-subtle: #f8f8fb;
-      --border: rgba(0, 0, 0, 0.06);
+      --surface-sunk: #ebebf0;
+      --border: rgba(0, 0, 0, 0.07);
       --ink: #1d1d1f;
       --ink-2: #6b6f76;
       --ink-3: #8e9198;
       --accent: #c83e7b;
       --accent-bg: #fcebf3;
       --accent-glow: rgba(200, 62, 123, 0.22);
-      --blue: #0a72e8;
       --mint: #1fa98a;
-      --code-bg: #f8f8fb;
-      --tag-bg: #ffffff;
-      --tag-active: #c83e7b;
-      --copy-btn-bg: #ffffff;
-      --copy-btn-hover: #f1f2f6;
+      --code-ink: #2d3139;
       --shadow: 0 1px 2px rgba(20, 30, 60, .04), 0 6px 24px rgba(20, 30, 60, .07);
-      --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .12);
-      --radius: 22px;
+      --shadow-hover: 0 2px 4px rgba(20, 30, 60, .05), 0 16px 40px rgba(20, 30, 60, .14);
+      --radius: 20px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
       --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+
+      /* 五模組顏色 */
+      --m-fmt: #0a72e8;      --m-fmt-bg: #e8f1fd;
+      --m-top: #1f8f75;      --m-top-bg: #e4f5f0;
+      --m-bot: #c83e7b;      --m-bot-bg: #fcebf3;
+      --m-typo: #7a4fd0;     --m-typo-bg: #f0eafb;
+      --m-neg: #6b6f76;      --m-neg-bg: #efeff3;
+      --m-misc: #b0700f;     --m-misc-bg: #fbf1e1;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg);
       color: var(--ink);
       font-family: var(--f-body);
       line-height: 1.6;
-      padding: 40px 20px 80px;
+      padding: 36px 16px 80px;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
+    body:has(dialog[open]) { overflow: hidden; }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    button { font: inherit; color: inherit; }
 
-    /* 頁首標題 */
-    header {
-      margin-bottom: 32px;
-      text-align: center;
-    }
+    .container { max-width: 1120px; margin: 0 auto; }
+
+    /* ── 頁首 ── */
+    header { text-align: center; margin-bottom: 24px; }
 
     header h1 {
       font-family: var(--f-display);
-      font-size: clamp(28px, 4vw, 40px);
+      font-size: clamp(26px, 4vw, 38px);
       font-weight: 800;
       letter-spacing: -0.03em;
-      color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      text-wrap: balance;
     }
 
-    header p {
-      color: var(--ink-2);
-      font-size: 16px;
-    }
+    header p { color: var(--ink-2); font-size: 15px; text-wrap: pretty; }
 
-    /* 標籤篩選列 */
-    .filter-bar {
+    .schema {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
       justify-content: center;
-      margin-bottom: 36px;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    .schema-label { margin-right: 2px; }
+
+    /* 模組色塊（頁首與詳情共用） */
+    .mod {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 2px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .mod-fmt  { color: var(--m-fmt);  background: var(--m-fmt-bg); }
+    .mod-top  { color: var(--m-top);  background: var(--m-top-bg); }
+    .mod-bot  { color: var(--m-bot);  background: var(--m-bot-bg); }
+    .mod-typo { color: var(--m-typo); background: var(--m-typo-bg); }
+    .mod-neg  { color: var(--m-neg);  background: var(--m-neg-bg); }
+    .mod-misc { color: var(--m-misc); background: var(--m-misc-bg); }
+
+    /* ── 分類篩選 ── */
+    .filter-bar {
+      position: sticky;
+      top: calc(var(--lab-bar, 0px) + 8px);
+      z-index: 20;
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 28px;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.82);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      backdrop-filter: saturate(180%) blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
     }
 
-    .tag-btn {
-      background: var(--tag-bg);
+    .cat-btn {
+      background: none;
+      border: 0;
       color: var(--ink-2);
-      border: 1px solid var(--border);
-      padding: 7px 16px;
+      padding: 7px 14px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 1px 2px rgba(20, 30, 60, .04);
-      transition: all 0.2s ease;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
     }
+    .cat-btn:hover { color: var(--ink); background: var(--surface-subtle); }
+    .cat-btn .count { font-weight: 500; opacity: .6; margin-left: 3px; font-variant-numeric: tabular-nums; }
+    .cat-btn.active { background: var(--accent); color: #fff; box-shadow: 0 4px 14px var(--accent-glow); }
+    .cat-btn.active .count { opacity: .8; }
 
-    .tag-btn:hover {
-      color: var(--ink);
-      background: #ffffff;
-      box-shadow: 0 4px 12px rgba(20, 30, 60, .08);
-    }
-
-    .tag-btn.active {
-      background: var(--tag-active);
-      color: #fff;
-      border-color: var(--tag-active);
-      box-shadow: 0 6px 18px var(--accent-glow);
-    }
-
-    /* 瀑布流版面 */
-    .masonry-grid {
-      column-count: 1;
-      column-gap: 24px;
-    }
-
-    @media (min-width: 768px) {
-      .masonry-grid {
-        column-count: 2;
+    @media (max-width: 599px) {
+      .filter-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        scrollbar-width: none;
+        width: auto;
+        border-radius: 16px;
       }
+      .filter-bar::-webkit-scrollbar { display: none; }
     }
 
-    @media (min-width: 1200px) {
-      .masonry-grid {
-        column-count: 2;
-      }
+    /* ── 作品牆 ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (min-width: 900px) {
+      .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
     }
 
-    .case-card {
-      break-inside: avoid;
+    .card {
+      position: relative;
       background: var(--surface);
       border-radius: var(--radius);
-      padding: 26px;
-      margin-bottom: 24px;
+      overflow: hidden;
       box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .case-card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-2px);
-    }
-
-    /* 卡片標頭 */
-    .card-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .card-tag {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent);
-      background: var(--accent-bg);
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-
-    .case-title {
-      font-family: var(--f-display);
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .case-desc {
-      font-size: 14px;
-      color: var(--ink-2);
-      margin-bottom: 18px;
-      line-height: 1.55;
-    }
-
-    /* 區塊小標 */
-    .section-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--ink-3);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* 提示詞區塊 */
-    .prompt-box {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 13px;
-      color: #2d3139;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 180px;
-      overflow-y: auto;
-      margin-bottom: 18px;
-      position: relative;
-    }
-
-    /* 格式切換與複製工具列 */
-    .view-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      background: #efeff4;
-      padding: 4px 6px;
-      border-radius: 12px;
-    }
-
-    .view-tabs {
-      display: flex;
-      gap: 4px;
-    }
-
-    .view-tab {
-      background: none;
-      border: none;
-      color: var(--ink-2);
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: transform .25s ease, box-shadow .25s ease;
+      outline: none;
     }
+    .card:hover, .card:focus-visible { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .card:focus-visible { box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-hover); }
 
-    .view-tab:hover {
-      color: var(--ink);
-    }
-
-    .view-tab.active {
-      background: #ffffff;
-      color: var(--ink);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .copy-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--copy-btn-bg);
-      color: var(--ink);
-      border: 1px solid var(--border);
-      padding: 5px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-      transition: all 0.2s;
-    }
-
-    .copy-btn:hover {
-      background: var(--copy-btn-hover);
-    }
-
-    .copy-btn.copied {
-      background: var(--mint);
-      border-color: var(--mint);
-      color: #fff;
-    }
-
-    /* 結構化內容顯示區 */
-    .output-viewer {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 22px;
+    .card-media {
       position: relative;
-    }
-
-    .output-content {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 12.5px;
-      color: #2d3139;
-      white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 280px;
-      overflow-y: auto;
-      line-height: 1.55;
-    }
-
-    /* 視覺成果預覽區 */
-    .visual-section {
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .visual-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .visual-header h4 {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--ink-2);
-    }
-
-    .poster-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px 12px;
-      background: #ebebf0;
-      border-radius: 12px;
-    }
-
-    /* 3:4 CSS Visual Simulation of the Poster Prompt */
-    .mock-poster {
-      width: 260px;
-      height: 346.6px; /* 3:4 比例 */
-      background: #fff;
-      border-radius: 4px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      font-family: Georgia, serif;
-    }
-
-    /* Top Half (Original full-bleed) */
-    .poster-top {
-      flex: 1;
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #334155, #475569);
-      position: relative;
+      aspect-ratio: 3 / 4;
+      background: var(--surface-sunk);
       overflow: hidden;
     }
-
-    .poster-top-visual {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 60% 40%, rgba(245, 158, 11, 0.45), transparent 60%),
-                  radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.5), transparent 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* Bottom Half (Warm off-white textured paper) */
-    .poster-bottom {
-      flex: 1;
-      width: 100%;
-      background: #fbf9f5;
-      background-image: radial-gradient(#e5dfd5 1px, transparent 1px);
-      background-size: 8px 8px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 12px 14px;
-    }
-
-    /* Blurred Crop Window behind subject */
-    .blurred-crop-frame {
-      position: absolute;
-      top: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 64px;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      background: linear-gradient(135deg, rgba(71, 85, 105, 0.4), rgba(51, 65, 85, 0.6));
-      filter: blur(0.5px);
-      border-radius: 2px;
-      z-index: 1;
-    }
-
-    /* 3D Cutout Pop-out Subject breaking the boundary */
-    .subject-popout {
-      position: absolute;
-      top: -34px; /* Breaks across top/bottom seam */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 110px;
-      height: 140px;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Simulated Subject Graphic (Statue / Portrait Silhouette with 3D drop shadow) */
-    .subject-graphic {
+    .card-media img {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.35));
-    }
-
-    /* Subject base soft fade / shadow */
-    .subject-base-fade {
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 130px;
-      height: 24px;
-      background: radial-gradient(ellipse at center, rgba(30, 27, 24, 0.28) 0%, transparent 70%);
-      z-index: 4;
-      pointer-events: none;
-    }
-
-    /* Typography on Poster */
-    .poster-text-top {
-      font-size: 6px;
-      line-height: 1.4;
-      color: #94918c;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      z-index: 6;
-      font-weight: 500;
-    }
-
-    .poster-text-bottom {
-      align-self: flex-end;
-      text-align: right;
-      font-size: 6px;
-      line-height: 1.4;
-      color: #94918c;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      z-index: 6;
-      font-weight: 500;
-    }
-
-    /* 實體圖片展示 */
-    .real-image-wrapper {
-      position: relative;
-      display: inline-block;
-      max-width: 320px;
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 28px rgba(20, 30, 60, 0.16);
-      cursor: zoom-in;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .real-image-wrapper:hover {
-      transform: scale(1.02);
-      box-shadow: 0 16px 36px rgba(20, 30, 60, 0.24);
-    }
-
-    .real-image-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      aspect-ratio: 3 / 4;
       object-fit: cover;
+      display: block;
+      transition: transform .5s ease;
     }
+    .card:hover .card-media img { transform: scale(1.035); }
 
-    .image-badge {
+    .card-badge {
       position: absolute;
       top: 10px;
-      right: 10px;
-      background: rgba(29, 29, 31, 0.78);
+      left: 10px;
+      background: rgba(29, 29, 31, 0.72);
+      -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
       padding: 3px 9px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.4px;
       pointer-events: none;
     }
 
-    .image-caption {
-      margin-top: 10px;
-      text-align: center;
+    .quick-copy {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.92);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 0;
+      padding: 6px 11px;
+      border-radius: 999px;
       font-size: 12px;
-      color: var(--ink-2);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity .2s, transform .2s, background .2s, color .2s;
+    }
+    .card:hover .quick-copy, .card:focus-within .quick-copy { opacity: 1; transform: none; }
+    .quick-copy:hover { background: #fff; }
+    .quick-copy.copied { background: var(--mint); color: #fff; opacity: 1; transform: none; }
+    @media (hover: none) {
+      .quick-copy { opacity: 1; transform: none; padding: 6px 9px; }
+      .quick-copy .qc-text { display: none; }
+      .quick-copy.copied .qc-text { display: inline; }
     }
 
-    /* Lightbox Modal */
-    .lightbox {
-      position: fixed;
+    .card-body { padding: 14px 16px 16px; }
+    .card-cat {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 3px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .card-cat .ratio { color: var(--ink-3); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .card-title {
+      font-family: var(--f-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      text-wrap: balance;
+    }
+    .card-sub {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 599px) {
+      .card-body { padding: 10px 12px 12px; }
+      .card-title { font-size: 14px; }
+      .card-sub { display: none; }
+      .card-cat { font-size: 11px; }
+    }
+
+    /* ── 無成果圖時的概念預覽（Case 02 紙雕） ── */
+    .mock-poster {
+      position: absolute;
       inset: 0;
-      background: rgba(10, 12, 18, 0.92);
-      backdrop-filter: blur(8px);
-      z-index: 9999;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-      padding: 24px;
+      font-family: Georgia, serif;
     }
-
-    .lightbox.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      border-radius: 8px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
-      object-fit: contain;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      font-size: 20px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .lightbox-close:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Case 02 Papercut Diorama Mockup Styles */
     .mock-papercut-top {
       flex: 1;
-      width: 100%;
       background: linear-gradient(180deg, #5b768e 0%, #879ba9 50%, #c4b8a7 100%);
       position: relative;
       display: flex;
@@ -562,126 +284,331 @@
       justify-content: center;
       overflow: hidden;
     }
-
     .mock-papercut-top::before {
       content: "";
       position: absolute;
       top: 20%;
       left: 60%;
-      width: 48px;
-      height: 48px;
+      width: 18%;
+      aspect-ratio: 1;
       border-radius: 50%;
       background: radial-gradient(circle, #fde4c3 0%, rgba(253,228,195,0) 70%);
-      opacity: 0.8;
+      opacity: .8;
     }
-
     .mock-papercut-top-label {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 11px;
+      color: rgba(255,255,255,.75);
+      font-size: 10px;
       letter-spacing: 2px;
       font-weight: 600;
-      text-transform: uppercase;
       z-index: 2;
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0,0,0,.25);
       padding: 4px 10px;
       border-radius: 4px;
-      backdrop-filter: blur(4px);
     }
-
     .mock-papercut-bottom {
       flex: 1;
-      width: 100%;
       background: #fbf8f2;
       background-image: radial-gradient(#ece4d6 1px, transparent 1px);
       background-size: 8px 8px;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 16px;
+      padding: 8%;
       overflow: hidden;
     }
+    .papercut-editorial { position: relative; z-index: 5; }
+    .papercut-title { font-size: clamp(12px, 2.4vw, 18px); line-height: 1.15; color: #272320; font-weight: 700; margin-bottom: 4px; }
+    .papercut-subtitle { font-family: var(--mono); font-size: 8px; letter-spacing: 2px; color: #7b7169; font-weight: 600; }
+    .papercut-diorama-layers { position: absolute; inset: auto 0 0 0; height: 66%; z-index: 3; }
+    .paper-layer { position: absolute; bottom: 0; left: 0; right: 0; }
+    .paper-layer-1 { height: 92%; background: #ded5c7; clip-path: polygon(0% 45%, 30% 25%, 65% 42%, 100% 20%, 100% 100%, 0% 100%); }
+    .paper-layer-2 { height: 68%; background: #cbbeab; clip-path: polygon(0% 30%, 40% 48%, 75% 22%, 100% 38%, 100% 100%, 0% 100%); }
+    .paper-layer-3 { height: 40%; background: #b5a48e; clip-path: polygon(0% 22%, 28% 40%, 60% 16%, 100% 32%, 100% 100%, 0% 100%); }
+    .placeholder-poster {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--ink-3);
+      font-size: 13px;
+      background: repeating-linear-gradient(45deg, #ececf1 0 12px, #e6e6ec 12px 24px);
+    }
 
-    .papercut-editorial {
+    /* ── 詳情面板 ── */
+    dialog.detail {
+      border: 0;
+      padding: 0;
+      margin: auto;
+      width: min(1120px, calc(100vw - 48px));
+      height: min(880px, calc(100dvh - 48px));
+      max-width: none;
+      max-height: none;
+      border-radius: 24px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 30px 80px rgba(10, 15, 30, .35);
+      overflow: hidden;
+    }
+    dialog.detail::backdrop {
+      background: rgba(18, 20, 28, .55);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+    dialog.detail[open] { animation: pop .22s ease; }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { dialog.detail[open] { animation: none; } }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      height: 100%;
+    }
+
+    .detail-media {
+      background: var(--surface-sunk);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      min-height: 0;
+    }
+    .detail-media .frame {
       position: relative;
-      z-index: 5;
-      text-align: left;
+      height: 100%;
+      max-height: 100%;
+      aspect-ratio: 3 / 4;
+      max-width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(20, 30, 60, .22);
+      background: var(--surface-sunk);
     }
-
-    .papercut-title {
-      font-family: Georgia, serif;
-      font-size: 17px;
-      line-height: 1.15;
-      color: #272320;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-      margin-bottom: 6px;
-    }
-
-    .papercut-subtitle {
-      font-family: monospace, sans-serif;
-      font-size: 8.5px;
-      letter-spacing: 2px;
-      color: #7b7169;
-      text-transform: uppercase;
+    .detail-media .frame.zoomable { cursor: zoom-in; }
+    .detail-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .detail-media .zoom-hint {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background: rgba(29,29,31,.72);
+      color: #fff;
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .papercut-keywords {
-      font-size: 7.5px;
-      letter-spacing: 1.5px;
-      color: #9c9187;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .papercut-poem {
-      font-family: Georgia, serif;
-      font-style: italic;
-      font-size: 8.5px;
-      color: #635a53;
-      margin-top: 4px;
-    }
-
-    .papercut-diorama-layers {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70%;
+      padding: 3px 9px;
+      border-radius: 999px;
       pointer-events: none;
-      z-index: 3;
     }
 
-    .paper-layer {
+    .detail-side { display: flex; flex-direction: column; min-height: 0; }
+
+    .detail-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 14px 18px 10px 26px;
+    }
+    .detail-counter { font-size: 12px; color: var(--ink-3); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .detail-nav { display: flex; gap: 6px; }
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: var(--ink-2);
+      transition: background .15s, color .15s;
+    }
+    .icon-btn:hover { background: var(--surface-subtle); color: var(--ink); }
+    .icon-btn:disabled { opacity: .35; cursor: default; }
+
+    .detail-scroll { overflow-y: auto; padding: 0 26px 28px; flex: 1; min-height: 0; }
+
+    .detail-cat { font-size: 12px; font-weight: 700; color: var(--accent); display: flex; gap: 8px; align-items: center; }
+    .detail-cat .ratio { color: var(--ink-3); }
+    .detail-title {
+      font-family: var(--f-display);
+      font-size: clamp(21px, 2.4vw, 26px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-top: 4px;
+      text-wrap: balance;
+    }
+    .detail-en { font-size: 13.5px; color: var(--ink-3); margin-top: 2px; }
+    .detail-desc { font-size: 14.5px; color: var(--ink-2); margin-top: 12px; text-wrap: pretty; }
+    .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .detail-tag { font-size: 12px; color: var(--ink-2); background: var(--surface-subtle); border: 1px solid var(--border); padding: 2px 9px; border-radius: 999px; }
+    .detail-caption { font-size: 12.5px; color: var(--ink-3); margin-top: 10px; }
+
+    .detail-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 12px;
+      padding: 9px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: background .15s, box-shadow .15s, color .15s;
+    }
+    .btn:hover { background: var(--surface-subtle); }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 6px 18px var(--accent-glow); }
+    .btn-primary:hover { background: #b5346d; }
+    .btn.copied { background: var(--mint); border-color: var(--mint); color: #fff; box-shadow: none; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin: 24px 0 14px;
+      background: #efeff4;
+      padding: 4px;
+      border-radius: 12px;
+      width: fit-content;
+    }
+    .tab {
+      background: none;
+      border: 0;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+      border-radius: 9px;
+      cursor: pointer;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+    /* 提示詞模組 */
+    .module {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .module > summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px 9px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .module > summary::-webkit-details-marker { display: none; }
+    .module > summary .chev { color: var(--ink-3); font-size: 11px; transition: transform .2s; width: 12px; }
+    .module[open] > summary .chev { transform: rotate(90deg); }
+    .module > summary .mod { white-space: normal; }
+    .module .mod-copy {
+      margin-left: auto;
+      border: 0;
+      background: none;
+      color: var(--ink-3);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .module .mod-copy:hover { background: var(--surface-subtle); color: var(--ink); }
+    .module .mod-copy.copied { color: var(--mint); }
+    .module pre {
+      margin: 0;
+      padding: 2px 14px 14px 32px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--code-ink);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .code-block {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--code-ink);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* 中文解析 */
+    .md h4 { font-size: 15px; font-weight: 700; margin: 4px 0 10px; }
+    .md ul { padding-left: 18px; margin: 0; }
+    .md li { font-size: 14px; color: var(--ink); margin: 5px 0; line-height: 1.65; }
+    .md li li { color: var(--ink-2); font-size: 13.5px; }
+    .md li::marker { color: var(--ink-3); }
+    .md p { font-size: 14px; margin: 8px 0; }
+    .md code { font-family: var(--mono); font-size: 12px; background: var(--surface-sunk); padding: 1px 6px; border-radius: 5px; }
+
+    @media (max-width: 759px) {
+      dialog.detail {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+      }
+      .detail-grid { display: block; height: 100%; overflow-y: auto; }
+      .detail-media { padding: 16px 16px 4px; background: var(--surface); }
+      .detail-media .frame { height: auto; width: min(100%, 420px); }
+      .detail-side { display: block; }
+      .detail-top {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        padding: max(10px, env(safe-area-inset-top)) 12px 10px 16px;
+        background: rgba(255,255,255,.9);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--border);
+      }
+      .detail-scroll { overflow: visible; padding: 0 16px 40px; }
+      .module pre { padding-left: 14px; }
+    }
+
+    /* ── Lightbox（放在 dialog 內，才能疊在面板之上） ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 18, 0.94);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox img { max-width: 94vw; max-height: 90vh; border-radius: 8px; object-fit: contain; box-shadow: 0 24px 60px rgba(0,0,0,.8); }
+    .lightbox-close {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      top: max(16px, env(safe-area-inset-top));
+      right: 16px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
     }
 
-    .paper-layer-1 {
-      height: 92%;
-      background: #ded5c7;
-      clip-path: polygon(0% 45%, 30% 25%, 65% 42%, 100% 20%, 100% 100%, 0% 100%);
-      filter: drop-shadow(0 -3px 4px rgba(60, 50, 40, 0.08));
-    }
-
-    .paper-layer-2 {
-      height: 68%;
-      background: #cbbeab;
-      clip-path: polygon(0% 30%, 40% 48%, 75% 22%, 100% 38%, 100% 100%, 0% 100%);
-      filter: drop-shadow(0 -4px 6px rgba(50, 40, 30, 0.12));
-    }
-
-    .paper-layer-3 {
-      height: 40%;
-      background: #b5a48e;
-      clip-path: polygon(0% 22%, 28% 40%, 60% 16%, 100% 32%, 100% 100%, 0% 100%);
-      filter: drop-shadow(0 -5px 8px rgba(40, 30, 20, 0.16));
-    }
-
+    .empty { text-align: center; color: var(--ink-3); padding: 60px 0; grid-column: 1 / -1; }
   </style>
 </head>
 <body>
@@ -689,29 +616,50 @@
   <div class="container">
     <header>
       <h1>Prompt Showcase · 提示詞與成果庫</h1>
-      <p>精選優質提示詞、結構化產出與視覺成果參考對照</p>
+      <p>點作品看完整提示詞與解析，或直接一鍵複製</p>
+      <div class="schema" aria-label="提示詞五模組架構">
+        <span class="schema-label">每則提示詞都由五個模組組成：</span>
+        <span class="mod mod-fmt">FORMAT</span>
+        <span class="mod mod-top">TOP HALF</span>
+        <span class="mod mod-bot">BOTTOM HALF</span>
+        <span class="mod mod-typo">TYPOGRAPHY</span>
+        <span class="mod mod-neg">NEGATIVE</span>
+      </div>
     </header>
 
-    <!-- Tag Filter Bar -->
-    <div class="filter-bar" id="filterBar">
-      <button class="tag-btn active" data-tag="all">全部 (All)</button>
+    <nav class="filter-bar" id="filterBar" aria-label="分類篩選"></nav>
+
+    <main class="gallery" id="gallery"></main>
+  </div>
+
+  <dialog class="detail" id="detail" aria-labelledby="detailTitle">
+    <div class="detail-grid">
+      <div class="detail-media" id="detailMedia"></div>
+      <div class="detail-side">
+        <div class="detail-top">
+          <span class="detail-counter" id="detailCounter"></span>
+          <div class="detail-nav">
+            <button class="icon-btn" id="prevBtn" aria-label="上一則">‹</button>
+            <button class="icon-btn" id="nextBtn" aria-label="下一則">›</button>
+            <button class="icon-btn" id="closeBtn" aria-label="關閉">✕</button>
+          </div>
+        </div>
+        <div class="detail-scroll" id="detailScroll"></div>
+      </div>
     </div>
 
-    <!-- Masonry Cards Container -->
-    <div class="masonry-grid" id="cardGrid"></div>
-  </div>
-
-  <!-- Lightbox Modal -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose" aria-label="關閉">✕</button>
-    <img id="lightboxImg" src="" alt="放大預覽">
-  </div>
+    <div class="lightbox" id="lightbox" role="button" aria-label="關閉放大預覽">
+      <button class="lightbox-close" id="lightboxClose" aria-label="關閉">✕</button>
+      <img id="lightboxImg" src="" alt="放大預覽">
+    </div>
+  </dialog>
 
   <script>
-    // 案例資料庫 (可隨時追加新案例)
-        const showcaseData = [
+    // 案例資料庫 (可隨時追加新案例；category 為首頁篩選用的大分類)
+    const showcaseData = [
       {
         id: "case-01",
+        category: "拼貼混媒",
         title: "3:4 畫廊風 3D 破框海報 (Gallery Split 3D Pop-out)",
         tags: ["圖像生成", "海報設計", "視覺排版", "3D破框"],
         desc: "以原照片無縫對接，下半部暖米白紙張背景上主體局部放大並打破橫向模糊小窗（3D破框），底部柔和漸變融入紙面。",
@@ -752,6 +700,7 @@
       },
       {
         id: "case-02",
+        category: "紙藝立體",
         title: "3:4 雜誌風立體紙雕海報 (Layered Paper-cut Diorama & Editorial)",
         tags: ["圖像生成", "海報設計", "紙雕藝術", "雜誌排版", "視覺重構"],
         desc: "以照片無縫拼接，下半部將原場景重構為精細多層次立體卡紙微縮剪紙（Paper-cut Diorama），搭配高級獨立雜誌風格襯線排版。",
@@ -793,6 +742,7 @@
       },
       {
         id: "case-03",
+        category: "手繪插畫",
         title: "3:4 獨立刊物風極簡手繪紙本海報 (Minimalist Hand-drawn Paper Illustration)",
         tags: ["圖像生成", "海報設計", "極簡手繪", "雜誌排版", "藝術出版", "視覺重構"],
         desc: "上下 1:1 分割。上半部忠實保留原片；下半部以極簡手繪墨線與低彩度壓克力平塗，在大量負空間中重構微縮主體，營造獨立藝術刊物封面感。",
@@ -832,6 +782,7 @@
       },
       {
         id: "case-04",
+        category: "紙藝立體",
         title: "3:4 旅人手帳立體微縮紙雕海報 (Travel Journal Pop-up Diorama)",
         tags: ["圖像生成", "海報設計", "手帳紙藝", "立體微縮", "空間延伸", "視覺重構"],
         desc: "畫面精準 50/50 分割。上半部真實海景道路；下半部無縫銜接至一本展開的旅行手帳，將道路、標誌、電線桿重構為立體折頁微縮紙雕。",
@@ -869,6 +820,7 @@
       },
       {
         id: "case-05",
+        category: "手繪插畫",
         title: "3:4「第二世界」概念二創海報 (The Second World Doodled Poster)",
         tags: ["圖像生成", "海報設計", "第二世界", "黑線塗鴉", "互動拼貼", "視覺重構"],
         desc: "上下 1:1 分割。上半部真實攝影；下半部米白紙大面積留白，將照片邊緣與元素轉化為可互動結構，配合黑線塗鴉小人與幽默手寫旁白。",
@@ -906,6 +858,7 @@
       },
       {
         id: "case-06",
+        category: "紙藝立體",
         title: "3:4 建築空間手工剪紙與紙雕海報 (Architectural Paper-cut Collage Poster)",
         tags: ["圖像生成", "海報設計", "手工剪紙", "紙雕拼貼", "建築重構", "現代排版"],
         desc: "嚴格 50/50 上下分割。上半部展覽級真實建築攝影；下半部將老街教堂重構為霧面卡紙微縮剪紙，結合鏤空字與現代編輯排版系統。",
@@ -953,6 +906,7 @@
       },
       {
         id: "case-07",
+        category: "建築線稿",
         title: "專業建築競賽藍圖線稿插畫 (Architectural Competition Vector Line Illustration)",
         tags: ["圖像生成", "建築設計", "競賽線稿", "藍圖美學", "向量插畫", "視覺重構"],
         desc: "保留原建築佈局與透視，轉化為歐洲競賽級純白底深靛藍（#1E3264）向量線稿。實填藍色人物，細線窗格與空氣透視，零陰影雜色。",
@@ -989,6 +943,7 @@
       },
       {
         id: "case-08",
+        category: "電影攝影",
         title: "4:5 A24 電影感慢快門人像攝影 (A24 Motion Blur Cinematic Portrait)",
         tags: ["圖像生成", "電影感攝影", "慢快門", "動態模糊", "人像攝影", "A24風格"],
         desc: "胸口視角 Leica SL3 慢快門作品。主體絕對凝止銳利，背景數百通勤人流拉出動態模糊，低飽和混凝土冷色調呈現「冷靜與混亂」A24 電影張力。",
@@ -1024,6 +979,7 @@
       },
       {
         id: "case-09",
+        category: "拼貼混媒",
         title: "3:4 混合媒介手撕紙實景拼貼海報 (Mixed Media Torn Paper Collage Poster)",
         tags: ["圖像生成", "混合媒介", "手撕紙拼貼", "絲網印刷", "藝術海報", "視覺重構"],
         desc: "照片以不規則手撕毛邊破入暖米白底紙。結合朱砂紅圓形色塊、黑色松樹飛鳥剪影與極小打字機文字，呈現絲網印刷與獨立藝術誌質感。",
@@ -1054,209 +1010,19 @@
       }
     ];
 
-    // 初始化與渲染
-    function initShowcase() {
-      renderTags();
-      renderCards(showcaseData);
-    }
+    // ── 設定 ──
+    const CATEGORY_ORDER = ["紙藝立體", "手繪插畫", "拼貼混媒", "建築線稿", "電影攝影"];
 
-    // 取得所有唯一標籤
-    function getAllTags() {
-      const tagSet = new Set();
-      showcaseData.forEach(item => item.tags.forEach(t => tagSet.add(t)));
-      return Array.from(tagSet);
-    }
+    // 有成果圖的排前面，概念預覽排最後
+    const items = [...showcaseData].sort((a, b) => (b.image ? 1 : 0) - (a.image ? 1 : 0));
 
-    // 渲染過濾標籤列
-    function renderTags() {
-      const filterBar = document.getElementById("filterBar");
-      const tags = getAllTags();
-      tags.forEach(tag => {
-        const btn = document.createElement("button");
-        btn.className = "tag-btn";
-        btn.dataset.tag = tag;
-        btn.textContent = tag;
-        btn.addEventListener("click", () => filterByTag(tag, btn));
-        filterBar.appendChild(btn);
-      });
+    let currentCat = "all";
+    let visible = items;
+    let currentIndex = -1;
 
-      document.querySelector('[data-tag="all"]').addEventListener("click", function() {
-        document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-        renderCards(showcaseData);
-      });
-    }
-
-    // 標籤篩選
-    function filterByTag(tag, targetBtn) {
-      document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
-      targetBtn.classList.add("active");
-      const filtered = showcaseData.filter(item => item.tags.includes(tag));
-      renderCards(filtered);
-    }
-
-    // 渲染案例卡片
-    function renderCards(dataList) {
-      const cardGrid = document.getElementById("cardGrid");
-      cardGrid.innerHTML = "";
-
-      dataList.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "case-card";
-        card.id = `card-${item.id}`;
-
-        card.innerHTML = `
-          <div class="card-meta">
-            <div class="card-tags">
-              ${item.tags.map(t => `<span class="card-tag">#${t}</span>`).join("")}
-            </div>
-          </div>
-          <h2 class="case-title">${item.title}</h2>
-          <p class="case-desc">${item.desc}</p>
-
-          <div class="section-title">
-            <span>📝</span> 原始提示詞 (Prompt)
-          </div>
-          <div class="prompt-box">${escapeHtml(item.prompt)}</div>
-
-          <!-- Format Switcher & Output View -->
-          <div class="view-toolbar">
-            <div class="view-tabs">
-              <button class="view-tab active" data-type="md" data-id="${item.id}">Markdown</button>
-              <button class="view-tab" data-type="json" data-id="${item.id}">JSON</button>
-              <button class="view-tab" data-type="prompt" data-id="${item.id}">Prompt</button>
-            </div>
-            <button class="copy-btn" id="copy-btn-${item.id}" title="點擊複製目前顯示內容">
-              <span>📋</span> <span class="copy-text">複製內容</span>
-            </button>
-          </div>
-
-          <div class="output-viewer">
-            <pre class="output-content" id="output-content-${item.id}">${escapeHtml(item.markdown)}</pre>
-          </div>
-
-          <!-- 成果視覺參考圖 (真實 AI 產圖) -->
-          <div class="visual-section">
-            <div class="visual-header">
-              <h4>🖼️ 成果視覺參考圖 (AI Generated Result)</h4>
-            </div>
-            <div class="poster-container">
-              ${item.image ? `
-                <div>
-                  <div class="real-image-wrapper" onclick="openLightbox('${item.image}')" title="點擊放大預覽">
-                    <span class="image-badge">✨ AI 成果範例</span>
-                    <img src="${item.image}" alt="${escapeHtml(item.title)}">
-                  </div>
-                  ${item.imageCaption ? `<div class="image-caption">${escapeHtml(item.imageCaption)} (點擊可放大)</div>` : ""}
-                </div>
-              ` : (item.id === "case-02" ? `
-                <!-- Case 02 Papercut Diorama Mockup -->
-                <div class="mock-poster">
-                  <div class="mock-papercut-top">
-                    <span class="mock-papercut-top-label">ORIGINAL SCENE</span>
-                  </div>
-                  <div class="mock-papercut-bottom">
-                    <div class="papercut-editorial">
-                      <div class="papercut-title">QUIET HORIZON<br>SILENT CONTOURS</div>
-                      <div class="papercut-subtitle">LANDSCAPE STUDY / 01</div>
-                      <div class="papercut-keywords">TEXTURE • CONTOUR • DEPTH</div>
-                      <div class="papercut-poem">Where the quiet horizon folds into paper memory.</div>
-                    </div>
-                    <div class="papercut-diorama-layers">
-                      <div class="paper-layer paper-layer-1"></div>
-                      <div class="paper-layer paper-layer-2"></div>
-                      <div class="paper-layer paper-layer-3"></div>
-                    </div>
-                  </div>
-                </div>
-              ` : `
-                <!-- General Fallback CSS Mockup -->
-                <div class="mock-poster">
-                  <div class="poster-top"><div class="poster-top-visual">ORIGINAL SCENE</div></div>
-                  <div class="poster-bottom">
-                    <div class="poster-text-top">IN SILENCE AND FORM<br>TIME DISSOLVES AWAY<br>ECHOES REMAIN</div>
-                    <div class="blurred-crop-frame"></div>
-                    <div class="subject-popout">
-                      <svg class="subject-graphic" viewBox="0 0 100 130" fill="none">
-                        <path d="M50 8C38 8 32 20 32 34C32 46 38 54 42 60C32 64 20 74 16 95C24 102 40 108 50 108C60 108 76 102 84 95C80 74 68 64 58 60C62 54 68 46 68 34C68 20 62 8 50 8Z" fill="#383431" />
-                      </svg>
-                    </div>
-                    <div class="subject-base-fade"></div>
-                    <div class="poster-text-bottom">SERIES NO. 04<br>— AUTUMN ARCHIVE</div>
-                  </div>
-                </div>
-              `)}
-            </div>
-          </div>
-        `;
-
-        cardGrid.appendChild(card);
-        bindCardEvents(item);
-      });
-    }
-
-    // 綁定卡片內按鈕事件
-    function bindCardEvents(item) {
-      const card = document.getElementById(`card-${item.id}`);
-      const tabs = card.querySelectorAll(".view-tab");
-      const outputEl = card.querySelector(`#output-content-${item.id}`);
-      const copyBtn = card.querySelector(`#copy-btn-${item.id}`);
-      const copyText = copyBtn.querySelector(".copy-text");
-
-      let currentMode = "md"; // 'md', 'json', 'prompt'
-
-      tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-          tabs.forEach(t => t.classList.remove("active"));
-          tab.classList.add("active");
-          currentMode = tab.dataset.type;
-
-          if (currentMode === "md") {
-            outputEl.textContent = item.markdown;
-          } else if (currentMode === "json") {
-            outputEl.textContent = item.json;
-          } else if (currentMode === "prompt") {
-            outputEl.textContent = item.prompt;
-          }
-        });
-      });
-
-      // 複製按鈕功能
-      copyBtn.addEventListener("click", async () => {
-        let contentToCopy = "";
-        if (currentMode === "md") contentToCopy = item.markdown;
-        else if (currentMode === "json") contentToCopy = item.json;
-        else if (currentMode === "prompt") contentToCopy = item.prompt;
-
-        try {
-          await navigator.clipboard.writeText(contentToCopy);
-          copyBtn.classList.add("copied");
-          copyText.textContent = "已複製！✓";
-          setTimeout(() => {
-            copyBtn.classList.remove("copied");
-            copyText.textContent = "複製內容";
-          }, 1800);
-        } catch (err) {
-          // Fallback
-          const ta = document.createElement("textarea");
-          ta.value = contentToCopy;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          copyBtn.classList.add("copied");
-          copyText.textContent = "已複製！✓";
-          setTimeout(() => {
-            copyBtn.classList.remove("copied");
-            copyText.textContent = "複製內容";
-          }, 1800);
-        }
-      });
-    }
-
-    // 跳脫 HTML 防止 XSS
+    // ── 工具 ──
     function escapeHtml(str) {
-      return str
+      return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1264,36 +1030,341 @@
         .replace(/'/g, "&#039;");
     }
 
-    // 啟動
-    
-    // Lightbox 功能
-    function openLightbox(imgSrc) {
-      const lb = document.getElementById("lightbox");
-      const img = document.getElementById("lightboxImg");
-      img.src = imgSrc;
-      lb.classList.add("active");
-    }
-
-    function closeLightbox() {
-      const lb = document.getElementById("lightbox");
-      lb.classList.remove("active");
-    }
-
-    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-    document.getElementById("lightbox").addEventListener("click", (e) => {
-      if (e.target.id === "lightbox" || e.target.id === "lightboxClose") {
-        closeLightbox();
+    // "3:4 畫廊風 3D 破框海報 (Gallery Split 3D Pop-out)" → { ratio, zh, en }
+    function splitTitle(title) {
+      let rest = title.trim();
+      let ratio = "";
+      const r = rest.match(/^(\d+:\d+)\s*/);
+      if (r) { ratio = r[1]; rest = rest.slice(r[0].length); }
+      let en = "";
+      const p = rest.match(/\s*\(([^()]+)\)\s*$/);
+      if (p) { en = p[1]; rest = rest.slice(0, p.index); }
+      if (!ratio) {
+        const m = (showcaseData.find(i => i.title === title)?.prompt || "").match(/--ar\s+(\d+:\d+)/);
+        if (m) ratio = m[1];
       }
+      return { ratio, zh: rest.trim(), en };
+    }
+
+    function moduleKind(name) {
+      const n = name.toUpperCase();
+      const has = (w) => new RegExp(`\\b${w}\\b`).test(n);
+      if (has("TOP HALF") || has("SOURCE") || has("PHOTOGRAPHIC")) return "top";
+      if (has("BOTTOM HALF")) return "bot";
+      if (has("TYPOGRAPHY")) return "typo";
+      if (has("NEGATIVE") || has("PARAMS")) return "neg";
+      if (has("FORMAT") || has("RATIO")) return "fmt";
+      return "misc";
+    }
+
+    // 依 [SECTION] 標題拆成模組
+    function parsePrompt(prompt) {
+      const parts = [];
+      const re = /^\[([^\]\n]+)\]\s*$/gm;
+      let m, last = null, lastEnd = 0;
+      while ((m = re.exec(prompt))) {
+        if (last) parts.push({ name: last, body: prompt.slice(lastEnd, m.index).trim() });
+        else if (m.index > 0 && prompt.slice(0, m.index).trim()) parts.push({ name: "", body: prompt.slice(0, m.index).trim() });
+        last = m[1].trim();
+        lastEnd = re.lastIndex;
+      }
+      if (last) parts.push({ name: last, body: prompt.slice(lastEnd).trim() });
+      if (!parts.length) parts.push({ name: "", body: prompt.trim() });
+      return parts;
+    }
+
+    function inlineMd(s) {
+      return escapeHtml(s)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>");
+    }
+
+    // 只處理本資料用到的 Markdown：### 標題、* / - 兩層清單、粗體、行內 code
+    function renderMarkdown(md) {
+      let html = "";
+      let depth = 0; // 0 = 不在清單，1 = 第一層，2 = 第二層
+      const closeTo = (d) => {
+        while (depth > d) { html += depth === 2 ? "</li></ul>" : "</li></ul>"; depth--; }
+      };
+      md.split("\n").forEach(line => {
+        const h = line.match(/^#{1,6}\s+(.*)$/);
+        const top = line.match(/^[*-]\s+(.*)$/);
+        const sub = line.match(/^\s{2,}[*-]\s+(.*)$/);
+        if (h) { closeTo(0); html += `<h4>${inlineMd(h[1])}</h4>`; }
+        else if (sub && depth >= 1) {
+          if (depth === 1) { html += "<ul>"; depth = 2; } else { html += "</li>"; }
+          html += `<li>${inlineMd(sub[1])}`;
+        }
+        else if (top) {
+          closeTo(1);
+          if (depth === 0) { html += "<ul>"; depth = 1; } else { html += "</li>"; }
+          html += `<li>${inlineMd(top[1])}`;
+        }
+        else if (line.trim()) { closeTo(0); html += `<p>${inlineMd(line)}</p>`; }
+      });
+      closeTo(0);
+      return html;
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        (document.querySelector("dialog[open]") || document.body).appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+    }
+
+    function flashCopied(btn, label, doneLabel = "已複製 ✓") {
+      const target = btn.querySelector(".label") || btn;
+      clearTimeout(btn._t);
+      btn.classList.add("copied");
+      target.textContent = doneLabel;
+      btn._t = setTimeout(() => {
+        btn.classList.remove("copied");
+        target.textContent = label;
+      }, 1600);
+    }
+
+    function posterHtml(item) {
+      if (item.image) return `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy">`;
+      if (item.id === "case-02") return `
+        <div class="mock-poster" aria-hidden="true">
+          <div class="mock-papercut-top"><span class="mock-papercut-top-label">ORIGINAL SCENE</span></div>
+          <div class="mock-papercut-bottom">
+            <div class="papercut-editorial">
+              <div class="papercut-title">QUIET HORIZON<br>SILENT CONTOURS</div>
+              <div class="papercut-subtitle">LANDSCAPE STUDY / 01</div>
+            </div>
+            <div class="papercut-diorama-layers">
+              <div class="paper-layer paper-layer-1"></div>
+              <div class="paper-layer paper-layer-2"></div>
+              <div class="paper-layer paper-layer-3"></div>
+            </div>
+          </div>
+        </div>`;
+      return `<div class="placeholder-poster">成果圖待補</div>`;
+    }
+
+    // ── 分類篩選 ──
+    function renderFilters() {
+      const bar = document.getElementById("filterBar");
+      const counts = {};
+      items.forEach(i => { counts[i.category] = (counts[i.category] || 0) + 1; });
+      const cats = [...CATEGORY_ORDER.filter(c => counts[c]), ...Object.keys(counts).filter(c => !CATEGORY_ORDER.includes(c))];
+      const btn = (key, label, n) =>
+        `<button class="cat-btn${key === currentCat ? " active" : ""}" data-cat="${escapeHtml(key)}" aria-pressed="${key === currentCat}">${escapeHtml(label)}<span class="count">${n}</span></button>`;
+      bar.innerHTML = btn("all", "全部", items.length) + cats.map(c => btn(c, c, counts[c])).join("");
+      bar.querySelectorAll(".cat-btn").forEach(b => b.addEventListener("click", () => {
+        currentCat = b.dataset.cat;
+        renderFilters();
+        renderGallery();
+      }));
+    }
+
+    // ── 作品牆 ──
+    function renderGallery() {
+      const grid = document.getElementById("gallery");
+      visible = currentCat === "all" ? items : items.filter(i => i.category === currentCat);
+      if (!visible.length) { grid.innerHTML = `<p class="empty">這個分類還沒有作品</p>`; return; }
+
+      grid.innerHTML = visible.map((item, idx) => {
+        const t = splitTitle(item.title);
+        return `
+          <article class="card" tabindex="0" role="button" data-idx="${idx}" aria-label="查看 ${escapeHtml(t.zh)}">
+            <div class="card-media">
+              ${posterHtml(item)}
+              ${item.image ? "" : `<span class="card-badge">概念預覽</span>`}
+              <button class="quick-copy" data-idx="${idx}" aria-label="複製 ${escapeHtml(t.zh)} 的提示詞">
+                <span aria-hidden="true">📋</span><span class="qc-text label">複製提示詞</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="card-cat">${escapeHtml(item.category || "")}${t.ratio ? `<span class="ratio">${t.ratio}</span>` : ""}</div>
+              <h2 class="card-title">${escapeHtml(t.zh)}</h2>
+              ${t.en ? `<div class="card-sub">${escapeHtml(t.en)}</div>` : ""}
+            </div>
+          </article>`;
+      }).join("");
+
+      grid.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", () => openDetail(+card.dataset.idx));
+        card.addEventListener("keydown", e => {
+          if (e.target === card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openDetail(+card.dataset.idx); }
+        });
+      });
+      grid.querySelectorAll(".quick-copy").forEach(b => b.addEventListener("click", async e => {
+        e.stopPropagation();
+        await copyText(visible[+b.dataset.idx].prompt);
+        flashCopied(b, "複製提示詞");
+      }));
+    }
+
+    // ── 詳情面板 ──
+    const dialog = document.getElementById("detail");
+    let activeTab = "prompt";
+
+    function openDetail(idx) {
+      currentIndex = idx;
+      renderDetail();
+      if (!dialog.open) dialog.showModal();
+      const id = visible[idx].id;
+      if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+    }
+
+    function closeDetail() {
+      closeLightbox();
+      dialog.close();
+    }
+
+    dialog.addEventListener("close", () => {
+      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      const card = document.querySelector(`.card[data-idx="${currentIndex}"]`);
+      if (card) card.focus({ preventScroll: true });
     });
 
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeLightbox();
+    function renderDetail() {
+      const item = visible[currentIndex];
+      const t = splitTitle(item.title);
+
+      document.getElementById("detailCounter").textContent = `${currentIndex + 1} / ${visible.length}`;
+      document.getElementById("prevBtn").disabled = currentIndex === 0;
+      document.getElementById("nextBtn").disabled = currentIndex === visible.length - 1;
+
+      document.getElementById("detailMedia").innerHTML = `
+        <div class="frame${item.image ? " zoomable" : ""}" ${item.image ? `role="button" tabindex="0" aria-label="放大預覽"` : ""}>
+          ${posterHtml(item)}
+          ${item.image ? `<span class="zoom-hint">點擊放大</span>` : `<span class="card-badge">概念預覽 · 待補成果圖</span>`}
+        </div>`;
+      const frame = document.querySelector("#detailMedia .zoomable");
+      if (frame) {
+        frame.addEventListener("click", () => openLightbox(item.image));
+        frame.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(item.image); } });
+      }
+
+      const modules = parsePrompt(item.prompt);
+      const tabsHtml = [["prompt", "提示詞"], ["md", "中文解析"], ["json", "JSON"]]
+        .map(([k, l]) => `<button class="tab" role="tab" data-tab="${k}" aria-selected="${k === activeTab}">${l}</button>`).join("");
+
+      let panel = "";
+      if (activeTab === "prompt") {
+        panel = modules.map((m, i) => `
+          <details class="module" open>
+            <summary>
+              <span class="chev" aria-hidden="true">▶</span>
+              <span class="mod mod-${moduleKind(m.name)}">${escapeHtml(m.name || "PROMPT")}</span>
+              <button class="mod-copy" data-mod="${i}"><span class="label">複製</span></button>
+            </summary>
+            <pre>${escapeHtml(m.body)}</pre>
+          </details>`).join("");
+      } else if (activeTab === "md") {
+        panel = `<div class="md">${renderMarkdown(item.markdown || "")}</div>`;
+      } else {
+        panel = `<pre class="code-block">${escapeHtml(item.json || "")}</pre>`;
+      }
+
+      const scroll = document.getElementById("detailScroll");
+      scroll.innerHTML = `
+        <div class="detail-cat">${escapeHtml(item.category || "")}${t.ratio ? `<span class="ratio">${t.ratio}</span>` : ""}</div>
+        <h2 class="detail-title" id="detailTitle">${escapeHtml(t.zh)}</h2>
+        ${t.en ? `<div class="detail-en">${escapeHtml(t.en)}</div>` : ""}
+        <p class="detail-desc">${escapeHtml(item.desc)}</p>
+        <div class="detail-tags">${item.tags.map(tag => `<span class="detail-tag">#${escapeHtml(tag)}</span>`).join("")}</div>
+        ${item.image && item.imageCaption ? `<div class="detail-caption">${escapeHtml(item.imageCaption)}</div>` : ""}
+        <div class="detail-actions">
+          <button class="btn btn-primary" id="copyPrompt"><span aria-hidden="true">📋</span><span class="label">複製完整提示詞</span></button>
+          <button class="btn" id="copyJson"><span class="label">複製 JSON</span></button>
+        </div>
+        <div class="tabs" role="tablist">${tabsHtml}</div>
+        <div role="tabpanel">${panel}</div>`;
+
+      scroll.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+        activeTab = b.dataset.tab;
+        const keep = scroll.scrollTop;
+        renderDetail();
+        scroll.scrollTop = keep;
+        scroll.querySelector(`.tab[data-tab="${activeTab}"]`).focus();
+      }));
+      document.getElementById("copyPrompt").addEventListener("click", async e => {
+        await copyText(item.prompt);
+        flashCopied(e.currentTarget, "複製完整提示詞");
+      });
+      document.getElementById("copyJson").addEventListener("click", async e => {
+        await copyText(item.json || "");
+        flashCopied(e.currentTarget, "複製 JSON");
+      });
+      scroll.querySelectorAll(".mod-copy").forEach(b => b.addEventListener("click", async e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const m = modules[+b.dataset.mod];
+        await copyText(m.name ? `[${m.name}]\n${m.body}` : m.body);
+        flashCopied(b, "複製", "✓");
+      }));
+    }
+
+    function step(delta) {
+      const n = currentIndex + delta;
+      if (n < 0 || n >= visible.length) return;
+      currentIndex = n;
+      renderDetail();
+      document.getElementById("detailScroll").scrollTop = 0;
+      document.querySelector(".detail-grid").scrollTop = 0;
+      history.replaceState(null, "", "#" + visible[n].id);
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", () => step(-1));
+    document.getElementById("nextBtn").addEventListener("click", () => step(1));
+    document.getElementById("closeBtn").addEventListener("click", closeDetail);
+
+    // 點背景關閉
+    dialog.addEventListener("click", e => { if (e.target === dialog) closeDetail(); });
+
+    // Esc：先關燈箱，再關面板
+    dialog.addEventListener("cancel", e => {
+      if (lightbox.classList.contains("active")) { e.preventDefault(); closeLightbox(); }
     });
 
-    initShowcase();
+    dialog.addEventListener("keydown", e => {
+      if (lightbox.classList.contains("active")) return;
+      const tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "summary" || tag === "input" || tag === "textarea") return;
+      if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+    });
+
+    // ── Lightbox ──
+    const lightbox = document.getElementById("lightbox");
+    function openLightbox(src) {
+      document.getElementById("lightboxImg").src = src;
+      lightbox.classList.add("active");
+      document.getElementById("lightboxClose").focus();
+    }
+    function closeLightbox() {
+      if (!lightbox.classList.contains("active")) return;
+      lightbox.classList.remove("active");
+      const f = document.querySelector("#detailMedia .zoomable");
+      if (f) f.focus({ preventScroll: true });
+    }
+    lightbox.addEventListener("click", closeLightbox);
+
+    // ── 啟動：支援 #case-03 直接開啟 ──
+    renderFilters();
+    renderGallery();
+    function openFromHash() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const idx = visible.findIndex(i => i.id === id);
+      if (idx >= 0) openDetail(idx);
+    }
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
   </script>
-
-
 
 </body>
 </html>

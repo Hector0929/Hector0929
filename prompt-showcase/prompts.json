@@ -1,6 +1,7 @@
 [
   {
     "id": "case-01",
+    "category": "拼貼混媒",
     "title": "3:4 畫廊風 3D 破框海報 (Gallery Split 3D Pop-out)",
     "tags": [
       "圖像生成",
@@ -17,6 +18,7 @@
   },
   {
     "id": "case-02",
+    "category": "紙藝立體",
     "title": "3:4 雜誌風立體紙雕海報 (Layered Paper-cut Diorama & Editorial)",
     "tags": [
       "圖像生成",
@@ -34,6 +36,7 @@
   },
   {
     "id": "case-03",
+    "category": "手繪插畫",
     "title": "3:4 獨立刊物風極簡手繪紙本海報 (Minimalist Hand-drawn Paper Illustration)",
     "tags": [
       "圖像生成",
@@ -52,6 +55,7 @@
   },
   {
     "id": "case-04",
+    "category": "紙藝立體",
     "title": "3:4 旅人手帳立體微縮紙雕海報 (Travel Journal Pop-up Diorama)",
     "tags": [
       "圖像生成",
@@ -70,6 +74,7 @@
   },
   {
     "id": "case-05",
+    "category": "手繪插畫",
     "title": "3:4「第二世界」概念二創海報 (The Second World Doodled Poster)",
     "tags": [
       "圖像生成",
@@ -88,6 +93,7 @@
   },
   {
     "id": "case-06",
+    "category": "紙藝立體",
     "title": "3:4 建築空間手工剪紙與紙雕海報 (Architectural Paper-cut Collage Poster)",
     "tags": [
       "圖像生成",
@@ -106,6 +112,7 @@
   },
   {
     "id": "case-07",
+    "category": "建築線稿",
     "title": "專業建築競賽藍圖線稿插畫 (Architectural Competition Vector Line Illustration)",
     "tags": [
       "圖像生成",
@@ -124,6 +131,7 @@
   },
   {
     "id": "case-08",
+    "category": "電影攝影",
     "title": "4:5 A24 電影感慢快門人像攝影 (A24 Motion Blur Cinematic Portrait)",
     "tags": [
       "圖像生成",
@@ -142,6 +150,7 @@
   },
   {
     "id": "case-09",
+    "category": "拼貼混媒",
     "title": "3:4 混合媒介手撕紙實景拼貼海報 (Mixed Media Torn Paper Collage Poster)",
     "tags": [
       "圖像生成",
